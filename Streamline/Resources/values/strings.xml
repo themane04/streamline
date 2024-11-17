@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Streamline</string>
-    <color name="ic_launcher_background">#00000000</color>
+    <string name="app_name_caps">STREAMLINE</string>
     <string name="app_text">Hello, Welcome to Streamline!</string>
+    <string name="app_background_color">#FEF3E2</string>
 </resources>
