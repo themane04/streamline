@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/RelativeLayout">
     <LinearLayout android:id="@+id/centered_container" style="@style/VLinearLayout">
-        <ImageView
-                style="@style/StreamlineLogo"
-        />
-        <TextView
-                style="@style/StreamlineText"
-        />
+        <ImageView style="@style/StreamlineLogo"/>
+        <TextView style="@style/StreamlineText"/>
         <EditText
                 android:hint="@string/email"
                 android:id="@+id/email"

@@ -1,52 +1,50 @@
-using Android.Views;
+using AndroidX.RecyclerView.Widget;
+using Streamline.Resources.adapter;
+using Streamline.Resources.service;
 
 namespace Streamline;
 
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity : Activity
 {
-    protected override void OnCreate(Bundle? savedInstanceState)
+    protected override async void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-        ActionBar?.Hide();
-        GoToSignIn();
-    }
 
-    private void GoToSignIn()
-    {
-        SetContentView(Resource.Layout.sign_in);
-        TextView signUpTextView = FindViewById<TextView>(Resource.Id.signup_text);
-        signUpTextView?.SetOnClickListener(new ClickListener(this, "signUp"));
-    }
-
-    private void GoToSignUp()
-    {
-        SetContentView(Resource.Layout.sign_up);
-        TextView signInTextView = FindViewById<TextView>(Resource.Id.signin_text);
-        signInTextView?.SetOnClickListener(new ClickListener(this, "signIn"));
-    }
-
-    private class ClickListener : Java.Lang.Object, View.IOnClickListener
-    {
-        private readonly MainActivity _activity;
-        private readonly string _action;
-
-        public ClickListener(MainActivity activity, string action)
+        try
         {
-            _activity = activity;
-            _action = action;
+            SetContentView(Resource.Layout.homepage);
+            ActionBar?.Hide();
+            await LoadMoviesAsync();
         }
-
-        public void OnClick(View? v)
+        catch (Exception ex)
         {
-            if (_action == "signIn")
+            Console.WriteLine($"Error in OnCreate: {ex.Message}");
+            Toast.MakeText(this, $"Error: {ex.Message}", ToastLength.Long)?.Show();
+        }
+    }
+
+    private async Task LoadMoviesAsync()
+    {
+        try
+        {
+            var movies = await MovieService.GetPopularMoviesAsync();
+            var recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+
+            if (recyclerView != null)
             {
-                _activity.GoToSignIn();
+                recyclerView.SetLayoutManager(new LinearLayoutManager(this));
+                recyclerView.SetAdapter(new MovieAdapter(this, movies));
             }
-            else if (_action == "signUp")
+            else
             {
-                _activity.GoToSignUp();
+                throw new NullReferenceException("RecyclerView not found");
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in LoadMoviesAsync: {ex.Message}");
+            Toast.MakeText(this, $"Failed to load movies: {ex.Message}", ToastLength.Long)?.Show();
         }
     }
 }
