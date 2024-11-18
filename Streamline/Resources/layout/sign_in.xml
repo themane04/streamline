@@ -11,23 +11,28 @@
                 android:hint="@string/email"
                 android:id="@+id/email"
                 android:inputType="textEmailAddress"
-                style="@style/InputField"/>
+                style="@style/InputField"
+        />
         <EditText
                 android:hint="@string/password"
                 android:id="@+id/password"
                 android:inputType="textPassword"
-                style="@style/InputField"/>
+                style="@style/InputField"
+        />
         <Button
                 android:text="@string/signin"
                 android:id="@+id/login_button"
-                style="@style/ActionButton"/>
+                style="@style/ActionButton"
+        />
         <TextView
                 android:text="@string/dont_have_an_account"
                 android:id="@+id/already_have_an_account"
-                style="@style/BeforeLinkText"/>
+                style="@style/BeforeLinkText"
+        />
         <TextView
+                android:id="@+id/signup_text"
                 android:text="@string/signup"
-                android:id="@+id/signup"
-                style="@style/LinkText"/>
+                style="@style/LinkText"
+        />
     </LinearLayout>
 </RelativeLayout>

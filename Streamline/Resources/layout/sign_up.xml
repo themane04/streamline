@@ -37,26 +37,28 @@
                 android:hint="@string/password"
                 android:id="@+id/password"
                 android:inputType="textPassword"
-                style="@style/InputField"/>
+                style="@style/InputField"
+        />
         <EditText
                 android:hint="@string/confirm_password"
                 android:id="@+id/confirm_password"
                 android:inputType="textPassword"
-                style="@style/InputField"/>
+                style="@style/InputField"
+        />
         <Button
                 android:text="@string/signup"
                 android:id="@+id/login_button"
-                style="@style/ActionButton"/>
+                style="@style/ActionButton"
+        />
         <TextView
                 android:text="@string/already_have_an_account"
                 android:id="@+id/already_have_an_account"
-                style="@style/BeforeLinkText"/>
+                style="@style/BeforeLinkText"
+        />
         <TextView
+                android:id="@+id/signin_text"
                 android:text="@string/signin"
-                android:id="@+id/signup"
                 style="@style/LinkText"
-                android:clickable="true"
-                android:focusable="true"
         />
     </LinearLayout>
 </RelativeLayout>
