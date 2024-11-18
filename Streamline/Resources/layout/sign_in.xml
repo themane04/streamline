@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/RelativeLayout">
-    <LinearLayout android:id="@+id/centered_container" style="@style/LinearLayout">
-        <ImageView style="@style/StreamlineLogo"/>
-        <TextView style="@style/StreamlineText"/>
-        <EditText android:hint="@string/email" android:id="@+id/email" android:inputType="textEmailAddress"
-                  style="@style/InputField"/>
-        <EditText android:hint="@string/password" android:id="@+id/password" android:inputType="textPassword"
-                  style="@style/InputField"/>
-        <Button android:text="@string/login" android:id="@+id/login_button" style="@style/ActionButton"/>
-        <TextView android:text="@string/already_have_an_account" android:id="@+id/already_have_an_account"
-                  style="@style/BeforeLinkText"/>
-        <TextView android:text="@string/signup" android:id="@+id/signup" style="@style/LinkText"/>
+    <LinearLayout android:id="@+id/centered_container" style="@style/VLinearLayout">
+        <ImageView
+                style="@style/StreamlineLogo"
+        />
+        <TextView
+                style="@style/StreamlineText"
+        />
+        <EditText
+                android:hint="@string/email"
+                android:id="@+id/email"
+                android:inputType="textEmailAddress"
+                style="@style/InputField"/>
+        <EditText
+                android:hint="@string/password"
+                android:id="@+id/password"
+                android:inputType="textPassword"
+                style="@style/InputField"/>
+        <Button
+                android:text="@string/signin"
+                android:id="@+id/login_button"
+                style="@style/ActionButton"/>
+        <TextView
+                android:text="@string/dont_have_an_account"
+                android:id="@+id/already_have_an_account"
+                style="@style/BeforeLinkText"/>
+        <TextView
+                android:text="@string/signup"
+                android:id="@+id/signup"
+                style="@style/LinkText"/>
     </LinearLayout>
 </RelativeLayout>
