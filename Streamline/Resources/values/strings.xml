@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Streamline</string>
-    <string name="app_name_caps">STREAMLINE</string>
     <string name="app_text">Hello, Welcome to Streamline!</string>
-    <string name="app_background_color">#FEF3E2</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="login">Log In</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="signup">Sign Up</string>
 </resources>
