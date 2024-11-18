@@ -19,5 +19,9 @@
             <SubType>Designer</SubType>
             <Generator>MSBuild:UpdateGeneratedFiles</Generator>
         </AndroidResource>
+        <AndroidResource Update="Resources\values\auth_style.xml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
     </ItemGroup>
 </Project>

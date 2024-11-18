@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RelativeLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/app_background_color</item>
+    </style>
+    <style name="LinearLayout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+    <style name="StreamlineLogo">
+        <item name="android:layout_width">196dp</item>
+        <item name="android:layout_height">196dp</item>
+        <item name="android:src">@drawable/streamline_transparent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+    <style name="StreamlineText">
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">48sp</item>
+        <item name="android:textColor">@color/app_secondary_color</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+    <style name="InputField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:background">@drawable/rounded_input_field</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="ActionButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/app_text_color</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+    <style name="BeforeLinkText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">false</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textColor">@color/app_text_color</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="LinkText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_primary_color</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+</resources>
