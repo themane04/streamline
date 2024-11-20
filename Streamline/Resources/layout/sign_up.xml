@@ -47,7 +47,7 @@
         />
         <Button
                 android:text="@string/signup"
-                android:id="@+id/login_button"
+                android:id="@+id/signup_button"
                 style="@style/ActionButton"
         />
         <TextView

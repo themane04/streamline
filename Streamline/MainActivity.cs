@@ -8,7 +8,7 @@ public class MainActivity : Activity
 {
     private NavigationManager? _navigationManager;
 
-    protected override async void OnCreate(Bundle? savedInstanceState)
+    protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
@@ -19,8 +19,6 @@ public class MainActivity : Activity
 
             _navigationManager = new NavigationManager(this);
             SignInListeners.Setup(this, _navigationManager);
-
-            await MovieService.LoadMoviesAsync(this);
         }
         catch (Exception ex)
         {

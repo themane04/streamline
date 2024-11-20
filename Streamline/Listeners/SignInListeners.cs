@@ -20,7 +20,7 @@ public static class SignInListeners
         Button? loginButton = activity.FindViewById<Button>(Resource.Id.login_button);
         if (loginButton != null)
         {
-            loginButton.Click += (sender, args) => navigationManager.NavigateTo(Screen.Home);
+            loginButton.Click += async (sender, args) => await NavigationHelper.NavigateToHomepageAsync(activity);
         }
         else
         {

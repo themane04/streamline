@@ -41,7 +41,6 @@ public class MovieService
         {
             var movies = await GetPopularMoviesAsync();
 
-            // Find the RecyclerView in the provided activity's layout
             var recyclerView = activity.FindViewById<RecyclerView>(Resource.Id.recyclerView);
 
             if (recyclerView != null)
