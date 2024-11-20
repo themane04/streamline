@@ -2,9 +2,9 @@
 using Android.Content;
 using AndroidX.RecyclerView.Widget;
 using Com.Squareup.Picasso;
-using Streamline.Resources.model;
+using Streamline.Modules.model;
 
-namespace Streamline.Resources.adapter;
+namespace Streamline.Modules.adapter;
 
 public class MovieAdapter : RecyclerView.Adapter
 {
@@ -24,7 +24,7 @@ public class MovieAdapter : RecyclerView.Adapter
         if (holder is MovieViewHolder viewHolder)
         {
             var movie = _movies[position];
-            
+
             // Check if viewHolder properties are not null before assigning values
             if (viewHolder.Title != null)
                 viewHolder.Title.Text = movie.Title ?? "No Title";

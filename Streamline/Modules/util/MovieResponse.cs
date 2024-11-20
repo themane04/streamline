@@ -1,6 +1,6 @@
-﻿using Streamline.Resources.model;
+﻿using Streamline.Modules.model;
 
-namespace Streamline.Resources.util;
+namespace Streamline.Modules.util;
 
 public class MovieResponse
 {

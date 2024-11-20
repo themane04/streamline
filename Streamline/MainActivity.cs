@@ -1,6 +1,7 @@
+using Android.Views;
 using AndroidX.RecyclerView.Widget;
-using Streamline.Resources.adapter;
-using Streamline.Resources.service;
+using Streamline.Modules.adapter;
+using Streamline.Modules.service;
 
 namespace Streamline;
 
@@ -15,6 +16,7 @@ public class MainActivity : Activity
         {
             SetContentView(Resource.Layout.homepage);
             ActionBar?.Hide();
+            GoToSignIn();
             await LoadMoviesAsync();
         }
         catch (Exception ex)
@@ -45,6 +47,44 @@ public class MainActivity : Activity
         {
             Console.WriteLine($"Error in LoadMoviesAsync: {ex.Message}");
             Toast.MakeText(this, $"Failed to load movies: {ex.Message}", ToastLength.Long)?.Show();
+        }
+    }
+
+    private void GoToSignUp()
+    {
+        SetContentView(Resource.Layout.sign_up);
+        TextView signInTextView = FindViewById<TextView>(Resource.Id.signin_text);
+        signInTextView?.SetOnClickListener(new ClickListener(this, "signIn"));
+    }
+
+    private void GoToSignIn()
+    {
+        SetContentView(Resource.Layout.sign_in);
+        TextView signUpTextView = FindViewById<TextView>(Resource.Id.signup_text);
+        signUpTextView?.SetOnClickListener(new ClickListener(this, "signUp"));
+    }
+
+    private class ClickListener : Java.Lang.Object, View.IOnClickListener
+    {
+        private readonly MainActivity _activity;
+        private readonly string _action;
+
+        public ClickListener(MainActivity activity, string action)
+        {
+            _activity = activity;
+            _action = action;
+        }
+
+        public void OnClick(View? v)
+        {
+            if (_action == "signIn")
+            {
+                _activity.GoToSignIn();
+            }
+            else if (_action == "signUp")
+            {
+                _activity.GoToSignUp();
+            }
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using Streamline.Resources.context;
-using Streamline.Resources.model;
+﻿using System.Text.Json;
+using Streamline.Modules.context;
+using Streamline.Modules.model;
 
-namespace Streamline.Resources.service;
-
-using System.Net.Http;
-using System.Text.Json;
+namespace Streamline.Modules.service;
 
 public class MovieService
 {

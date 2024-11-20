@@ -28,4 +28,7 @@
       <PackageReference Include="Picasso.Net" Version="2.4.0.1" />
       <PackageReference Include="Xamarin.AndroidX.RecyclerView" Version="1.3.2.9" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Modules\" />
+    </ItemGroup>
 </Project>
