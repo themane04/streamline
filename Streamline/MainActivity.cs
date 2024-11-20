@@ -1,7 +1,7 @@
 using Android.Views;
 using AndroidX.RecyclerView.Widget;
 using Streamline.Modules.adapter;
-using Streamline.Modules.service;
+using Streamline.Services;
 
 namespace Streamline;
 
@@ -14,14 +14,15 @@ public class MainActivity : Activity
 
         try
         {
-            SetContentView(Resource.Layout.homepage);
+            SetContentView(Resource.Layout.sign_in);
             ActionBar?.Hide();
-            GoToSignIn();
+
+            SetupSignInListeners();
             await LoadMoviesAsync();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in OnCreate: {ex.Message}");
+            Android.Util.Log.Error("MainActivity", $"Error in OnCreate: {ex}");
             Toast.MakeText(this, $"Error: {ex.Message}", ToastLength.Long)?.Show();
         }
     }
@@ -45,23 +46,45 @@ public class MainActivity : Activity
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in LoadMoviesAsync: {ex.Message}");
+            Android.Util.Log.Error("MainActivity", $"Error in LoadMoviesAsync: {ex}");
             Toast.MakeText(this, $"Failed to load movies: {ex.Message}", ToastLength.Long)?.Show();
         }
     }
 
-    private void GoToSignUp()
+    private void SetupSignInListeners()
     {
-        SetContentView(Resource.Layout.sign_up);
-        TextView signInTextView = FindViewById<TextView>(Resource.Id.signin_text);
-        signInTextView?.SetOnClickListener(new ClickListener(this, "signIn"));
-    }
-
-    private void GoToSignIn()
-    {
-        SetContentView(Resource.Layout.sign_in);
         TextView signUpTextView = FindViewById<TextView>(Resource.Id.signup_text);
         signUpTextView?.SetOnClickListener(new ClickListener(this, "signUp"));
+
+        Button loginButton = FindViewById<Button>(Resource.Id.login_button);
+        if (loginButton != null)
+        {
+            loginButton.Click += (sender, args) => NavigateTo(Screen.Home);
+        }
+    }
+
+    private void NavigateTo(Screen screen)
+    {
+        switch (screen)
+        {
+            case Screen.Home:
+                SetContentView(Resource.Layout.homepage);
+                break;
+            case Screen.SignIn:
+                SetContentView(Resource.Layout.sign_in);
+                SetupSignInListeners();
+                break;
+            case Screen.SignUp:
+                SetContentView(Resource.Layout.sign_up);
+                SetupSignUpListeners();
+                break;
+        }
+    }
+
+    private void SetupSignUpListeners()
+    {
+        TextView signInTextView = FindViewById<TextView>(Resource.Id.signin_text);
+        signInTextView?.SetOnClickListener(new ClickListener(this, "signIn"));
     }
 
     private class ClickListener : Java.Lang.Object, View.IOnClickListener
@@ -79,12 +102,19 @@ public class MainActivity : Activity
         {
             if (_action == "signIn")
             {
-                _activity.GoToSignIn();
+                _activity.NavigateTo(Screen.SignIn);
             }
             else if (_action == "signUp")
             {
-                _activity.GoToSignUp();
+                _activity.NavigateTo(Screen.SignUp);
             }
         }
+    }
+
+    private enum Screen
+    {
+        Home,
+        SignIn,
+        SignUp
     }
 }

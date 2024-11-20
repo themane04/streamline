@@ -19,6 +19,7 @@
                 android:text="@string/signin"
                 android:id="@+id/login_button"
                 style="@style/ActionButton"
+                android:onClick="GoToHome"
         />
         <TextView
                 android:text="@string/dont_have_an_account"

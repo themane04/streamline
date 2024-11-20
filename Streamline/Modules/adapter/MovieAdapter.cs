@@ -2,7 +2,7 @@
 using Android.Content;
 using AndroidX.RecyclerView.Widget;
 using Com.Squareup.Picasso;
-using Streamline.Modules.model;
+using Streamline.Models;
 
 namespace Streamline.Modules.adapter;
 

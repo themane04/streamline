@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
+using Streamline.Models;
 using Streamline.Modules.context;
-using Streamline.Modules.model;
 
-namespace Streamline.Modules.service;
+namespace Streamline.Services;
 
 public class MovieService
 {

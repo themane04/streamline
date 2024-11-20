@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Streamline.Modules.model;
+namespace Streamline.Models;
 
 public class Movie
 {

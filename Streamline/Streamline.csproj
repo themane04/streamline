@@ -29,6 +29,7 @@
       <PackageReference Include="Xamarin.AndroidX.RecyclerView" Version="1.3.2.9" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Listeners\" />
       <Folder Include="Modules\" />
     </ItemGroup>
 </Project>
