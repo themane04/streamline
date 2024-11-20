@@ -6,7 +6,7 @@ namespace Streamline;
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity : Activity
 {
-    private NavigationManager _navigationManager;
+    private NavigationManager? _navigationManager;
 
     protected override async void OnCreate(Bundle? savedInstanceState)
     {
