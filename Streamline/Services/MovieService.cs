@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using AndroidX.RecyclerView.Widget;
+using Streamline.Adapters;
+using Streamline.Contexts;
 using Streamline.Models;
-using Streamline.Modules.adapter;
-using Streamline.Modules.context;
 
 namespace Streamline.Services;
 

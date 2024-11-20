@@ -2,7 +2,7 @@
 using Streamline.Models;
 using Streamline.Utilities;
 
-namespace Streamline.Modules.context;
+namespace Streamline.Contexts;
 
 [JsonSerializable(typeof(MovieResponse))]
 [JsonSerializable(typeof(List<Movie>))]

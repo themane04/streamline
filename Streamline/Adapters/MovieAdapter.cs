@@ -4,7 +4,7 @@ using AndroidX.RecyclerView.Widget;
 using Com.Squareup.Picasso;
 using Streamline.Models;
 
-namespace Streamline.Modules.adapter;
+namespace Streamline.Adapters;
 
 public class MovieAdapter : RecyclerView.Adapter
 {
