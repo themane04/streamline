@@ -2,7 +2,9 @@
 using Android.Content;
 using AndroidX.RecyclerView.Widget;
 using Com.Squareup.Picasso;
+using Streamline.Enums;
 using Streamline.Models;
+using Streamline.Utilities;
 
 namespace Streamline.Adapters;
 
@@ -24,18 +26,14 @@ public class MovieAdapter : RecyclerView.Adapter
         if (holder is MovieViewHolder viewHolder)
         {
             var movie = _movies[position];
+            LogHelper.Log(LogLevel.Info, "MovieAdapter", $"Binding movie: {movie.Title}");
 
-            // Check if viewHolder properties are not null before assigning values
-            if (viewHolder.Title != null)
-                viewHolder.Title.Text = movie.Title ?? "No Title";
-
-            if (viewHolder.Overview != null)
-                viewHolder.Overview.Text = movie.Overview ?? "No Overview";
-
-            if (viewHolder.Poster != null)
-                Picasso.With(_context).Load(movie.FullPosterPath).Into(viewHolder.Poster);
+            viewHolder.Title?.SetText(movie.Title ?? "No Title", TextView.BufferType.Normal);
+            viewHolder.Overview?.SetText(movie.Overview ?? "No Overview", TextView.BufferType.Normal);
+            Picasso.With(_context).Load(movie.FullPosterPath).Into(viewHolder.Poster);
         }
     }
+
 
     public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
     {

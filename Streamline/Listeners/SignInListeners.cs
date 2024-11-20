@@ -1,5 +1,7 @@
-﻿using Streamline.Enums;
+﻿using Android.Util;
+using Streamline.Enums;
 using Streamline.Services;
+using Streamline.Utilities;
 
 namespace Streamline.Listeners;
 
@@ -14,17 +16,21 @@ public static class SignInListeners
         }
         else
         {
-            Android.Util.Log.Warn("SignInListeners", "signup_text TextView not found in the layout.");
+            LogHelper.Log(LogLevel.Warn, "SignInListeners", "signup_text TextView not found in the layout.");
         }
 
         Button? loginButton = activity.FindViewById<Button>(Resource.Id.login_button);
         if (loginButton != null)
         {
-            loginButton.Click += async (sender, args) => await NavigationHelper.NavigateToHomepageAsync(activity);
+            loginButton.Click += async (sender, args) =>
+            {
+                LogHelper.Log(LogLevel.Info, "SignInListeners", "login_button Button clicked.");
+                await NavigationHelper.NavigateToHomepageAsync(activity);
+            };
         }
         else
         {
-            Android.Util.Log.Warn("SignInListeners", "login_button Button not found in the layout.");
+            LogHelper.Log(LogLevel.Warn, "SignInListeners", "login_button Button not found in the layout.");
         }
     }
 }

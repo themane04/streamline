@@ -1,5 +1,7 @@
+using Streamline.Enums;
 using Streamline.Listeners;
 using Streamline.Services;
+using Streamline.Utilities;
 
 namespace Streamline;
 
@@ -22,7 +24,7 @@ public class MainActivity : Activity
         }
         catch (Exception ex)
         {
-            Android.Util.Log.Error("MainActivity", $"Error in OnCreate: {ex}");
+            LogHelper.Log(LogLevel.Error, "MainActivity", $"Error: {ex.Message}");
             Toast.MakeText(this, $"Error: {ex.Message}", ToastLength.Long)?.Show();
         }
     }

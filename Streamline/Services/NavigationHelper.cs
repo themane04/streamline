@@ -1,4 +1,6 @@
 ﻿using Android.Util;
+using Streamline.Enums;
+using Streamline.Utilities;
 
 namespace Streamline.Services;
 
@@ -9,12 +11,14 @@ public static class NavigationHelper
         try
         {
             activity.SetContentView(Resource.Layout.homepage);
-            activity.ActionBar?.Hide();
+
+            LogHelper.Log(LogLevel.Info, "NavigationHelper", "Navigated to homepage.");
+
             await MovieService.LoadMoviesAsync(activity);
         }
         catch (Exception ex)
         {
-            Log.Error("NavigationHelper", $"Error navigating to homepage: {ex}");
+            LogHelper.Log(LogLevel.Error, "NavigationHelper", $"Error: {ex.Message}");
             Toast.MakeText(activity, $"Error: {ex.Message}", ToastLength.Long)?.Show();
         }
     }

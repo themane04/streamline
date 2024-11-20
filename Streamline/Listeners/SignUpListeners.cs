@@ -1,5 +1,6 @@
 ﻿using Streamline.Enums;
 using Streamline.Services;
+using Streamline.Utilities;
 
 namespace Streamline.Listeners;
 
@@ -14,7 +15,7 @@ public static class SignUpListeners
         }
         else
         {
-            Android.Util.Log.Warn("SignUpListeners", "signin_text TextView not found in the layout.");
+            LogHelper.Log(LogLevel.Warn, "SignUpListeners", "signin_text TextView not found in the layout.");
         }
 
         Button? signUpButton = activity.FindViewById<Button>(Resource.Id.signup_button);
@@ -24,7 +25,7 @@ public static class SignUpListeners
         }
         else
         {
-            Android.Util.Log.Warn("SignUpListeners", "signup_button Button not found in the layout.");
+            LogHelper.Log(LogLevel.Warn, "SignUpListeners", "signup_button Button not found in the layout.");
         }
     }
 }

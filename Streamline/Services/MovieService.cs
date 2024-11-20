@@ -1,8 +1,11 @@
 ﻿using System.Text.Json;
+using Android.Util;
 using AndroidX.RecyclerView.Widget;
 using Streamline.Adapters;
 using Streamline.Contexts;
+using Streamline.Enums;
 using Streamline.Models;
+using Streamline.Utilities;
 
 namespace Streamline.Services;
 
@@ -23,14 +26,14 @@ public class MovieService
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                Android.Util.Log.Info("MovieService", $"Fetched movies: {json}");
+                LogHelper.Log(LogLevel.Info, "MovieService", $"Fetched {json.Length} bytes of movie data.");
                 var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
                 return result?.Results ?? new List<Movie>();
             }
         }
         catch (Exception ex)
         {
-            Android.Util.Log.Error("MovieService", $"Error fetching movies: {ex.Message}");
+            LogHelper.Log(LogLevel.Error, "MovieService", $"Error fetching movies: {ex.Message}");
         }
 
         return new List<Movie>();
@@ -41,22 +44,24 @@ public class MovieService
         try
         {
             var movies = await GetPopularMoviesAsync();
-
             var recyclerView = activity.FindViewById<RecyclerView>(Resource.Id.recyclerView);
 
             if (recyclerView != null)
             {
                 recyclerView.SetLayoutManager(new LinearLayoutManager(activity));
-                recyclerView.SetAdapter(new MovieAdapter(activity, movies));
+                var adapter = new MovieAdapter(activity, movies);
+                recyclerView.SetAdapter(adapter);
+
+                LogHelper.Log(LogLevel.Info, "MovieService", $"Attached adapter with {movies.Count} movies.");
             }
             else
             {
-                throw new NullReferenceException("RecyclerView not found in the layout");
+                LogHelper.Log(LogLevel.Warn, "MovieService", "recyclerView not found in the layout.");
             }
         }
         catch (Exception ex)
         {
-            Android.Util.Log.Error("MovieService", $"Error loading movies into RecyclerView: {ex}");
+            LogHelper.Log(LogLevel.Error, "MovieService", $"Failed to load movies: {ex.Message}");
             Toast.MakeText(activity, $"Failed to load movies: {ex.Message}", ToastLength.Long)?.Show();
         }
     }

@@ -9,23 +9,21 @@
             android:id="@+id/moviePoster"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
     <TextView
             android:id="@+id/movieTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Movie Title"
+            android:text="Title"
             android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     <TextView
             android:id="@+id/movieOverview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Movie Overview"
-            android:textSize="14sp"
-            android:paddingTop="4dp" />
+            android:text="Overview"
+            android:textSize="14sp"/>
 </LinearLayout>
 
