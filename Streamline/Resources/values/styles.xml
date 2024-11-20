@@ -5,4 +5,5 @@
     <color name="app_navigation_color">#FAB12F</color>
     <color name="app_background_color">#FEF3E2</color>
     <color name="app_text_color">#3C3C3C</color>
+    <color name="app_white">#FFFFFF</color>
 </resources>

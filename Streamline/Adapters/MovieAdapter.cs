@@ -33,6 +33,11 @@ public class MovieAdapter : RecyclerView.Adapter
                     .Load(movie.FullPosterPath)
                     .Into(viewHolder.Poster);
             }
+
+            if (viewHolder.Rating != null)
+            {
+                viewHolder.Rating.Text = movie.VoteAverage.ToString("0.0");
+            }
         }
     }
 
@@ -53,12 +58,14 @@ public class MovieAdapter : RecyclerView.Adapter
     private class MovieViewHolder : RecyclerView.ViewHolder
     {
         public ImageView? Poster { get; }
+        public TextView? Rating { get; }
 
         public MovieViewHolder(View itemView) : base(itemView)
         {
             Poster = itemView.FindViewById<ImageView>(Resource.Id.moviePoster);
+            Rating = itemView.FindViewById<TextView>(Resource.Id.movieRating);
 
-            if (Poster == null)
+            if (Poster == null || Rating == null)
             {
                 throw new InvalidOperationException("View components not found");
             }
