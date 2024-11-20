@@ -1,5 +1,4 @@
-﻿using Android.Views;
-using Streamline.Enums;
+﻿using Streamline.Enums;
 using Streamline.Services;
 
 namespace Streamline.Listeners;
