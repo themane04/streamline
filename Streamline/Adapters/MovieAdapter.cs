@@ -1,7 +1,6 @@
 ﻿using Android.Views;
 using Android.Content;
 using AndroidX.RecyclerView.Widget;
-using Com.Squareup.Picasso;
 using Streamline.Enums;
 using Streamline.Models;
 using Streamline.Utilities;
@@ -30,10 +29,14 @@ public class MovieAdapter : RecyclerView.Adapter
 
             viewHolder.Title?.SetText(movie.Title ?? "No Title", TextView.BufferType.Normal);
             viewHolder.Overview?.SetText(movie.Overview ?? "No Overview", TextView.BufferType.Normal);
-            Picasso.With(_context).Load(movie.FullPosterPath).Into(viewHolder.Poster);
+            if (!string.IsNullOrEmpty(movie.FullPosterPath))
+            {
+                PicassoSingleton.GetInstance(_context)
+                    .Load(movie.FullPosterPath)
+                    .Into(viewHolder.Poster);
+            }
         }
     }
-
 
     public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
     {

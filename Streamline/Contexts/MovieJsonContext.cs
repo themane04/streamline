@@ -5,7 +5,7 @@ using Streamline.Utilities;
 namespace Streamline.Contexts;
 
 [JsonSerializable(typeof(MovieResponse))]
-[JsonSerializable(typeof(List<Movie>))]
+[JsonSerializable(typeof(Movie))]
 public partial class MovieJsonContext : JsonSerializerContext
 {
 }

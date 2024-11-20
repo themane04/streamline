@@ -27,8 +27,30 @@ public class MovieService
             {
                 string json = await response.Content.ReadAsStringAsync();
                 LogHelper.Log(LogLevel.Info, "MovieService", $"Fetched {json.Length} bytes of movie data.");
-                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
-                return result?.Results ?? new List<Movie>();
+
+                try
+                {
+                    var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
+
+                    if (result?.Results != null)
+                    {
+                        LogHelper.Log(LogLevel.Info, "MovieService", $"Deserialized {result.Results.Count} movies.");
+                    }
+                    else
+                    {
+                        LogHelper.Log(LogLevel.Warn, "MovieService", "Deserialization returned null or empty results.");
+                    }
+
+                    return result?.Results ?? new List<Movie>();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Log(LogLevel.Error, "MovieService", $"Deserialization error: {ex.Message}");
+                }
+            }
+            else
+            {
+                LogHelper.Log(LogLevel.Warn, "MovieService", $"API Error: {response.StatusCode}");
             }
         }
         catch (Exception ex)
@@ -52,11 +74,20 @@ public class MovieService
                 var adapter = new MovieAdapter(activity, movies);
                 recyclerView.SetAdapter(adapter);
 
-                LogHelper.Log(LogLevel.Info, "MovieService", $"Attached adapter with {movies.Count} movies.");
+                if (movies.Count == 0)
+                {
+                    LogHelper.Log(LogLevel.Warn, "MovieService", "No movies found to display.");
+                    Toast.MakeText(activity, "No movies available to display.", ToastLength.Long)?.Show();
+                }
+                else
+                {
+                    LogHelper.Log(LogLevel.Info, "MovieService", $"Loaded {movies.Count} movies into RecyclerView.");
+                }
             }
             else
             {
-                LogHelper.Log(LogLevel.Warn, "MovieService", "recyclerView not found in the layout.");
+                LogHelper.Log(LogLevel.Warn, "MovieService", "RecyclerView not found in activity.");
+                Toast.MakeText(activity, "Failed to load movies: RecyclerView not found.", ToastLength.Long)?.Show();
             }
         }
         catch (Exception ex)
