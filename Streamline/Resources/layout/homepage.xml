@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/RelativeLayout">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/RelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
     <LinearLayout
             android:id="@+id/centered_container"
             style="@style/VLinearLayout"
@@ -12,16 +15,16 @@
                     style="@style/StreamlineLogo"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
-                    android:layout_marginTop="0dp"
                     android:layout_marginRight="15dp"
-            />
-            <TextView
-                    style="@style/StreamlineText"
-                    android:layout_marginTop="0dp"
-                    android:textSize="35dp"
-            />
+                    android:layout_marginTop="0dp"/>
+            <TextView style="@style/StreamlineText" android:layout_marginTop="0dp"/>
         </LinearLayout>
         <ImageButton style="@style/SearchButton"/>
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerView" style="@style/MovieCardGrid"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            style="@style/MovieCardGrid"
+            android:layout_below="@id/centered_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 </RelativeLayout>

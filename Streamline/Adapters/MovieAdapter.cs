@@ -39,14 +39,15 @@ public class MovieAdapter : RecyclerView.Adapter
     public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
     {
         var inflater = LayoutInflater.From(parent.Context);
-        View? itemView = inflater?.Inflate(Resource.Layout.movie_item, parent, false);
+        var itemView = inflater?.Inflate(Resource.Layout.movie_item, parent, false);
+        return new MovieViewHolder(itemView ?? throw new InvalidOperationException("View not found"));
+    }
 
-        if (itemView == null)
-        {
-            throw new InvalidOperationException("LayoutInflater returned a null view.");
-        }
-
-        return new MovieViewHolder(itemView);
+    public void AppendMovies(List<Movie> newMovies)
+    {
+        int startPosition = _movies.Count;
+        _movies.AddRange(newMovies);
+        NotifyItemRangeInserted(startPosition, newMovies.Count);
     }
 
     private class MovieViewHolder : RecyclerView.ViewHolder
