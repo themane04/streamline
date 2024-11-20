@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+using AndroidX.RecyclerView.Widget;
 using Streamline.Models;
+using Streamline.Modules.adapter;
 using Streamline.Modules.context;
 
 namespace Streamline.Services;
@@ -27,9 +29,35 @@ public class MovieService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error fetching movies: {ex.Message}");
+            Android.Util.Log.Error("MovieService", $"Error fetching movies: {ex.Message}");
         }
 
         return new List<Movie>();
+    }
+
+    public static async Task LoadMoviesAsync(Activity activity)
+    {
+        try
+        {
+            var movies = await GetPopularMoviesAsync();
+
+            // Find the RecyclerView in the provided activity's layout
+            var recyclerView = activity.FindViewById<RecyclerView>(Resource.Id.recyclerView);
+
+            if (recyclerView != null)
+            {
+                recyclerView.SetLayoutManager(new LinearLayoutManager(activity));
+                recyclerView.SetAdapter(new MovieAdapter(activity, movies));
+            }
+            else
+            {
+                throw new NullReferenceException("RecyclerView not found in the layout");
+            }
+        }
+        catch (Exception ex)
+        {
+            Android.Util.Log.Error("MovieService", $"Error loading movies into RecyclerView: {ex}");
+            Toast.MakeText(activity, $"Failed to load movies: {ex.Message}", ToastLength.Long)?.Show();
+        }
     }
 }
