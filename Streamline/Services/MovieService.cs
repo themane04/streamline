@@ -23,6 +23,7 @@ public class MovieService
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
+                Android.Util.Log.Info("MovieService", $"Fetched movies: {json}");
                 var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
                 return result?.Results ?? new List<Movie>();
             }
