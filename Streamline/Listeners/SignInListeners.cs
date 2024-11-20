@@ -26,6 +26,7 @@ public static class SignInListeners
             {
                 LogHelper.Log(LogLevel.Info, "SignInListeners", "login_button Button clicked.");
                 await NavigationHelper.NavigateToHomepageAsync(activity);
+                Toast.MakeText(activity, "Login successful.", ToastLength.Short)?.Show();
             };
         }
         else

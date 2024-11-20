@@ -16,7 +16,7 @@ public class MainActivity : Activity
 
         try
         {
-            SetContentView(Resource.Layout.sign_in);
+            SetContentView(Resource.Layout.log_in);
             ActionBar?.Hide();
 
             _navigationManager = new NavigationManager(this);

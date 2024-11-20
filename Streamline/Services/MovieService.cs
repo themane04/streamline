@@ -67,13 +67,12 @@ public class MovieService
         {
             var movies = await GetPopularMoviesAsync();
             var recyclerView = activity.FindViewById<RecyclerView>(Resource.Id.recyclerView);
-
             if (recyclerView != null)
             {
-                recyclerView.SetLayoutManager(new LinearLayoutManager(activity));
+                int spanCount = ResponsiveGrid.GetSpanCount(activity);
+                recyclerView.SetLayoutManager(new GridLayoutManager(activity, spanCount));
                 var adapter = new MovieAdapter(activity, movies);
                 recyclerView.SetAdapter(adapter);
-
                 if (movies.Count == 0)
                 {
                     LogHelper.Log(LogLevel.Warn, "MovieService", "No movies found to display.");

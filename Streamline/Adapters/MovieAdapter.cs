@@ -27,8 +27,6 @@ public class MovieAdapter : RecyclerView.Adapter
             var movie = _movies[position];
             LogHelper.Log(LogLevel.Info, "MovieAdapter", $"Binding movie: {movie.Title}");
 
-            viewHolder.Title?.SetText(movie.Title ?? "No Title", TextView.BufferType.Normal);
-            viewHolder.Overview?.SetText(movie.Overview ?? "No Overview", TextView.BufferType.Normal);
             if (!string.IsNullOrEmpty(movie.FullPosterPath))
             {
                 PicassoSingleton.GetInstance(_context)
@@ -53,17 +51,13 @@ public class MovieAdapter : RecyclerView.Adapter
 
     private class MovieViewHolder : RecyclerView.ViewHolder
     {
-        public TextView? Title { get; }
-        public TextView? Overview { get; }
         public ImageView? Poster { get; }
 
         public MovieViewHolder(View itemView) : base(itemView)
         {
-            Title = itemView.FindViewById<TextView>(Resource.Id.movieTitle);
-            Overview = itemView.FindViewById<TextView>(Resource.Id.movieOverview);
             Poster = itemView.FindViewById<ImageView>(Resource.Id.moviePoster);
 
-            if (Title == null || Overview == null || Poster == null)
+            if (Poster == null)
             {
                 throw new InvalidOperationException("View components not found");
             }

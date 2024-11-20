@@ -20,7 +20,7 @@ public class NavigationManager
                 _activity.SetContentView(Resource.Layout.homepage);
                 break;
             case Screen.SignIn:
-                _activity.SetContentView(Resource.Layout.sign_in);
+                _activity.SetContentView(Resource.Layout.log_in);
                 SignInListeners.Setup(_activity, this);
                 break;
             case Screen.SignUp:
