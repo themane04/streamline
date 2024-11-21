@@ -9,8 +9,8 @@ namespace Streamline.Services;
 
 public class MovieService
 {
-    private static readonly string ApiKey = "d9cb9af8ce13f4a3a6a3d19dde83783f";
-    private static readonly string BaseUrl = "https://api.themoviedb.org/3/";
+    private static readonly string ApiKey = Environments.GetApiKey();
+    private static readonly string BaseUrl = Environments.GetDbUrl();
     public static List<Movie> allMovies = new();
 
     public static async Task<List<Movie>> GetPopularMoviesAsync(int page)
