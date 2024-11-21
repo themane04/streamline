@@ -1,5 +1,4 @@
-﻿using Android.Util;
-using Streamline.Enums;
+﻿using Streamline.Enums;
 using Streamline.Services;
 using Streamline.Utilities;
 

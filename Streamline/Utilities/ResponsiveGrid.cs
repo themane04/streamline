@@ -1,9 +1,17 @@
-﻿namespace Streamline.Utilities;
+﻿using Streamline.Enums;
+
+namespace Streamline.Utilities;
 
 public class ResponsiveGrid
 {
     public static int GetSpanCount(Activity activity)
     {
+        if (activity?.Resources?.DisplayMetrics == null)
+        {
+            LogHelper.Log(LogLevel.Error, "ResponsiveGrid", "Activity or DisplayMetrics is null.");
+            return 1;
+        }
+
         var displayMetrics = activity.Resources.DisplayMetrics;
         var screenWidthDp = (int)(displayMetrics.WidthPixels / displayMetrics.Density);
 

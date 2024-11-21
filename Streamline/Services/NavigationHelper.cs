@@ -26,11 +26,11 @@ public static class NavigationHelper
 
                 var adapter = new MovieAdapter(activity, new List<Movie>());
                 recyclerView.SetAdapter(adapter);
+                
+                SearchButtonListener.Setup(activity, MovieService.allMovies, adapter);
 
-                // Load the first page
                 await MovieService.LoadMoviesAsync(activity, 1, adapter);
 
-                // Add the correct scroll listener
                 recyclerView.AddOnScrollListener(new EndlessScrollListener(layoutManager, page =>
                     MovieService.LoadMoviesAsync(activity, page, adapter)));
             }

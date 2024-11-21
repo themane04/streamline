@@ -48,6 +48,16 @@ public class MovieAdapter : RecyclerView.Adapter
         return new MovieViewHolder(itemView ?? throw new InvalidOperationException("View not found"));
     }
 
+    public void UpdateMovies(List<Movie> newMovies)
+    {
+        _movies.Clear();
+        _movies.AddRange(newMovies);
+        NotifyDataSetChanged();
+
+        LogHelper.Log(LogLevel.Info, "MovieAdapter",
+            $"Updated {newMovies.Count} movies. RecyclerView ItemCount: {ItemCount}");
+    }
+
     public void AppendMovies(List<Movie> newMovies)
     {
         int startPosition = _movies.Count;

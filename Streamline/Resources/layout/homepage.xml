@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 style="@style/RelativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+>
     <LinearLayout
             android:id="@+id/centered_container"
             style="@style/VLinearLayout"
@@ -16,15 +17,39 @@
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="0dp"/>
-            <TextView style="@style/StreamlineText" android:layout_marginTop="0dp"/>
+                    android:layout_marginTop="0dp"
+            />
+            <TextView
+                    style="@style/StreamlineText"
+                    android:layout_marginTop="0dp"
+            />
         </LinearLayout>
-        <ImageButton style="@style/SearchButton"/>
+        <FrameLayout
+                android:id="@+id/searchContainer"
+                style="@style/FrameLayout"
+        >
+            <ImageButton
+                    android:id="@+id/searchButton"
+                    style="@style/SearchButton"
+            />
+            <EditText
+                    style="@style/InputField"
+                    android:id="@+id/searchInput"
+                    android:hint="@string/search_hint"
+                    android:visibility="gone"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="0dp"
+                    android:inputType="text"
+            />
+        </FrameLayout>
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             style="@style/MovieCardGrid"
             android:layout_below="@id/centered_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:layout_marginTop="8dp"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+    />
 </RelativeLayout>

@@ -11,6 +11,7 @@ public class MovieService
 {
     private static readonly string ApiKey = "d9cb9af8ce13f4a3a6a3d19dde83783f";
     private static readonly string BaseUrl = "https://api.themoviedb.org/3/";
+    public static List<Movie> allMovies = new();
 
     public static async Task<List<Movie>> GetPopularMoviesAsync(int page)
     {
@@ -57,12 +58,9 @@ public class MovieService
 
             if (newMovies.Count > 0)
             {
-                LogHelper.Log(LogLevel.Info, "MovieService", $"Appending {newMovies.Count} movies to page {page}.");
-                activity.RunOnUiThread(() =>
-                {
-                    adapter.AppendMovies(newMovies);
-                    LogHelper.Log(LogLevel.Info, "MovieService", $"Total movies in adapter: {adapter.ItemCount}.");
-                });
+                allMovies.AddRange(newMovies);
+                LogHelper.Log(LogLevel.Info, "MovieService", $"Total movies in allMovies: {allMovies.Count}");
+                activity.RunOnUiThread(() => adapter.AppendMovies(newMovies));
             }
             else
             {
