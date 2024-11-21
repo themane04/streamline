@@ -13,12 +13,10 @@ public class MainActivity : Activity
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-
         try
         {
             SetContentView(Resource.Layout.log_in);
             ActionBar?.Hide();
-
             _navigationManager = new NavigationManager(this);
             SignInListeners.Setup(this, _navigationManager);
         }
@@ -27,5 +25,11 @@ public class MainActivity : Activity
             LogHelper.Log(LogLevel.Error, "MainActivity", $"Error: {ex.Message}");
             Toast.MakeText(this, $"Error: {ex.Message}", ToastLength.Long)?.Show();
         }
+    }
+    
+    protected override void OnResume()
+    {
+        base.OnResume();
+        NavigationHelper.UpdateNavigationBarVisibility(this);
     }
 }

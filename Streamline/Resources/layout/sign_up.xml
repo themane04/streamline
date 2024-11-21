@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/RelativeLayout">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/RelativeLayout"
+        android:id="@+id/signup_page"
+>
     <LinearLayout
             android:id="@+id/centered_container"
             style="@style/VLinearLayout"

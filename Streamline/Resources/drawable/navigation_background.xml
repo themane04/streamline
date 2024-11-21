@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="30dp"/>
+            <gradient
+                    android:startColor="#30FA4032"
+                    android:endColor="#30FA812F"
+                    android:type="linear"
+                    android:centerX="0.5"
+                    android:centerY="0.5"
+                    android:gradientRadius="0.5"
+            />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp"/>
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+</layer-list>
