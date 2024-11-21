@@ -81,9 +81,7 @@ public static class SearchButtonListener
             if (!string.IsNullOrEmpty(query))
             {
                 var filteredMovies = allMovies
-                    .Where(movie =>
-                        (!string.IsNullOrEmpty(movie.Title) && movie.Title.ToLower().Contains(query)) ||
-                        (!string.IsNullOrEmpty(movie.Overview) && movie.Overview.ToLower().Contains(query)))
+                    .Where(movie => !string.IsNullOrEmpty(movie.Title) && movie.Title.ToLower().Contains(query))
                     .ToList();
 
                 LogHelper.Log(LogLevel.Info, "SearchButtonListener", $"Filtered movies count: {filteredMovies.Count}");
@@ -91,7 +89,6 @@ public static class SearchButtonListener
             }
             else
             {
-                LogHelper.Log(LogLevel.Info, "SearchButtonListener", "Query is empty, resetting to all movies.");
                 adapter.UpdateMovies(allMovies);
             }
         };

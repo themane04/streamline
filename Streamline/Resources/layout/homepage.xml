@@ -28,18 +28,15 @@
                 android:id="@+id/searchContainer"
                 style="@style/FrameLayout"
         >
-            <ImageButton
-                    android:id="@+id/searchButton"
-                    style="@style/SearchButton"
-            />
+            <ImageButton android:id="@+id/searchButton" style="@style/SearchButton"/>
             <EditText
                     style="@style/InputField"
                     android:id="@+id/searchInput"
                     android:hint="@string/search_hint"
-                    android:visibility="gone"
                     android:layout_height="60dp"
                     android:layout_marginTop="0dp"
                     android:inputType="text"
+                    android:visibility="gone"
             />
         </FrameLayout>
     </LinearLayout>
