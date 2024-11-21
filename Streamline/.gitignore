@@ -1,5 +1,4 @@
 ﻿/bin/
 /obj/
 /.idea/
-Streamline/Utilities/Environments.cs
-!Streamline/Utilities/Environments.cs.template
+/Utilities/Environments.cs
