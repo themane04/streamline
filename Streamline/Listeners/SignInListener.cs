@@ -4,14 +4,14 @@ using Streamline.Utilities;
 
 namespace Streamline.Listeners;
 
-public static class SignInListeners
+public static class SignInListener
 {
-    public static void Setup(Activity activity, NavigationManager navigationManager)
+    public static void Setup(Activity activity, NavigationManagerService navigationManagerService)
     {
         TextView? signUpTextView = activity.FindViewById<TextView>(Resource.Id.signup_text);
         if (signUpTextView != null)
         {
-            signUpTextView.SetOnClickListener(new ClickListener(navigationManager, Screen.SignUp));
+            signUpTextView.SetOnClickListener(new ClickListener(navigationManagerService, Screen.SignUp));
         }
         else
         {

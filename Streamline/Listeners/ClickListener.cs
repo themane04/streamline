@@ -6,17 +6,17 @@ namespace Streamline.Listeners;
 
 public class ClickListener : Java.Lang.Object, View.IOnClickListener
 {
-    private readonly NavigationManager _navigationManager;
+    private readonly NavigationManagerService _navigationManagerService;
     private readonly Screen _action;
 
-    public ClickListener(NavigationManager navigationManager, Screen action)
+    public ClickListener(NavigationManagerService navigationManagerService, Screen action)
     {
-        _navigationManager = navigationManager;
+        _navigationManagerService = navigationManagerService;
         _action = action;
     }
 
     public void OnClick(View? v)
     {
-        _navigationManager.NavigateTo(_action);
+        _navigationManagerService.NavigateTo(_action);
     }
 }

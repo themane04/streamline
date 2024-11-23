@@ -8,7 +8,7 @@ namespace Streamline;
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity : Activity
 {
-    private NavigationManager? _navigationManager;
+    private NavigationManagerService? _navigationManager;
 
     protected override void OnCreate(Bundle? savedInstanceState)
     {
@@ -17,8 +17,8 @@ public class MainActivity : Activity
         {
             SetContentView(Resource.Layout.log_in);
             ActionBar?.Hide();
-            _navigationManager = new NavigationManager(this);
-            SignInListeners.Setup(this, _navigationManager);
+            _navigationManager = new NavigationManagerService(this);
+            SignInListener.Setup(this, _navigationManager);
         }
         catch (Exception ex)
         {

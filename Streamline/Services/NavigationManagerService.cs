@@ -3,11 +3,11 @@ using Streamline.Listeners;
 
 namespace Streamline.Services;
 
-public class NavigationManager
+public class NavigationManagerService
 {
     private readonly Activity _activity;
 
-    public NavigationManager(Activity activity)
+    public NavigationManagerService(Activity activity)
     {
         _activity = activity;
     }
@@ -21,11 +21,11 @@ public class NavigationManager
                 break;
             case Screen.SignIn:
                 _activity.SetContentView(Resource.Layout.log_in);
-                SignInListeners.Setup(_activity, this);
+                SignInListener.Setup(_activity, this);
                 break;
             case Screen.SignUp:
                 _activity.SetContentView(Resource.Layout.sign_up);
-                SignUpListeners.Setup(_activity, this);
+                SignUpListener.Setup(_activity, this);
                 break;
         }
     }

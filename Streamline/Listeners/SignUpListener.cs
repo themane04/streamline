@@ -4,14 +4,14 @@ using Streamline.Utilities;
 
 namespace Streamline.Listeners;
 
-public static class SignUpListeners
+public static class SignUpListener
 {
-    public static void Setup(Activity activity, NavigationManager navigationManager)
+    public static void Setup(Activity activity, NavigationManagerService navigationManagerService)
     {
         TextView? signInTextView = activity.FindViewById<TextView>(Resource.Id.login_text);
         if (signInTextView != null)
         {
-            signInTextView.SetOnClickListener(new ClickListener(navigationManager, Screen.SignIn));
+            signInTextView.SetOnClickListener(new ClickListener(navigationManagerService, Screen.SignIn));
         }
         else
         {
@@ -23,7 +23,7 @@ public static class SignUpListeners
         {
             signUpButton.Click += (sender, args) =>
             {
-                navigationManager.NavigateTo(Screen.SignIn);
+                navigationManagerService.NavigateTo(Screen.SignIn);
                 Toast.MakeText(activity, "Sign up successful.", ToastLength.Short)?.Show();
             };
         }
