@@ -19,28 +19,20 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="0dp"
             />
-            <TextView
-                    style="@style/StreamlineText"
-                    android:layout_marginTop="0dp"
-            />
+            <TextView style="@style/StreamlineText" android:layout_marginTop="0dp"/>
         </LinearLayout>
-        <FrameLayout
-                android:id="@+id/searchContainer"
-                style="@style/FrameLayout"
-        >
+        <FrameLayout android:id="@+id/searchContainer" style="@style/FrameLayout">
             <ImageButton android:id="@+id/searchButton" style="@style/SearchButton"/>
             <EditText
                     style="@style/InputField"
                     android:id="@+id/searchInput"
                     android:hint="@string/search_hint"
                     android:layout_height="60dp"
-                    android:layout_marginTop="0dp"
                     android:inputType="text"
-                    android:visibility="gone"
+                    android:visibility="visible"
             />
         </FrameLayout>
     </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             style="@style/MovieCardGrid"
