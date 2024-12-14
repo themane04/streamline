@@ -40,9 +40,9 @@
         _isSearching = !_isSearching;
         StateHasChanged();
         if (!_isSearching)
-         {
+        {
             _searchQuery = string.Empty;
-         }
+        }
     }
 
     [JSInvokable]
@@ -98,23 +98,7 @@
         <div>
             <LogoTitle/>
             <div class="button-container">
-                @if (_isSearching)
-                {
-                    <div class="search-container">
-                        <input type="text" placeholder="Search movies..."
-                               @bind="_searchQuery"
-                               class="search-input"/>
-                        <button @onclick="SearchMovies" class="search-submit-button">Search</button>
-                        <button @onclick="ToggleSearch" class="close-search-button">X</button>
-                    </div>
-                }
-                else
-                {
-                    <button @onclick="ToggleSearch">Test ToggleSearch</button>
-                    <button @onclick="ToggleSearch" class="search-button">
-                    <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
-                    </button>
-                }
+                <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
             </div>
         </div>
         <MovieGrid Movies="_movies"/>

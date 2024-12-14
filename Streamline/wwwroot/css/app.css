@@ -10,10 +10,12 @@
     --background-color: #FEF3E2;
     --text-color: #3C3C3C;
     --white-color: #FFFFFF;
+    
     /* Custom Properties */
     --input-field-background-color: rgba(250, 129, 47, 0.3);
     --button-color: rgba(250, 64, 50, 0.7);
     --action-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    
     /* Fonts */
     --font-montserrat-family: "Montserrat", sans-serif;
     --font-open-sans-family: "Open Sans", sans-serif;
