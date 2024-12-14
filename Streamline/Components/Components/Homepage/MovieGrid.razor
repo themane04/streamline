@@ -1,0 +1,25 @@
+﻿@code {
+    [Parameter] public List<Movie>? Movies { get; set; }
+}
+
+@if (Movies is not null && Movies.Any())
+{
+    <div class="movies-grid">
+        @foreach (var movie in Movies)
+        {
+            <div class="movie-item scale-on-interaction">
+                <div class="poster-container">
+                    <img src="@movie.FullPosterPath" alt="@movie.Title" class="movie-poster" />
+                    <div class="rating-container">
+                        <img src="images/assets/rating_star.png" alt="Rating Star" class="rating-star" />
+                        <p class="movie-vote">@movie.VoteAverage.ToString("0.0")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No movies available.</p>
+}

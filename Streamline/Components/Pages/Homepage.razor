@@ -1,0 +1,128 @@
+﻿@page "/home"
+
+@code {
+    private IJSObjectReference? _module;
+    private List<Movie> _movies = new();
+    private int _currentPage = 1;
+    private bool _isLoading;
+    private DotNetObjectReference<Homepage>? _dotNetRef;
+
+    private bool _isSearching;
+    private string _searchQuery = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _dotNetRef = DotNetObjectReference.Create(this);
+        _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
+    }
+
+    private async Task SearchMovies()
+    {
+        if (string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            return;
+        }
+
+        _isLoading = true;
+        try
+        {
+            _movies = await MovieService.SearchMoviesAsync(_searchQuery);
+            StateHasChanged();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ToggleSearch()
+    {
+        _isSearching = !_isSearching;
+        StateHasChanged();
+        if (!_isSearching)
+         {
+            _searchQuery = string.Empty;
+         }
+    }
+
+    [JSInvokable]
+    public async Task LoadNextPage()
+    {
+        if (_isLoading || _isSearching) return;
+
+        _isLoading = true;
+        try
+        {
+            _currentPage++;
+            var newMovies = await MovieService.GetPopularMoviesAsync(_currentPage);
+
+            if (newMovies.Count > 0)
+            {
+                _movies.AddRange(newMovies);
+                StateHasChanged();
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/global.js");
+
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("onScrollBottom", _dotNetRef);
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.DisposeAsync();
+        }
+
+        _dotNetRef?.Dispose();
+    }
+
+}
+
+<div class="page-container">
+    <div class="outer-container">
+        <div>
+            <LogoTitle/>
+            <div class="button-container">
+                @if (_isSearching)
+                {
+                    <div class="search-container">
+                        <input type="text" placeholder="Search movies..."
+                               @bind="_searchQuery"
+                               class="search-input"/>
+                        <button @onclick="SearchMovies" class="search-submit-button">Search</button>
+                        <button @onclick="ToggleSearch" class="close-search-button">X</button>
+                    </div>
+                }
+                else
+                {
+                    <button @onclick="ToggleSearch">Test ToggleSearch</button>
+                    <button @onclick="ToggleSearch" class="search-button">
+                    <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
+                    </button>
+                }
+            </div>
+        </div>
+        <MovieGrid Movies="_movies"/>
+        @if (_isLoading)
+        {
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        }
+    </div>
+</div>
