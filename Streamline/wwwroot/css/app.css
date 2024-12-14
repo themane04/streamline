@@ -10,12 +10,10 @@
     --background-color: #FEF3E2;
     --text-color: #3C3C3C;
     --white-color: #FFFFFF;
-
     /* Custom Properties */
     --input-field-background-color: rgba(250, 129, 47, 0.3);
     --button-color: rgba(250, 64, 50, 0.7);
     --action-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-
     /* Fonts */
     --font-montserrat-family: "Montserrat", sans-serif;
     --font-open-sans-family: "Open Sans", sans-serif;
@@ -34,17 +32,16 @@
 }
 
 html, body {
-    margin: 0;
-    padding: 0;
-    scroll-behavior: smooth;
     background-color: var(--background-color);
-    height: 100%;
+}
+
+.scale-on-interaction {
+    transition: transform 0.3s ease;
 }
 
 .scale-on-interaction:focus,
 .scale-on-interaction:active,
 .scale-on-interaction:hover {
-    transition: all 0.3s ease;
     transform: scale(1.05);
 }
 
