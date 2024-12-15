@@ -1,5 +1,24 @@
 ﻿@page "/home"
 
+
+<div class="page-container">
+    <div class="outer-container">
+        <div>
+            <LogoTitle/>
+            <div class="button-container">
+                <button class="img-container scale-on-interaction">
+                    <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
+                </button>
+            </div>
+        </div>
+        <MovieGrid Movies="_movies"/>
+        @if (_isLoading)
+        {
+            <LoadingSpinner/>
+        }
+    </div>
+</div>
+
 @code {
     private IJSObjectReference? _module;
     private List<Movie> _movies = new();
@@ -7,48 +26,16 @@
     private bool _isLoading;
     private DotNetObjectReference<Homepage>? _dotNetRef;
 
-    private bool _isSearching;
-    private string _searchQuery = string.Empty;
-
     protected override async Task OnInitializedAsync()
     {
         _dotNetRef = DotNetObjectReference.Create(this);
         _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
     }
 
-    private async Task SearchMovies()
-    {
-        if (string.IsNullOrWhiteSpace(_searchQuery))
-        {
-            return;
-        }
-
-        _isLoading = true;
-        try
-        {
-            _movies = await MovieService.SearchMoviesAsync(_searchQuery);
-            StateHasChanged();
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-    }
-
-    private void ToggleSearch()
-    {
-        _isSearching = !_isSearching;
-        StateHasChanged();
-        if (!_isSearching)
-        {
-            _searchQuery = string.Empty;
-        }
-    }
-
     [JSInvokable]
     public async Task LoadNextPage()
     {
-        if (_isLoading || _isSearching) return;
+        if (_isLoading) return;
 
         _isLoading = true;
         try
@@ -92,21 +79,3 @@
     }
 
 }
-
-<div class="page-container">
-    <div class="outer-container">
-        <div>
-            <LogoTitle/>
-            <div class="button-container">
-                <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
-            </div>
-        </div>
-        <MovieGrid Movies="_movies"/>
-        @if (_isLoading)
-        {
-            <div class="spinner-container">
-                <div class="spinner"></div>
-            </div>
-        }
-    </div>
-</div>

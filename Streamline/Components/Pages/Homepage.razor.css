@@ -4,6 +4,16 @@
     justify-content: end;
 }
 
+.img-container {
+    display: flex;
+    background: var(--input-field-background-color);
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: var(--action-box-shadow);
+    cursor: pointer;
+    border: none;
+}
+
 .search-container {
     display: flex;
     align-items: center;
