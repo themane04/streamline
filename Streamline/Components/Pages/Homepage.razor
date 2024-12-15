@@ -6,9 +6,22 @@
         <div>
             <LogoTitle/>
             <div class="button-container">
-                <button class="img-container scale-on-interaction">
-                    <img src="images/assets/search_icon_button.png" alt="Search" class="search-icon"/>
-                </button>
+                <MudButton OnClick="ToggleSearch"
+                           class="@ButtonClass">
+                    <div class="search-content">
+                        <img
+                            src="images/assets/search_icon_button.png"
+                            alt="Search"
+                            class="search-icon"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search for movies"
+                            class="search-input"
+                            style="@(_isSearchActive ? "opacity: 1; width: 100%;" : "opacity: 0; width: 0;")"
+                            @onclick:stopPropagation/>
+                    </div>
+                </MudButton>
             </div>
         </div>
         <MovieGrid Movies="_movies"/>
@@ -20,6 +33,18 @@
 </div>
 
 @code {
+
+    private bool _isSearchActive;
+
+    private string ButtonClass => _isSearchActive
+        ? "mud-search-button-container-hp expanded"
+        : "mud-search-button-container-hp scale-on-interaction";
+
+    private void ToggleSearch()
+    {
+        _isSearchActive = true;
+    }
+
     private IJSObjectReference? _module;
     private List<Movie> _movies = new();
     private int _currentPage = 1;

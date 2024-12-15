@@ -4,48 +4,38 @@
     justify-content: end;
 }
 
-.img-container {
-    display: flex;
-    background: var(--input-field-background-color);
-    padding: 15px;
-    border-radius: 50%;
-    box-shadow: var(--action-box-shadow);
-    cursor: pointer;
-    border: none;
-}
-
-.search-container {
+.search-content {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.search-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
 }
 
 .search-input {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.search-submit-button {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 20px;
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    color: var(--black-color);
+    background: transparent;
+    box-sizing: border-box;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    outline: none;
+    width: 0;
+    opacity: 0;
+    transition: all 0.5s ease;
 }
 
-.search-submit-button:hover {
-    background-color: #2980b9;
-}
-
-.close-search-button {
-    background-color: red;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.search-input::placeholder {
+    color: var(--black-color);
 }
