@@ -34,22 +34,16 @@
 
 @code {
 
-    private bool _isSearchActive;
-
-    private string ButtonClass => _isSearchActive
-        ? "mud-search-button-container-hp expanded"
-        : "mud-search-button-container-hp scale-on-interaction";
-
-    private void ToggleSearch()
-    {
-        _isSearchActive = true;
-    }
-
     private IJSObjectReference? _module;
     private List<Movie> _movies = new();
     private int _currentPage = 1;
     private bool _isLoading;
     private DotNetObjectReference<Homepage>? _dotNetRef;
+    private bool _isSearchActive;
+
+    private string ButtonClass => _isSearchActive
+        ? "mud-search-button-container-hp expanded"
+        : "mud-search-button-container-hp scale-on-interaction";
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,6 +95,11 @@
         }
 
         _dotNetRef?.Dispose();
+    }
+
+    private void ToggleSearch()
+    {
+        _isSearchActive = true;
     }
 
 }
