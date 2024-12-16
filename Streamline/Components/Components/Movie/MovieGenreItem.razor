@@ -1,0 +1,10 @@
+﻿@code
+{
+    [Parameter] public string? GenreName { get; set; }
+}
+
+<MudContainer Style="background: var(--secondary-color);border-radius: 5px;padding: 10px;z-index: 3; width: fit-content">
+    <MudText Style="font-weight: var(--font-weight-extrabold); color: var(--white-color)">
+        @GenreName
+    </MudText>
+</MudContainer>

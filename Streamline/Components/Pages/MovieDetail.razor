@@ -16,54 +16,57 @@
 
 }
 
-
 @if (Movie is not null)
 {
-    <div class="movie-detail-container">
-        <div class="poster-section">
-            <img src="@Movie.FullPosterPath" alt="@Movie.Title" class="movie-poster-large"/>
-            <div class="movie-rating">
-                <span class="rating-badge">⭐ @Movie.VoteAverage.ToString("0.0")</span>
-            </div>
-        </div>
-
-        <h1>@Movie.Title</h1>
-        <div class="genre-container">
-            @foreach (var genre in Movie.Genres)
-            {
-                <span class="genre-badge">@genre.Name</span>
-            }
-        </div>
-
-        <p class="release-date"><strong>Release Date:</strong> @Movie.ReleaseDate</p>
-
-        <div class="button-group">
-            <button class="action-button watchlist">Add To Watchlist</button>
-            <button class="action-button favorite">Add To Favorites</button>
-        </div>
-
-        <div class="details-section">
-            <p><strong>Director:</strong> James Gray</p>
-            <p><strong>Writers:</strong> James Gray, Brad Pitt</p>
-            <p><strong>Stars:</strong> Brad Pitt, Tommy Lee Jones</p>
-        </div>
-
-        <div class="movie-overview">
-            <p>@Movie.Overview</p>
-        </div>
-
-        <h3>More Like This:</h3>
-        <div class="more-like-this">
-            <!-- Example placeholders -->
-            <img src="/images/sample1.jpg" alt="Movie 1" class="similar-movie-poster"/>
-            <img src="/images/sample2.jpg" alt="Movie 2" class="similar-movie-poster"/>
-            <img src="/images/sample3.jpg" alt="Movie 3" class="similar-movie-poster"/>
-        </div>
-    </div>
+    <MudContainer
+        Style="display: flex;flex-direction: column;align-items: center;position: relative;max-width: 500px;
+        height: 100vh;margin: 0 auto;background: var(--white-color);box-shadow: var(--action-box-shadow);
+        border-radius: 40px 40px 0 0;">
+        <MudImage src="@Movie.FullBackdropPath" alt="@Movie.Title"
+                  Style="width: 100%;height: 350px;object-fit: cover;object-position: center;
+                  border-radius: 40px 40px 0 0;display: block;z-index: 0;"/>
+        <MudContainer
+            Style="display: flex;align-items: end;padding: 20px;font-family: var(--font-montserrat-family), sans-serif;
+            color: var(--text-color);background: var(--white-color);border-radius: 40px 40px 0 0;width: 100%;z-index: 1;
+            margin-top: -50px;">
+            <MovieItem SingleMovie="Movie" PosterHeight="195px" PosterWidth="138px" PosterMt="-110px" PosterMl="20px"/>
+            <MudContainer Style="margin-left: -120px;">
+                <MudText
+                    Style="font-size: 1.125rem;font-weight: var(--font-weight-extrabold);text-transform: uppercase;">
+                    @Movie.Title
+                </MudText>
+                
+                
+                
+                <MudContainer Style="display: flex; overflow-x: auto; white-space: nowrap; gap: 10px;max-width: 250px;">
+                    @foreach (var genre in Movie.Genres)
+                    {
+                        <MudContainer Style="background: var(--secondary-color); border-radius: 5px; z-index: 3;
+                        text-align: center; display: inline-flex; align-items: center; justify-content: center;
+                        flex-shrink: 0;border: 1px solid red;">
+                            <MudText Style="font-weight: var(--font-weight-extrabold); color: var(--white-color);">
+                                @genre.Name
+                            </MudText>
+                        </MudContainer>
+                    }
+                </MudContainer>
+                
+                
+                
+                
+                
+                <MudContainer Style="display: flex;align-items: center;">
+                    <MudText Style="font-weight: var(--font-weight-extrabold)">Release Date:</MudText>
+                    <MudText>@Movie.ReleaseDate</MudText>
+                </MudContainer>
+            </MudContainer>
+            <MovieRating VoteAverage="@Movie.VoteAverage.ToString("0.0")" VoteMt="250px" VoteMl="185px"/>
+        </MudContainer>
+    </MudContainer>
 }
 else
 {
     <LoadingSpinner/>
 }
 
-<MudButton OnClick="NavigateBack">Back</MudButton>
+@* <MudButton OnClick="NavigateBack">Back</MudButton> *@

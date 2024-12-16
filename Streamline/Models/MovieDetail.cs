@@ -11,8 +11,7 @@ public class MovieDetail
 
     [JsonPropertyName("backdrop_path")] public string? BackdropPath { get; set; }
 
-    [JsonPropertyName("belongs_to_collection")]
-    public MovieCollection? BelongsToCollection { get; set; }
+    [JsonPropertyName("belongs_to_collection")] public MovieCollection? BelongsToCollection { get; set; }
 
     [JsonPropertyName("budget")] public int Budget { get; set; }
 
@@ -29,18 +28,16 @@ public class MovieDetail
     [JsonPropertyName("original_language")] public string OriginalLanguage { get; set; } = string.Empty;
 
     [JsonPropertyName("original_title")] public string OriginalTitle { get; set; } = string.Empty;
-    
+
     [JsonPropertyName("overview")] public string Overview { get; set; } = string.Empty;
 
     [JsonPropertyName("popularity")] public double Popularity { get; set; }
 
     [JsonPropertyName("poster_path")] public string? PosterPath { get; set; }
 
-    [JsonPropertyName("production_companies")]
-    public List<MovieProductionCompany> ProductionCompanies { get; set; } = new();
+    [JsonPropertyName("production_companies")] public List<MovieProductionCompany> ProductionCompanies { get; set; } = new();
 
-    [JsonPropertyName("production_countries")]
-    public List<MovieProductionCompany> ProductionCountries { get; set; } = new();
+    [JsonPropertyName("production_countries")] public List<MovieProductionCompany> ProductionCountries { get; set; } = new();
 
     [JsonPropertyName("release_date")] public string ReleaseDate { get; set; } = string.Empty;
 

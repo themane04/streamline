@@ -1,0 +1,85 @@
+﻿@code {
+    [Parameter] public List<Movie>? Movies { get; set; }
+    [Parameter] public MovieDetail? SingleMovie { get; set; }
+    [Parameter] public EventCallback<int> OnMovieSelected { get; set; }
+    [Parameter] public string? PosterHeight { get; set; } = "";
+    [Parameter] public string? PosterWidth { get; set; } = "";
+    [Parameter] public string? PosterMt { get; set; } = "";
+    [Parameter] public string? PosterMl { get; set; } = "";
+
+    private bool IsMovieNull => SingleMovie == null;
+
+    private IEnumerable<Movie> GetMoviesToRender()
+    {
+        if (SingleMovie != null)
+        {
+            return new List<Movie>
+            {
+                MapMovieDetailToMovie(SingleMovie)
+            };
+        }
+
+        return Movies ?? Enumerable.Empty<Movie>();
+    }
+
+    private Movie MapMovieDetailToMovie(MovieDetail detail)
+    {
+        return new Movie
+        {
+            Id = detail.Id,
+            Title = detail.Title,
+            Overview = detail.Overview,
+            PosterPath = detail.PosterPath ?? string.Empty,
+            VoteAverage = detail.VoteAverage,
+            VoteCount = detail.VoteCount,
+            BackdropPath = detail.BackdropPath,
+            ReleaseDate = detail.ReleaseDate,
+            OriginalLanguage = detail.OriginalLanguage,
+            Popularity = detail.Popularity
+        };
+    }
+
+}
+
+@if (GetMoviesToRender().Any())
+{
+    @foreach (var movie in GetMoviesToRender())
+    {
+        <div
+            class="movie-item @(IsMovieNull ? "scale-on-interaction" : "")"
+            @onclick="() => OnMovieSelected.InvokeAsync(movie.Id)"
+        >
+            <div class="poster-container">
+                <img
+                    src="@movie.FullPosterPath"
+                    alt="@movie.Title"
+                    class="movie-poster"
+                    style="
+                        height: @PosterHeight;
+                    width: @PosterWidth;
+                    margin-top: @PosterMt;
+                    margin-left: @PosterMl;"
+                />
+                @if (IsMovieNull)
+                {
+                    <MovieRating VoteAverage="@movie.VoteAverage.ToString("0.0")"/>
+                }
+            </div>
+        </div>
+    }
+}
+else if (Movies is not null && !Movies.Any())
+{
+    <div class="no-movies-container">
+        <img
+            src="images/assets/homepage/no-play.png"
+            alt="No Movies Found"
+            class="no-movies-image"
+        />
+        <p class="no-movies-text">No movies found</p>
+    </div>
+}
+else
+{
+    <LoadingSpinner/>
+}

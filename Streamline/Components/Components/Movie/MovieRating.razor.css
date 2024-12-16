@@ -1,0 +1,23 @@
+﻿.rating-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.rating-star {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+.movie-vote {
+    font-size: 0.9rem;
+    color: var(--white-color);
+    font-weight: bold;
+    margin: 0;
+}
