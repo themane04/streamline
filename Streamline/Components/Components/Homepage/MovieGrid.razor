@@ -1,4 +1,8 @@
-﻿@if (Movies is not null && Movies.Any())
+﻿@code {
+    [Parameter] public List<Movie>? Movies { get; set; }
+}
+
+@if (Movies is not null && Movies.Any())
 {
     <div class="movies-grid">
         @foreach (var movie in Movies)
@@ -7,7 +11,7 @@
                 <div class="poster-container">
                     <img src="@movie.FullPosterPath" alt="@movie.Title" class="movie-poster"/>
                     <div class="rating-container">
-                        <img src="images/assets/rating_star.png" alt="Rating Star" class="rating-star"/>
+                        <img src="images/assets/homepage/rating_star.png" alt="Rating Star" class="rating-star"/>
                         <p class="movie-vote">@movie.VoteAverage.ToString("0.0")</p>
                     </div>
                 </div>
@@ -15,11 +19,19 @@
         }
     </div>
 }
+else if (Movies is not null && !Movies.Any())
+{
+    <div class="no-movies-container">
+        <img
+            src="images/assets/homepage/no-play.png"
+            alt="No Movies Found"
+            class="no-movies-image"
+        />
+        <p class="no-movies-text">No movies found</p>
+    </div>
+}
 else
 {
     <LoadingSpinner/>
 }
 
-@code {
-    [Parameter] public List<Movie>? Movies { get; set; }
-}

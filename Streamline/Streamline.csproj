@@ -32,4 +32,8 @@
         <PackageReference Include="MudBlazor" Version="8.0.0-preview.5" />
         <PackageReference Include="MudBlazor.ThemeManager" Version="2.1.0" />
     </ItemGroup>
+    <ItemGroup>
+      <AndroidAsset Include="wwwroot\images\assets\homepage\rating_star.png" />
+      <AndroidAsset Include="wwwroot\images\assets\homepage\search_icon_button.png" />
+    </ItemGroup>
 </Project>

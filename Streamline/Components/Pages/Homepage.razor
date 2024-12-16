@@ -1,37 +1,6 @@
 ﻿@page "/home"
 
 
-<div class="page-container">
-    <div class="outer-container">
-        <div>
-            <LogoTitle/>
-            <div class="button-container">
-                <MudButton OnClick="ToggleSearch"
-                           class="@ButtonClass">
-                    <div class="search-content">
-                        <img
-                            src="images/assets/search_icon_button.png"
-                            alt="Search"
-                            class="search-icon"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Search for movies"
-                            class="search-input"
-                            style="@(_isSearchActive ? "display: block; opacity: 1; width: 100%;" : "display: none;")"
-                            @onclick:stopPropagation/>
-                    </div>
-                </MudButton>
-            </div>
-        </div>
-        <MovieGrid Movies="_movies"/>
-        @if (_isLoading)
-        {
-            <LoadingSpinner/>
-        }
-    </div>
-</div>
-
 @code {
 
     private IJSObjectReference? _module;
@@ -40,6 +9,7 @@
     private bool _isLoading;
     private DotNetObjectReference<Homepage>? _dotNetRef;
     private bool _isSearchActive;
+    private string _searchQuery = "";
 
     private string ButtonClass => _isSearchActive
         ? "mud-search-button-container-hp expanded"
@@ -74,6 +44,32 @@
         }
     }
 
+    private void ToggleSearch()
+    {
+        _isSearchActive = true;
+        if (!_isSearchActive)
+        {
+            OnSearchInput(new ChangeEventArgs { Value = "" });
+        }
+    }
+
+    private async void OnSearchInput(ChangeEventArgs e)
+    {
+        _searchQuery = e.Value?.ToString() ?? "";
+
+        if (string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            _currentPage = 1;
+            _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
+        }
+        else
+        {
+            _movies = await MovieService.SearchMoviesAsync(_searchQuery);
+        }
+
+        StateHasChanged();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -97,9 +93,39 @@
         _dotNetRef?.Dispose();
     }
 
-    private void ToggleSearch()
-    {
-        _isSearchActive = true;
-    }
-
 }
+
+
+<div class="page-container">
+    <div class="outer-container">
+        <div>
+            <LogoTitle/>
+            <div class="button-container">
+                <MudButton OnClick="ToggleSearch"
+                           class="@ButtonClass">
+                    <div class="search-content">
+                        <img
+                            src="images/assets/homepage/search_icon_button.png"
+                            alt="Search"
+                            class="search-icon"
+                            style="@(_isSearchActive ? "margin-left: 15px; margin-right: 15px;" : "margin-left: 0; margin-right: 0;")"
+                        />
+                        <input
+                            @onclick:stopPropagation
+                            @oninput="OnSearchInput"
+                            type="text"
+                            placeholder="Search for movies"
+                            class="search-input"
+                            style="@(_isSearchActive ? "display: block; opacity: 1; width: 100%;" : "display: none;")"
+                        />
+                    </div>
+                </MudButton>
+            </div>
+        </div>
+        <MovieGrid Movies="_movies"/>
+        @if (_isLoading)
+        {
+            <LoadingSpinner/>
+        }
+    </div>
+</div>
