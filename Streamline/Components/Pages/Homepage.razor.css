@@ -7,10 +7,8 @@
 .search-content {
     display: flex;
     align-items: center;
-    gap: 10px;
     flex: 1;
     transition: all 0.3s ease;
-    margin-left: 10px;
 }
 
 .search-icon {
