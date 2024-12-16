@@ -1,5 +1,11 @@
 ﻿@code {
     [Parameter] public List<Movie>? Movies { get; set; }
+
+    private void NavigateToMovie(int movieId)
+    {
+        NavigationManager?.NavigateTo(AppRoutes.MovieDetailView + $"/{movieId}");
+    }
+
 }
 
 @if (Movies is not null && Movies.Any())
@@ -7,7 +13,7 @@
     <div class="movies-grid">
         @foreach (var movie in Movies)
         {
-            <div class="movie-item scale-on-interaction">
+            <div class="movie-item scale-on-interaction" @onclick="() => NavigateToMovie(movie.Id)">
                 <div class="poster-container">
                     <img src="@movie.FullPosterPath" alt="@movie.Title" class="movie-poster"/>
                     <div class="rating-container">

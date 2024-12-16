@@ -4,7 +4,7 @@ namespace Streamline.Models;
 
 public class Movie
 {
-    public int Id { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
 
     [JsonPropertyName("original_title")] public string Title { get; set; } = string.Empty;
 
@@ -20,7 +20,8 @@ public class Movie
 
     [JsonPropertyName("release_date")] public string ReleaseDate { get; set; } = string.Empty;
 
-    [JsonPropertyName("original_language")] public string OriginalLanguage { get; set; } = string.Empty;
+    [JsonPropertyName("original_language")]
+    public string OriginalLanguage { get; set; } = string.Empty;
 
     public double Popularity { get; set; }
 

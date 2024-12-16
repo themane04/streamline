@@ -65,4 +65,27 @@ public class MovieService
 
         return new List<Movie>();
     }
+    
+    public async Task<MovieDetail?> GetMovieDetailByIdAsync(int id)
+    {
+        using HttpClient client = new();
+        string url = $"{_baseUrl}movie/{id}?api_key={_apiKey}&language=en-US";
+
+        try
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<MovieDetail>(json);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+
+        return null;
+    }
 }

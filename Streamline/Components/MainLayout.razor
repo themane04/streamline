@@ -4,12 +4,11 @@
 
 @if (!ShouldExcludeNav())
 {
-    <Navigation />
+    <Navigation/>
 }
 
 @code {
     [Parameter] public RenderFragment? Body { get; set; }
-    [Inject] private NavigationManager? NavigationManager { get; set; }
 
     private bool ShouldExcludeNav()
     {
@@ -25,4 +24,5 @@
 
         return AppRoutes.ExcludedRoutes.Contains("/" + relativeUrl);
     }
+
 }

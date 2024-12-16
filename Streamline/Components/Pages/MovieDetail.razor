@@ -1,0 +1,69 @@
+﻿@page "/movie/{id:int}"
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Streamline.Models.MovieDetail? Movie { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Movie = await MovieService.GetMovieDetailByIdAsync(Id);
+    }
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo(AppRoutes.HomeUrl);
+    }
+
+}
+
+
+@if (Movie is not null)
+{
+    <div class="movie-detail-container">
+        <div class="poster-section">
+            <img src="@Movie.FullPosterPath" alt="@Movie.Title" class="movie-poster-large"/>
+            <div class="movie-rating">
+                <span class="rating-badge">⭐ @Movie.VoteAverage.ToString("0.0")</span>
+            </div>
+        </div>
+
+        <h1>@Movie.Title</h1>
+        <div class="genre-container">
+            @foreach (var genre in Movie.Genres)
+            {
+                <span class="genre-badge">@genre.Name</span>
+            }
+        </div>
+
+        <p class="release-date"><strong>Release Date:</strong> @Movie.ReleaseDate</p>
+
+        <div class="button-group">
+            <button class="action-button watchlist">Add To Watchlist</button>
+            <button class="action-button favorite">Add To Favorites</button>
+        </div>
+
+        <div class="details-section">
+            <p><strong>Director:</strong> James Gray</p>
+            <p><strong>Writers:</strong> James Gray, Brad Pitt</p>
+            <p><strong>Stars:</strong> Brad Pitt, Tommy Lee Jones</p>
+        </div>
+
+        <div class="movie-overview">
+            <p>@Movie.Overview</p>
+        </div>
+
+        <h3>More Like This:</h3>
+        <div class="more-like-this">
+            <!-- Example placeholders -->
+            <img src="/images/sample1.jpg" alt="Movie 1" class="similar-movie-poster"/>
+            <img src="/images/sample2.jpg" alt="Movie 2" class="similar-movie-poster"/>
+            <img src="/images/sample3.jpg" alt="Movie 3" class="similar-movie-poster"/>
+        </div>
+    </div>
+}
+else
+{
+    <LoadingSpinner/>
+}
+
+<MudButton OnClick="NavigateBack">Back</MudButton>
