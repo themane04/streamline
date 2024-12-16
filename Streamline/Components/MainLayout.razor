@@ -1,0 +1,28 @@
+﻿<div class="page-content">
+    @Body
+</div>
+
+@if (!ShouldExcludeNav())
+{
+    <Navigation />
+}
+
+@code {
+    [Parameter] public RenderFragment? Body { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
+
+    private bool ShouldExcludeNav()
+    {
+        var currentUrl = NavigationManager?.Uri.ToLower();
+
+        if (string.IsNullOrEmpty(currentUrl))
+        {
+            return false;
+        }
+
+        var baseUri = NavigationManager?.BaseUri.TrimEnd('/').ToLower() ?? "";
+        var relativeUrl = currentUrl.Replace(baseUri, "").TrimStart('/');
+
+        return AppRoutes.ExcludedRoutes.Contains("/" + relativeUrl);
+    }
+}

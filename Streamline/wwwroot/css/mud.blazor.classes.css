@@ -16,3 +16,29 @@
     width: 100%;
     border-radius: 30px;
 }
+
+.mud-auth-button {
+    width: 100%;
+    height: 70px;
+    margin-top: 40px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-bold);
+    font-size: 1.5rem;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    box-shadow: var(--action-box-shadow);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+}
+
+.mud-auth-button:hover,
+.mud-auth-button:visited,
+.mud-auth-button:active {
+    color: var(--text-color);
+}

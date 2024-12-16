@@ -1,5 +1,10 @@
 ﻿@page "/"
 
+@code
+{
+    
+}
+
 <div class="page-container vh-100 overflow-hidden">
     <div class="outer-container">
         <div>
@@ -15,11 +20,11 @@
             <input type="password"
                    placeholder="Password"
                    class="input-field scale-on-interaction" />
-            <a href="/home" class="button scale-on-interaction">Log In</a>
+            <MudButton href="@AppRoutes.HomeUrl" class="mud-auth-button scale-on-interaction">Log In</MudButton>
         </div>
         <div class="link-container">
             <p class="question-text">Don’t have an account?</p>
-            <a href="/signup" class="link scale-on-interaction">Sign Up</a>
+            <a href="@AppRoutes.SignupUrl" class="link scale-on-interaction">Sign Up</a>
         </div>
     </div>
 </div>
