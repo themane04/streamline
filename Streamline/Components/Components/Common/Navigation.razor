@@ -1,19 +1,4 @@
-﻿<nav class="bottom-nav">
-    <a href="@AppRoutes.HomeUrl" class="nav-item scale-on-interaction">
-        <img src="@GetIcon("home")" alt="Home" class="nav-icon"/>
-    </a>
-    <a href="@AppRoutes.BookmarkUrl" class="nav-item scale-on-interaction">
-        <img src="@GetIcon("bookmark")" alt="Bookmark" class="nav-icon"/>
-    </a>
-    <a href="@AppRoutes.FavoritesUrl" class="nav-item scale-on-interaction">
-        <img src="@GetIcon("favorites")" alt="Favorites" class="nav-icon"/>
-    </a>
-    <a href="@AppRoutes.ProfileUrl" class="nav-item scale-on-interaction">
-        <img src="@GetIcon("profile")" alt="Profile" class="nav-icon"/>
-    </a>
-</nav>
-
-@code {
+﻿@code {
     private string CurrentUrl { get; set; } = string.Empty;
 
     protected override void OnInitialized()
@@ -42,3 +27,18 @@
     }
 
 }
+
+<nav class="navigation-bottom-nav">
+    <a href="@AppRoutes.HomeUrl" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("home")" alt="Home" class="navigation-nav-icon"/>
+    </a>
+    <a href="@AppRoutes.BookmarkUrl" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("bookmark")" alt="Bookmark" class="navigation-nav-icon"/>
+    </a>
+    <a href="@AppRoutes.FavoritesUrl" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
+    </a>
+    <a href="@AppRoutes.ProfileUrl" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("profile")" alt="Profile" class="navigation-nav-icon"/>
+    </a>
+</nav>

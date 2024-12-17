@@ -1,4 +1,4 @@
-﻿.bottom-nav {
+﻿.navigation-bottom-nav {
     position: fixed;
     bottom: 5vh;
     left: 0;
@@ -16,16 +16,16 @@
     margin: 0 auto;
 }
 
-.nav-item {
+.navigation-nav-item {
     text-decoration: none;
 }
 
-.nav-icon {
+.navigation-nav-icon {
     width: 35px;
     height: 35px;
     transition: transform 0.2s ease;
 }
 
-.nav-icon:hover {
+.navigation-nav-icon:hover {
     transform: scale(1.2);
 }

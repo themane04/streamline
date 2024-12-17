@@ -1,4 +1,4 @@
-﻿.rating-container {
+﻿.movie-rating-container {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -9,13 +9,13 @@
     border-radius: 20px;
 }
 
-.rating-star {
+.movie-rating-rating-star {
     width: 18px;
     height: 18px;
     margin-right: 5px;
 }
 
-.movie-vote {
+.movie-rating-movie-vote {
     font-size: 0.9rem;
     color: var(--white-color);
     font-weight: bold;
