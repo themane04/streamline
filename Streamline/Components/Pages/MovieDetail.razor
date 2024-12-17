@@ -18,55 +18,32 @@
 
 @if (Movie is not null)
 {
-    <MudContainer
-        Style="display: flex;flex-direction: column;align-items: center;position: relative;max-width: 500px;
-        height: 100vh;margin: 0 auto;background: var(--white-color);box-shadow: var(--action-box-shadow);
-        border-radius: 40px 40px 0 0;">
-        <MudImage src="@Movie.FullBackdropPath" alt="@Movie.Title"
-                  Style="width: 100%;height: 350px;object-fit: cover;object-position: center;
-                  border-radius: 40px 40px 0 0;display: block;z-index: 0;"/>
-        <MudContainer
-            Style="display: flex;align-items: end;padding: 20px;font-family: var(--font-montserrat-family), sans-serif;
-            color: var(--text-color);background: var(--white-color);border-radius: 40px 40px 0 0;width: 100%;z-index: 1;
-            margin-top: -50px;">
+    <div class="movie-detail-page-container">
+        <img src="@Movie.FullBackdropPath" alt="@Movie.Title" class="movie-detail-backdrop-image"/>
+        <div class="movie-detail-inner-container">
             <MovieItem SingleMovie="Movie" PosterHeight="195px" PosterWidth="138px" PosterMt="-110px" PosterMl="20px"/>
-            <MudContainer Style="margin-left: -120px;">
-                <MudText
-                    Style="font-size: 1.125rem;font-weight: var(--font-weight-extrabold);text-transform: uppercase;">
-                    @Movie.Title
-                </MudText>
-                
-                
-                
-                <MudContainer Style="display: flex; overflow-x: auto; white-space: nowrap; gap: 10px;max-width: 250px;">
+            <div class="movie-detail-content">
+                <p class="movie-detail-movie-title">@Movie.Title</p>
+                <div class="movie-detail-genre-container">
                     @foreach (var genre in Movie.Genres)
                     {
-                        <MudContainer Style="background: var(--secondary-color); border-radius: 5px; z-index: 3;
-                        text-align: center; display: inline-flex; align-items: center; justify-content: center;
-                        flex-shrink: 0;border: 1px solid red;">
-                            <MudText Style="font-weight: var(--font-weight-extrabold); color: var(--white-color);">
+                        <div class="movie-detail-genre-inner-container">
+                            <p class="movie-detail-genre-name">
                                 @genre.Name
-                            </MudText>
-                        </MudContainer>
+                            </p>
+                        </div>
                     }
-                </MudContainer>
-                
-                
-                
-                
-                
-                <MudContainer Style="display: flex;align-items: center;">
-                    <MudText Style="font-weight: var(--font-weight-extrabold)">Release Date:</MudText>
-                    <MudText>@Movie.ReleaseDate</MudText>
-                </MudContainer>
-            </MudContainer>
+                </div>
+                <div class="movie-detail-release-date-container">
+                    <p class="movie-detail-release-date-text">Release Date:</p>
+                    <p>@Movie.ReleaseDate</p>
+                </div>
+            </div>
             <MovieRating VoteAverage="@Movie.VoteAverage.ToString("0.0")" VoteMt="250px" VoteMl="185px"/>
-        </MudContainer>
-    </MudContainer>
+        </div>
+    </div>
 }
 else
 {
     <LoadingSpinner/>
 }
-
-@* <MudButton OnClick="NavigateBack">Back</MudButton> *@

@@ -1,1 +1,79 @@
-﻿
+﻿.movie-detail-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 500px;
+    height: 100vh;
+    margin: 0 auto;
+    background: var(--white-color);
+    box-shadow: var(--action-box-shadow);
+    border-radius: 40px 40px 0 0;
+}
+
+.movie-detail-backdrop-image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 40px 40px 0 0;
+    display: block;
+    z-index: 0;
+}
+
+.movie-detail-inner-container {
+    display: flex;
+    align-items: end;
+    padding: 20px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    color: var(--text-color);
+    background: var(--white-color);
+    border-radius: 40px 40px 0 0;
+    width: 100%;
+    z-index: 1;
+    margin-top: -50px;
+}
+
+.movie-detail-content {
+    margin-left: -120px;
+}
+
+.movie-detail-movie-title {
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-extrabold);
+    text-transform: uppercase;
+}
+
+.movie-detail-genre-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    max-width: 250px;
+}
+
+.movie-detail-genre-inner-container {
+    background: var(--secondary-color);
+    border-radius: 5px;
+    z-index: 3;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid red;
+}
+
+.movie-detail-genre-name {
+    font-weight: var(--font-weight-extrabold);
+    color: var(--white-color);
+}
+
+.movie-detail-release-date-container {
+    display: flex;
+    align-items: center;
+}
+
+.movie-detail-release-date-text {
+    font-weight: var(--font-weight-extrabold)
+}
