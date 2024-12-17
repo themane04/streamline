@@ -101,18 +101,17 @@
 }
 
 
-<div class="page-container">
-    <div class="outer-container">
+<div class="homepage-page-container">
+    <div class="homepage-outer-container">
         <div>
             <LogoTitle/>
-            <div class="button-container">
-                <MudButton OnClick="ToggleSearch"
-                           class="@ButtonClass">
-                    <div class="search-content">
+            <div class="homepage-button-container">
+                <MudButton OnClick="ToggleSearch" class="@ButtonClass">
+                    <div class="homepage-search-content">
                         <img
                             src="images/assets/homepage/search_icon_button.png"
                             alt="Search"
-                            class="search-icon"
+                            class="homepage-search-icon"
                             style="@(_isSearchActive ? "margin-left: 15px; margin-right: 15px;" : "margin-left: 0; margin-right: 0;")"
                         />
                         <input
@@ -120,14 +119,14 @@
                             @oninput="OnSearchInput"
                             type="text"
                             placeholder="Search for movies"
-                            class="search-input"
+                            class="homepage-search-input"
                             style="@(_isSearchActive ? "display: block; opacity: 1; width: 100%;" : "display: none;")"
                         />
                     </div>
                 </MudButton>
             </div>
         </div>
-        <div class="movies-grid">
+        <div class="homepage-movies-grid">
             <MovieItem Movies="_movies" OnMovieSelected="NavigateToMovie"/>
         </div>
         @if (_isLoading)
