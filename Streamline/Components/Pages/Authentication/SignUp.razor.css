@@ -1,1 +1,89 @@
-﻿
+﻿.sign-up-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 100%;
+    padding-bottom: 20px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sign-up-outer-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 8vw;
+}
+
+.sign-up-logo {
+    width: 196px;
+    height: 196px;
+    margin-top: 20px;
+}
+
+.sign-up-streamline-title {
+    text-transform: uppercase;
+    font-size: 3rem;
+    color: var(--secondary-color);
+    font-family: var(--font-poppins-family), serif;
+    font-weight: var(--font-weight-semibold);
+    margin-top: 20px;
+}
+
+.sign-up-form {
+    max-width: 369px;
+}
+
+.sign-up-input-field {
+    width: 100%;
+    height: 70px;
+    margin-top: 20px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    border-radius: 30px;
+    border: none;
+    box-shadow: var(--action-box-shadow);
+    padding: 15px;
+}
+
+.sign-up-input-field::placeholder {
+    color: var(--text-color);
+}
+
+.sign-up-input-field:focus {
+    outline: none;
+}
+
+.sign-up-link-container {
+    margin-top: 20px;
+    font-size: 1.25rem;
+}
+
+.sign-up-question-text {
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    margin-bottom: 0;
+}
+
+.sign-up-link {
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.sign-up-link:visited,
+.sign-up-link:hover,
+.sign-up-link:active {
+    color: var(--primary-color);
+}

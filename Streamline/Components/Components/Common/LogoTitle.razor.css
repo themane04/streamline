@@ -1,4 +1,22 @@
-﻿.logo-title-img {
+﻿.logo-title-inner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.logo-title-image {
     width: 100px;
     height: 100px;
+    margin-top: 20px;
+}
+
+.logo-title-streamline-title {
+    text-transform: uppercase;
+    font-size: 3rem;
+    color: var(--secondary-color);
+    font-family: var(--font-poppins-family), serif;
+    font-weight: var(--font-weight-semibold);
+    margin-top: 20px;
 }

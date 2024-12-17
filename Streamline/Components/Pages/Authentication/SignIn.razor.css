@@ -1,1 +1,89 @@
-﻿
+﻿.sign-in-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 100%;
+    padding-bottom: 20px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sign-in-outer-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 8vw;
+}
+
+.sign-in-logo {
+    width: 196px;
+    height: 196px;
+    margin-top: 20px;
+}
+
+.sign-in-streamline-title {
+    text-transform: uppercase;
+    font-size: 3rem;
+    color: var(--secondary-color);
+    font-family: var(--font-poppins-family), serif;
+    font-weight: var(--font-weight-semibold);
+    margin-top: 20px;
+}
+
+.sign-in-form {
+    max-width: 369px;
+}
+
+.sign-in-input-field {
+    width: 100%;
+    height: 70px;
+    margin-top: 20px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    border-radius: 30px;
+    border: none;
+    box-shadow: var(--action-box-shadow);
+    padding: 15px;
+}
+
+.sign-in-input-field::placeholder {
+    color: var(--text-color);
+}
+
+.sign-in-input-field:focus {
+    outline: none;
+}
+
+.sign-in-link-container {
+    margin-top: 20px;
+    font-size: 1.25rem;
+}
+
+.sign-in-question-text {
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    margin-bottom: 0;
+}
+
+.sign-in-link {
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.sign-in-link:visited,
+.sign-in-link:hover,
+.sign-in-link:active {
+    color: var(--primary-color);
+}
