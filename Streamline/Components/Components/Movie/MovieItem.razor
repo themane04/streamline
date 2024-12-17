@@ -41,7 +41,22 @@
 
 }
 
-@if (GetMoviesToRender().Any())
+@if (Movies == null)
+{
+    <LoadingSpinner/>
+}
+else if (!Movies.Any())
+{
+    <div class="movie-item-no-movies-container">
+        <img
+            src="images/assets/homepage/no-play.png"
+            alt="No Movies Found"
+            class="movie-item-no-movies-image"
+        />
+        <p class="movie-item-no-movies-text">No movies found</p>
+    </div>
+}
+else
 {
     @foreach (var movie in GetMoviesToRender())
     {
@@ -67,19 +82,4 @@
             </div>
         </div>
     }
-}
-else if (Movies is not null && !Movies.Any())
-{
-    <div class="movie-item-no-movies-container">
-        <img
-            src="images/assets/homepage/no-play.png"
-            alt="No Movies Found"
-            class="movie-item-no-movies-image"
-        />
-        <p class="movie-item-no-movies-text">No movies found</p>
-    </div>
-}
-else
-{
-    <LoadingSpinner/>
 }
