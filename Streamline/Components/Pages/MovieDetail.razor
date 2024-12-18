@@ -30,7 +30,7 @@
             />
             <MovieRating
                 VoteAverage="@Movie.VoteAverage.ToString("0.0")"
-                VoteMt="250px"
+                VoteMt="180px"
                 VoteMl="40%"
             />
             <div class="movie-detail-content">
@@ -57,6 +57,16 @@
             <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Watchlist</MudButton>
             <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
         </div>
+        <MovieDetailInformation
+            MovieTagline="@Movie.Tagline"
+            MovieBelongsToCollection="@Movie.BelongsToCollection"
+            MovieProductionCompanies="@Movie.ProductionCompanies"
+            MovieBudget="@Movie.Budget"
+            MovieRevenue="@Movie.Revenue"
+            MovieRuntime="@Movie.Runtime"
+            MovieOverview="@Movie.Overview"
+            MoviePopularity="@Movie.Popularity"
+        />
     </div>
 }
 else

@@ -1,0 +1,51 @@
+﻿.movie-detail-information-text-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: fit-content;
+    margin-top: 20px;
+    text-align: left;
+    align-items: center;
+    color: var(--text-color);
+}
+
+.movie-detail-information-text-details-container {
+    display: flex;
+    width: 400px;
+    height: fit-content;
+    text-align: left;
+    margin-top: 10px;
+    justify-content: left;
+    align-items: start;
+}
+
+.movie-detail-information-tagline-container {
+    justify-content: center !important;
+    font-style: italic;
+    text-align: center;
+}
+
+.movie-detail-information-tagline {
+    quotes: '“' '”';
+    display: inline-block;
+}
+
+.movie-detail-information-collection-image {
+    width: 150px;
+    height: fit-content;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    box-shadow: var(--action-box-shadow);
+}
+
+.movie-detail-information-header-text {
+    font-weight: var(--font-weight-extrabold);
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.movie-detail-information-company-inner-container {
+    white-space: normal;
+    flex-wrap: wrap;
+}

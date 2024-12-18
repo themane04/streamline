@@ -10,6 +10,7 @@
     --background-color: #FEF3E2;
     --text-color: #3C3C3C;
     --white-color: #FFFFFF;
+    --light-gray-color: #F0F0F0;
     --black-color: #000000;
 
     /* Custom Properties */
@@ -36,7 +37,6 @@
 
 html, body {
     background-color: var(--background-color);
-    height: 100%;
     margin: 0;
     padding: 0;
 }

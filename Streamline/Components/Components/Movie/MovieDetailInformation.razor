@@ -1,0 +1,84 @@
+﻿@code {
+    [Parameter] public string MovieTagline { get; set; } = "";
+    [Parameter] public MovieCollection? MovieBelongsToCollection { get; set; }
+    [Parameter] public List<MovieProductionCompany>? MovieProductionCompanies { get; set; }
+    [Parameter] public long MovieBudget { get; set; }
+    [Parameter] public long MovieRevenue { get; set; }
+    [Parameter] public int MovieRuntime { get; set; }
+    [Parameter] public string MovieOverview { get; set; } = "";
+    [Parameter] public double MoviePopularity { get; set; }
+}
+
+<div class="movie-detail-information-text-content-container">
+    <div class="movie-detail-information-text-details-container movie-detail-information-tagline-container"
+         style="display: @(string.IsNullOrWhiteSpace(MovieTagline) ? "none" : "flex");">
+        <p class="movie-detail-information-tagline">
+            <q>@MovieTagline</q>
+        </p>
+    </div>
+    @if (MovieBelongsToCollection?.FullPosterPath is not null)
+    {
+        <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
+             class="movie-detail-information-collection-image scale-on-interaction"/>
+    }
+    else
+    {
+        <div class="movie-detail-information-text-details-container">
+            <p class="movie-detail-information-header-text">Collection:</p>
+            <p>No Collection</p>
+        </div>
+    }
+    <div class="movie-detail-information-text-details-container">
+        <p class="movie-detail-information-header-text">Production Companies:</p>
+        <p class="movie-detail-information-company-inner-container">
+            @for (var i = 0; i < MovieProductionCompanies?.Count; i++)
+            {
+                @MovieProductionCompanies[i].Name
+                @if (i < MovieProductionCompanies.Count - 1)
+                {
+                    <text>, </text>
+                }
+            }
+        </p>
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <p class="movie-detail-information-header-text">Budget:</p>
+        @if (MovieBudget == 0)
+        {
+            <p>Not Available</p>
+        }
+        else
+        {
+            <p>@MovieBudget.ToString("C0", new CultureInfo("en-US"))</p>
+        }
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <p class="movie-detail-information-header-text">Revenue:</p>
+        @if (MovieRevenue == 0)
+        {
+            <p>Not Available</p>
+        }
+        else
+        {
+            <p>@MovieRevenue.ToString("C0", new CultureInfo("en-US"))</p>
+        }
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <p class="movie-detail-information-header-text">Runtime:</p>
+        @if (MovieRuntime == 0)
+        {
+            <p>Not Available</p>
+        }
+        else
+        {
+            <p>@MovieRuntime.ToString() minutes</p>
+        }
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <p>@MovieOverview</p>
+    </div>
+    <div class="movie-detail-information-text-details-container" style="align-items: center">
+        <p class="movie-detail-information-header-text">Popularity:</p>
+        <MoviePopularityChart MoviePopularity="MoviePopularity"/>
+    </div>
+</div>
