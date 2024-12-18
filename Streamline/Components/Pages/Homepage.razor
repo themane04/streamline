@@ -4,9 +4,10 @@
 @code {
 
     private IJSObjectReference? _module;
-    private List<Movie> _movies = new();
+    private List<Movie>? _movies = new();
     private int _currentPage = 1;
-    private bool _isLoading;
+    private bool _isInitialLoading;
+    private bool _isPageLoading;
     private DotNetObjectReference<Homepage>? _dotNetRef;
     private bool _isSearchActive;
     private string _searchQuery = "";
@@ -18,15 +19,24 @@
     protected override async Task OnInitializedAsync()
     {
         _dotNetRef = DotNetObjectReference.Create(this);
-        _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
+        _isInitialLoading = true;
+        try
+        {
+            _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
+        }
+        finally
+        {
+            _isInitialLoading = false;
+            StateHasChanged();
+        }
     }
 
     [JSInvokable]
     public async Task LoadNextPage()
     {
-        if (_isLoading) return;
+        if (_isPageLoading) return;
 
-        _isLoading = true;
+        _isPageLoading = true;
         try
         {
             _currentPage++;
@@ -34,13 +44,13 @@
 
             if (newMovies.Count > 0)
             {
-                _movies.AddRange(newMovies);
+                _movies?.AddRange(newMovies);
                 StateHasChanged();
             }
         }
         finally
         {
-            _isLoading = false;
+            _isPageLoading = false;
         }
     }
 
@@ -127,9 +137,21 @@
             </div>
         </div>
         <div class="homepage-movies-grid">
-            <MovieItem Movies="_movies" OnMovieSelected="NavigateToMovie"/>
+            @if (_isInitialLoading)
+            {
+                <LoadingSpinner/>
+            }
+            else if (_movies is not null && !_movies.Any())
+            {
+                <NoMoviesFound/>
+            }
+            else
+            {
+                <MovieItem Movies="_movies" OnMovieSelected="NavigateToMovie"/>
+            }
         </div>
-        @if (_isLoading)
+
+        @if (_isPageLoading)
         {
             <LoadingSpinner/>
         }
