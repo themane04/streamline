@@ -37,8 +37,18 @@
     text-decoration: none;
 }
 
+.mud-movie-detail-button {
+    width: 150px;
+    height: 30px;
+    font-size: 0.813rem;
+    margin-top: 0;
+}
+
 .mud-auth-button:hover,
 .mud-auth-button:visited,
-.mud-auth-button:active {
+.mud-auth-button:active,
+.mud-movie-detail-button:hover,
+.mud-movie-detail-button:visited,
+.mud-movie-detail-button:active {
     color: var(--text-color);
 }

@@ -1,8 +1,5 @@
 ﻿.movie-item-container {
     position: relative;
-    width: calc(100% - 20px);
-    max-width: 300px;
-    flex: 1 1 300px;
     border-radius: 10px;
     margin: 0 10px;
 }

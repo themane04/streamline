@@ -2,7 +2,7 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    private Streamline.Models.MovieDetail? Movie { get; set; }
+    private Models.MovieDetail? Movie { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -21,9 +21,22 @@
     <div class="movie-detail-page-container">
         <img src="@Movie.FullBackdropPath" alt="@Movie.Title" class="movie-detail-backdrop-image"/>
         <div class="movie-detail-inner-container">
-            <MovieItem SingleMovie="Movie" PosterHeight="195px" PosterWidth="138px" PosterMt="-110px" PosterMl="20px"/>
+            <MovieItem
+                SingleMovie="Movie"
+                PosterHeight="195px"
+                PosterWidth="138px"
+                PosterMt="-100px"
+                PosterMl="30px"
+            />
+            <MovieRating
+                VoteAverage="@Movie.VoteAverage.ToString("0.0")"
+                VoteMt="250px"
+                VoteMl="40%"
+            />
             <div class="movie-detail-content">
-                <p class="movie-detail-movie-title">@Movie.Title</p>
+                <p class="movie-detail-movie-title">
+                    @StringTruncation.Truncate(Movie.Title, 16)
+                </p>
                 <div class="movie-detail-genre-container">
                     @foreach (var genre in Movie.Genres)
                     {
@@ -36,10 +49,13 @@
                 </div>
                 <div class="movie-detail-release-date-container">
                     <p class="movie-detail-release-date-text">Release Date:</p>
-                    <p>@Movie.ReleaseDate</p>
+                    <p>@(DateTime.Parse(Movie.ReleaseDate).ToString("dd.MM.yyyy"))</p>
                 </div>
             </div>
-            <MovieRating VoteAverage="@Movie.VoteAverage.ToString("0.0")" VoteMt="250px" VoteMl="185px"/>
+        </div>
+        <div class="movie-detail-button-container">
+            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Watchlist</MudButton>
+            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
         </div>
     </div>
 }

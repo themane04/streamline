@@ -21,6 +21,11 @@
 
     private string GetIcon(string page)
     {
+        if (page == "home" && (CurrentUrl.Contains(AppRoutes.HomeUrl) || CurrentUrl.Contains(AppRoutes.MovieDetailView)))
+        {
+            return $"images/assets/navigation/active/{page}_active.png";
+        }
+
         return CurrentUrl.Contains(page)
             ? $"images/assets/navigation/active/{page}_active.png"
             : $"images/assets/navigation/{page}.png";

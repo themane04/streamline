@@ -11,12 +11,12 @@
     --text-color: #3C3C3C;
     --white-color: #FFFFFF;
     --black-color: #000000;
-    
+
     /* Custom Properties */
     --input-field-background-color: rgba(250, 129, 47, 0.3);
     --button-color: rgba(250, 64, 50, 0.7);
     --action-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    
+
     /* Fonts */
     --font-montserrat-family: "Montserrat", sans-serif;
     --font-open-sans-family: "Open Sans", sans-serif;
@@ -36,6 +36,9 @@
 
 html, body {
     background-color: var(--background-color);
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .scale-on-interaction {
@@ -47,4 +50,8 @@ html, body {
 .scale-on-interaction:active,
 .scale-on-interaction:hover {
     transform: scale(1.05);
+}
+
+*::-webkit-scrollbar {
+    display: none !important;
 }

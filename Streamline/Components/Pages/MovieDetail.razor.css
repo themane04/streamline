@@ -35,13 +35,16 @@
 }
 
 .movie-detail-content {
-    margin-left: -120px;
+    margin: 0 0 0 10px;
 }
 
 .movie-detail-movie-title {
     font-size: 1.125rem;
     font-weight: var(--font-weight-extrabold);
     text-transform: uppercase;
+    margin: 0;
+    text-align: left;
+    max-width: 200px;
 }
 
 .movie-detail-genre-container {
@@ -50,6 +53,8 @@
     white-space: nowrap;
     gap: 10px;
     max-width: 250px;
+    margin: 5px 0 0;
+    width: 30vw;
 }
 
 .movie-detail-genre-inner-container {
@@ -61,19 +66,31 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 1px solid red;
 }
 
 .movie-detail-genre-name {
     font-weight: var(--font-weight-extrabold);
+    font-size: 0.625rem;
     color: var(--white-color);
+    margin: 0;
+    padding: 5px;
 }
 
 .movie-detail-release-date-container {
     display: flex;
     align-items: center;
+    margin: 5px 0 0;
+    font-size: 0.75rem;
 }
 
 .movie-detail-release-date-text {
-    font-weight: var(--font-weight-extrabold)
+    font-weight: var(--font-weight-extrabold);
+    margin-right: 5px;
+}
+
+.movie-detail-button-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
 }
