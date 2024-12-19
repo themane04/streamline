@@ -109,7 +109,7 @@
 <div class="homepage-page-container">
     <div class="homepage-outer-container">
         <div>
-            <LogoTitle/>
+            <LogoTitle Title="Showcase"/>
             <div class="homepage-button-container">
                 <MudButton OnClick="ToggleSearch" class="@ButtonClass">
                     <div class="homepage-search-content">
@@ -138,7 +138,10 @@
             }
             else if (_movies is not null && !_movies.Any())
             {
-                <NoMoviesFound/>
+                <NoItemFound
+                    ImagePath="images/assets/homepage/no-play.png"
+                    Text="No movies found"
+                />
             }
             else
             {

@@ -1,6 +1,11 @@
-﻿<div class="logo-title-inner-container">
+﻿@code
+{
+    [Parameter] public string Title { get; set; } = "Streamline";
+}
+
+<div class="logo-title-inner-container">
     <img src="images/logo/streamline_transparent.png"
          alt="Streamline Logo"
          class="logo-title-image"/>
-    <p class="logo-title-streamline-title">Streamline</p>
+    <p class="logo-title-streamline-title">@Title</p>
 </div>

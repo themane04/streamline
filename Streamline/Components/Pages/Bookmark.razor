@@ -3,8 +3,7 @@
 <div class="bookmark-page-container">
     <div class="bookmark-page-inner-container">
         <div>
-            <LogoTitle/>
-            <p class="bookmark-page-header-text">Your Watchlist</p>
+            <LogoTitle Title="Watchlist"/>
         </div>
         <div class="bookmark-movies-grid">
             @if (_isLoading)
@@ -13,12 +12,24 @@
             }
             else
             {
-                <MovieItem
-                    WatchlistMovies="@_watchlistMovies"
-                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
-                    PosterHeight="244px"
-                    PosterWidth="175px"
-                />
+                @if (_watchlistMovies == null || _watchlistMovies.Count == 0)
+                {
+                    <NoItemFound
+                        ImagePath="images/assets/bookmark/broken-heart.png"
+                        Text="Nothing in your watchlist"
+                    />
+                }
+                else
+                {
+                    <MovieItem
+                        WatchlistMovies="@_watchlistMovies"
+                        OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+                        PosterHeight="244px"
+                        PosterWidth="175px"
+                        ShowCloseButton="true"
+                        RemoveMovieFromWishlist="RemoveMovieFromWishlist"
+                    />
+                }
             }
         </div>
     </div>
@@ -39,6 +50,20 @@
         {
             _isLoading = false;
             StateHasChanged();
+        }
+    }
+
+    private async Task RemoveMovieFromWishlist(int movieId)
+    {
+        await MovieService.RemoveFromWatchlist(movieId);
+        if (_watchlistMovies != null)
+        {
+            var movieToRemove = _watchlistMovies.FirstOrDefault(m => m.MovieId == movieId);
+            if (movieToRemove != null)
+            {
+                _watchlistMovies.Remove(movieToRemove);
+                StateHasChanged();
+            }
         }
     }
 

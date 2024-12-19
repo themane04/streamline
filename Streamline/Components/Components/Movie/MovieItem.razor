@@ -10,6 +10,8 @@
     [Parameter] public string? RatingVoteMt { get; set; } = "";
     [Parameter] public string? RatingVoteMl { get; set; } = "";
     [Parameter] public bool ShowRating { get; set; } = true;
+    [Parameter] public bool ShowCloseButton { get; set; }
+    [Parameter] public EventCallback<int> RemoveMovieFromWishlist { get; set; }
 
     private bool IsMovieNull => SingleMovie == null;
 
@@ -51,6 +53,11 @@
         };
     }
 
+    private async Task TriggerRemoveFromWishlist(int movieId)
+    {
+        await RemoveMovieFromWishlist.InvokeAsync(movieId);
+        StateHasChanged();
+    }
 }
 
 @foreach (var movie in GetMoviesToRender())
@@ -73,6 +80,12 @@
                 VoteMt="@RatingVoteMt"
                 VoteMl="@RatingVoteMl"
             />
+        }
+        @if (ShowCloseButton)
+        {
+            <MudButton Class="movie-item-close-button scale-on-interaction" OnClick="() => TriggerRemoveFromWishlist(movie.Id)">
+                <img src="images/assets/movie-item/close-button.png" alt="Close" class="movie-item-close-button-image"/>
+            </MudButton>
         }
     </div>
 }

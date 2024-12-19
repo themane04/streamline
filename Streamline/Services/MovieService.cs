@@ -140,14 +140,24 @@ public class MovieService
         _dbContext.WatchlistMovies.Add(movie);
         await _dbContext.SaveChangesAsync();
     }
-    
+
     public async Task<List<MovieWatchlist>> GetWatchlist()
     {
         return await _dbContext.WatchlistMovies.ToListAsync();
     }
-    
+
     public async Task<bool> IsMovieInWatchlist(int movieId)
     {
         return await _dbContext.WatchlistMovies.AnyAsync(m => m.MovieId == movieId);
+    }
+
+    public async Task RemoveFromWatchlist(int movieId)
+    {
+        var movieToRemove = await _dbContext.WatchlistMovies.FirstOrDefaultAsync(m => m.MovieId == movieId);
+        if (movieToRemove != null)
+        {
+            _dbContext.WatchlistMovies.Remove(movieToRemove);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

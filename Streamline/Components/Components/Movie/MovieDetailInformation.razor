@@ -24,10 +24,17 @@
             <q>@MovieTagline</q>
         </p>
     </div>
-    @if (MovieBelongsToCollection?.FullPosterPath is not null)
+    @if (!string.IsNullOrEmpty(MovieBelongsToCollection?.FullPosterPath) && MovieBelongsToCollection?.FullPosterPath.Length > "https://image.tmdb.org/t/p/w500".Length)
     {
         <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
              class="movie-detail-information-collection-image scale-on-interaction"/>
+    }
+    else if (!string.IsNullOrWhiteSpace(MovieBelongsToCollection?.Name))
+    {
+        <div class="movie-detail-information-text-details-container">
+            <p class="movie-detail-information-header-text">Collection:</p>
+            <p>@MovieBelongsToCollection?.Name</p>
+        </div>
     }
     else
     {

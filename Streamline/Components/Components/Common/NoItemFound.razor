@@ -1,0 +1,14 @@
+﻿@code
+{
+    [Parameter] public string ImagePath { get; set; } = "";
+    [Parameter] public string Text { get; set; } = "Nothing Found";
+}
+
+<div class="no-movies-found-container">
+    <img
+        src="@ImagePath"
+        alt="No Movies Found"
+        class="no-movies-found-image"
+    />
+    <p class="no-movies-found-text">@Text</p>
+</div>

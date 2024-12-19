@@ -15,3 +15,14 @@
     border-radius: 10px;
     box-shadow: var(--action-box-shadow);
 }
+
+.movie-rating-rating-star {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+.movie-item-close-button-image {
+    height: 20px;
+    width: 20px;
+}
