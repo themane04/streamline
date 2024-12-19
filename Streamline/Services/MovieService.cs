@@ -10,6 +10,7 @@ public class MovieService
 {
     private readonly string _apiKey = Environments.GetApiKey();
     private readonly string _baseUrl = Environments.GetDbUrl();
+    private readonly MovieDbContext _dbContext = new();
 
     public async Task<List<Movie>> GetPopularMoviesAsync(int page)
     {
@@ -126,5 +127,11 @@ public class MovieService
         }
 
         return new List<MovieDetail>();
+    }
+    
+    public async Task AddToWatchlist(MovieWatchlist movie)
+    {
+        _dbContext.WatchlistMovies.Add(movie);
+        await _dbContext.SaveChangesAsync();
     }
 }
