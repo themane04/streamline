@@ -1,38 +1,34 @@
 ﻿@page "/bookmark"
 
-<div class="bookmark-page-container">
-    <div class="bookmark-page-inner-container">
-        <div>
-            <LogoTitle Title="Watchlist"/>
-        </div>
-        <div class="bookmark-movies-grid">
-            @if (_isLoading)
-            {
-                <LoadingSpinner/>
-            }
-            else
-            {
-                @if (_watchlistMovies == null || _watchlistMovies.Count == 0)
-                {
-                    <NoItemFound
-                        ImagePath="images/assets/bookmark/broken-heart.png"
-                        Text="Nothing in your watchlist"
-                    />
-                }
-                else
-                {
-                    <MovieItem
-                        WatchlistMovies="@_watchlistMovies"
-                        OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
-                        PosterHeight="244px"
-                        PosterWidth="175px"
-                        ShowCloseButton="true"
-                        RemoveMovieFromWishlist="RemoveMovieFromWishlist"
-                    />
-                }
-            }
-        </div>
-    </div>
+<div>
+    <LogoTitle Title="Watchlist"/>
+</div>
+<div class="bookmark-movies-grid">
+    @if (_isLoading)
+    {
+        <LoadingSpinner/>
+    }
+    else
+    {
+        @if (_watchlistMovies == null || _watchlistMovies.Count == 0)
+        {
+            <NoItemFound
+                ImagePath="images/assets/bookmark/broken-heart.png"
+                Text="Nothing in your watchlist"
+            />
+        }
+        else
+        {
+            <MovieItem
+                WatchlistMovies="@_watchlistMovies"
+                OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+                PosterHeight="244px"
+                PosterWidth="175px"
+                ShowCloseButton="true"
+                RemoveMovieFromWishlist="RemoveMovieFromWishlist"
+            />
+        }
+    }
 </div>
 
 @code {

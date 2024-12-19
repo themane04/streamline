@@ -1,4 +1,19 @@
-﻿@code {
+﻿<nav class="navigation-bottom-nav">
+    <a @onclick="() => NavigateTo(AppRoutes.HomeUrl)" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("home")" alt="Home" class="navigation-nav-icon"/>
+    </a>
+    <a @onclick="() => NavigateTo(AppRoutes.BookmarkUrl)" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("bookmark")" alt="Bookmark" class="navigation-nav-icon"/>
+    </a>
+    <a @onclick="() => NavigateTo(AppRoutes.FavoritesUrl)" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
+    </a>
+    <a @onclick="() => NavigateTo(AppRoutes.ProfileUrl)" class="navigation-nav-item scale-on-interaction">
+        <img src="@GetIcon("profile")" alt="Profile" class="navigation-nav-icon"/>
+    </a>
+</nav>
+
+@code {
     private string CurrentUrl { get; set; } = string.Empty;
 
     protected override void OnInitialized()
@@ -36,18 +51,3 @@
         NavigationManager.NavigateTo(url, forceLoad: true);
     }
 }
-
-<nav class="navigation-bottom-nav">
-    <a @onclick="(() => NavigateTo(AppRoutes.HomeUrl))" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("home")" alt="Home" class="navigation-nav-icon"/>
-    </a>
-    <a @onclick="(() => NavigateTo(AppRoutes.BookmarkUrl))" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("bookmark")" alt="Bookmark" class="navigation-nav-icon"/>
-    </a>
-    <a @onclick="(() => NavigateTo(AppRoutes.FavoritesUrl))" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
-    </a>
-    <a @onclick="(() => NavigateTo(AppRoutes.ProfileUrl))" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("profile")" alt="Profile" class="navigation-nav-icon"/>
-    </a>
-</nav>

@@ -1,23 +1,4 @@
-﻿@code {
-    [Parameter] public string MovieTagline { get; set; } = "";
-    [Parameter] public MovieCollection? MovieBelongsToCollection { get; set; }
-    [Parameter] public List<MovieProductionCompany>? MovieProductionCompanies { get; set; }
-    [Parameter] public long MovieBudget { get; set; }
-    [Parameter] public long MovieRevenue { get; set; }
-    [Parameter] public int MovieRuntime { get; set; }
-    [Parameter] public string MovieOverview { get; set; } = "";
-    [Parameter] public double MoviePopularity { get; set; }
-    [Parameter] public List<MovieDetail> SimilarMovies { get; set; } = new();
-    [Parameter] public EventCallback<MovieDetail> OnMovieSelected { get; set; }
-
-    private async Task NavigateToSimilarMovie(int movieId)
-    {
-        await Task.Run(() => NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true));
-    }
-
-}
-
-<div class="movie-detail-information-text-content-container">
+﻿<div class="movie-detail-information-text-content-container">
     <div class="movie-detail-information-text-details-container movie-detail-information-tagline-container"
          style="display: @(string.IsNullOrWhiteSpace(MovieTagline) ? "none" : "flex");">
         <p class="movie-detail-information-tagline">
@@ -115,3 +96,22 @@
         </div>
     </div>
 </div>
+
+@code {
+    [Parameter] public string MovieTagline { get; set; } = "";
+    [Parameter] public MovieCollection? MovieBelongsToCollection { get; set; }
+    [Parameter] public List<MovieProductionCompany>? MovieProductionCompanies { get; set; }
+    [Parameter] public long MovieBudget { get; set; }
+    [Parameter] public long MovieRevenue { get; set; }
+    [Parameter] public int MovieRuntime { get; set; }
+    [Parameter] public string MovieOverview { get; set; } = "";
+    [Parameter] public double MoviePopularity { get; set; }
+    [Parameter] public List<MovieDetail> SimilarMovies { get; set; } = new();
+    [Parameter] public EventCallback<MovieDetail> OnMovieSelected { get; set; }
+
+    private async Task NavigateToSimilarMovie(int movieId)
+    {
+        await Task.Run(() => NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true));
+    }
+
+}

@@ -1,5 +1,55 @@
 ﻿@page "/home"
 
+<div>
+    <LogoTitle Title="Showcase"/>
+    <div class="homepage-button-container">
+        <MudButton OnClick="ToggleSearch" class="@ButtonClass">
+            <div class="homepage-search-content">
+                <img
+                    src="images/assets/homepage/search_icon_button.png"
+                    alt="Search"
+                    class="homepage-search-icon"
+                    style="@(_isSearchActive ? "margin-left: 15px; margin-right: 15px;" : "margin-left: 0; margin-right: 0;")"
+                />
+                <input
+                    @onclick:stopPropagation
+                    @oninput="OnSearchInput"
+                    type="text"
+                    placeholder="Search for movies"
+                    class="homepage-search-input"
+                    style="@(_isSearchActive ? "display: block; opacity: 1; width: 100%;" : "display: none;")"
+                />
+            </div>
+        </MudButton>
+    </div>
+</div>
+<div class="homepage-movies-grid">
+    @if (_isInitialLoading)
+    {
+        <LoadingSpinner/>
+    }
+    else if (_movies is not null && !_movies.Any())
+    {
+        <NoItemFound
+            ImagePath="images/assets/homepage/no-play.png"
+            Text="No movies found"
+        />
+    }
+    else
+    {
+        <MovieItem
+            Movies="_movies"
+            OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+            PosterWidth="175px"
+            PosterHeight="244px"
+        />
+    }
+</div>
+
+@if (_isPageLoading)
+{
+    <LoadingSpinner/>
+}
 
 @code {
 
@@ -104,59 +154,3 @@
     }
 
 }
-
-
-<div class="homepage-page-container">
-    <div class="homepage-outer-container">
-        <div>
-            <LogoTitle Title="Showcase"/>
-            <div class="homepage-button-container">
-                <MudButton OnClick="ToggleSearch" class="@ButtonClass">
-                    <div class="homepage-search-content">
-                        <img
-                            src="images/assets/homepage/search_icon_button.png"
-                            alt="Search"
-                            class="homepage-search-icon"
-                            style="@(_isSearchActive ? "margin-left: 15px; margin-right: 15px;" : "margin-left: 0; margin-right: 0;")"
-                        />
-                        <input
-                            @onclick:stopPropagation
-                            @oninput="OnSearchInput"
-                            type="text"
-                            placeholder="Search for movies"
-                            class="homepage-search-input"
-                            style="@(_isSearchActive ? "display: block; opacity: 1; width: 100%;" : "display: none;")"
-                        />
-                    </div>
-                </MudButton>
-            </div>
-        </div>
-        <div class="homepage-movies-grid">
-            @if (_isInitialLoading)
-            {
-                <LoadingSpinner/>
-            }
-            else if (_movies is not null && !_movies.Any())
-            {
-                <NoItemFound
-                    ImagePath="images/assets/homepage/no-play.png"
-                    Text="No movies found"
-                />
-            }
-            else
-            {
-                <MovieItem
-                    Movies="_movies"
-                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
-                    PosterWidth="175px"
-                    PosterHeight="244px"
-                />
-            }
-        </div>
-
-        @if (_isPageLoading)
-        {
-            <LoadingSpinner/>
-        }
-    </div>
-</div>

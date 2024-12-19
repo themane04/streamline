@@ -1,14 +1,4 @@
-﻿@code {
-    [Parameter] public string BackUrl { get; set; } = AppRoutes.HomeUrl;
-
-    private void NavigateBack()
-    {
-        NavigationManager.NavigateTo(BackUrl, forceLoad: true);
-    }
-
-}
-
-<MudButton OnClick="NavigateBack"
+﻿<MudButton OnClick="NavigateBack"
            Class="scale-on-interaction"
            Style="
     position: absolute;
@@ -29,3 +19,13 @@
 >
     <img src="images/assets/navigation/back-arrow.png" alt="Back" style="height: 20px;width: 20px"/>
 </MudButton>
+
+@code {
+    [Parameter] public string BackUrl { get; set; } = AppRoutes.HomeUrl;
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo(BackUrl, forceLoad: true);
+    }
+
+}

@@ -1,8 +1,4 @@
-﻿@code{
-    [Parameter] public bool IsCentered { get; set; } = false;
-}
-
-<div
+﻿<div
     class="loading-spinner-container"
     style="
         margin-top: @(IsCentered ? "30%" : "20px");
@@ -12,3 +8,7 @@
 >
     <div class="loading-spinner"></div>
 </div>
+
+@code {
+    [Parameter] public bool IsCentered { get; set; } = false;
+}

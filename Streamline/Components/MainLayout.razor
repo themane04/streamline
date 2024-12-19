@@ -1,5 +1,7 @@
 ﻿<div class="main-layout-page-container">
-    @Body
+    <div class="main-layout-inner-container" style="@(IsMovieDetailView ? "margin-top: 0" : "8vw")">
+        @Body
+    </div>
 </div>
 
 @if (!ShouldExcludeNav())
@@ -9,6 +11,7 @@
 
 @code {
     [Parameter] public RenderFragment? Body { get; set; }
+    private bool IsMovieDetailView => NavigationManager?.Uri.Contains(AppRoutes.MovieDetailView) ?? false;
 
     private bool ShouldExcludeNav()
     {

@@ -1,4 +1,34 @@
-﻿@code {
+﻿@foreach (var movie in GetMoviesToRender())
+{
+    <div class="movie-item-container scale-on-interaction" @onclick="() => OnMovieSelected.InvokeAsync(movie.Id)">
+        <img
+            src="@movie.FullPosterPath"
+            alt="@movie.Title"
+            class="movie-item-movie-poster"
+            style="
+                height: @PosterHeight;
+            width: @PosterWidth;
+            margin-top: @PosterMt;
+            margin-left: @PosterMl;"
+        />
+        @if (IsMovieNull || ShowRating)
+        {
+            <MovieRating
+                VoteAverage="@movie.VoteAverage.ToString("0.0")"
+                VoteMt="@RatingVoteMt"
+                VoteMl="@RatingVoteMl"
+            />
+        }
+        @if (ShowCloseButton)
+        {
+            <MudButton Class="movie-item-close-button scale-on-interaction" OnClick="() => TriggerRemoveFromWishlist(movie.Id)">
+                <img src="images/assets/movie-item/close-button.png" alt="Close" class="movie-item-close-button-image"/>
+            </MudButton>
+        }
+    </div>
+}
+
+@code {
     [Parameter] public List<Movie>? Movies { get; set; }
     [Parameter] public MovieDetail? SingleMovie { get; set; }
     [Parameter] public List<MovieWatchlist>? WatchlistMovies { get; set; }
@@ -58,34 +88,4 @@
         await RemoveMovieFromWishlist.InvokeAsync(movieId);
         StateHasChanged();
     }
-}
-
-@foreach (var movie in GetMoviesToRender())
-{
-    <div class="movie-item-container scale-on-interaction" @onclick="() => OnMovieSelected.InvokeAsync(movie.Id)">
-        <img
-            src="@movie.FullPosterPath"
-            alt="@movie.Title"
-            class="movie-item-movie-poster"
-            style="
-                height: @PosterHeight;
-            width: @PosterWidth;
-            margin-top: @PosterMt;
-            margin-left: @PosterMl;"
-        />
-        @if (IsMovieNull || ShowRating)
-        {
-            <MovieRating
-                VoteAverage="@movie.VoteAverage.ToString("0.0")"
-                VoteMt="@RatingVoteMt"
-                VoteMl="@RatingVoteMl"
-            />
-        }
-        @if (ShowCloseButton)
-        {
-            <MudButton Class="movie-item-close-button scale-on-interaction" OnClick="() => TriggerRemoveFromWishlist(movie.Id)">
-                <img src="images/assets/movie-item/close-button.png" alt="Close" class="movie-item-close-button-image"/>
-            </MudButton>
-        }
-    </div>
 }

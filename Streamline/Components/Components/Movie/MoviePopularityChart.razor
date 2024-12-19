@@ -1,8 +1,4 @@
-﻿@code {
-    [Parameter] public double MoviePopularity { get; set; }
-}
-
-<div>
+﻿<div>
     <svg width="100" height="100" viewBox="0 0 36 36" class="circular-chart">
         <path class="circle-bg"
               d="M18 2.0845
@@ -22,3 +18,7 @@
               stroke-linecap="round"/>
     </svg>
 </div>
+
+@code {
+    [Parameter] public double MoviePopularity { get; set; }
+}

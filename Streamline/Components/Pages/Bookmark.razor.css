@@ -1,22 +1,4 @@
-﻿.bookmark-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-height: 100%;
-    padding-bottom: 20px;
-}
-
-.bookmark-page-inner-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 8vw;
-}
-
-.bookmark-page-header-text {
+﻿.bookmark-page-header-text {
     font-size: 1.438rem;
     font-weight: var(--font-weight-extrabold);
     font-family: var(--font-open-sans-family), sans-serif;

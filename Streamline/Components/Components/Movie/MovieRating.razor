@@ -1,10 +1,4 @@
-﻿@code {
-    [Parameter] public string VoteAverage { get; set; } = "0.0";
-    [Parameter] public string? VoteMt { get; set; } = "";
-    [Parameter] public string? VoteMl { get; set; } = "";
-}
-
-<div
+﻿<div
     class="movie-rating-container"
     style="
         margin-top: @VoteMt;
@@ -14,3 +8,9 @@
     <img src="images/assets/homepage/rating_star.png" alt="Rating Star" class="movie-rating-rating-star"/>
     <p class="movie-rating-movie-vote">@VoteAverage</p>
 </div>
+
+@code {
+    [Parameter] public string VoteAverage { get; set; } = "0.0";
+    [Parameter] public string? VoteMt { get; set; } = "";
+    [Parameter] public string? VoteMl { get; set; } = "";
+}

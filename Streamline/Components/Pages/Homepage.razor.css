@@ -1,22 +1,4 @@
-﻿.homepage-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-height: 100%;
-    padding-bottom: 20px;
-}
-
-.homepage-outer-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 8vw;
-}
-
-.homepage-button-container {
+﻿.homepage-button-container {
     width: 100%;
     display: flex;
     justify-content: end;

@@ -1,39 +1,5 @@
 ﻿@page "/movie/{id:int}"
 
-@code {
-    [Parameter] public int Id { get; set; }
-    private MovieDetail? Movie { get; set; }
-    private List<MovieDetail> SimilarMovies { get; set; } = new();
-    private MovieWatchlist WatchlistMovie { get; } = new();
-    private bool _isMovieInWatchlist;
-
-    private string WatchlistButtonClass =>
-        "mud-auth-button mud-movie-detail-button scale-on-interaction"
-        + (_isMovieInWatchlist ? " mud-auth-button-disabled" : "");
-
-    protected override async Task OnParametersSetAsync()
-    {
-        Movie = await MovieService.GetMovieDetailByIdAsync(Id);
-        SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
-        _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
-    }
-
-    protected async Task AddMovieToWatchlist()
-    {
-        if (Movie != null && !_isMovieInWatchlist)
-        {
-            WatchlistMovie.MovieId = Movie.Id;
-            WatchlistMovie.Title = Movie.Title;
-            WatchlistMovie.PosterPath = Movie.PosterPath ?? string.Empty;
-            WatchlistMovie.VoteAverage = Movie.VoteAverage;
-            await MovieService.AddToWatchlist(WatchlistMovie);
-            _isMovieInWatchlist = true;
-            StateHasChanged();
-        }
-    }
-
-}
-
 @if (Movie is not null)
 {
     <div class="movie-detail-page-container">
@@ -76,15 +42,9 @@
             <MudButton
                 Class="@WatchlistButtonClass"
                 Disabled="@_isMovieInWatchlist"
-                OnClick="@(_isMovieInWatchlist ? EventCallback.Empty : new EventCallback(this, AddMovieToWatchlist))">
-                @if (_isMovieInWatchlist)
-                {
-                    <span>Added to Watchlist</span>
-                }
-                else
-                {
-                    <span>Add to Watchlist</span>
-                }
+                OnClick="@(_isMovieInWatchlist ? EventCallback.Empty : new EventCallback(this, AddMovieToWatchlist))"
+            >
+                <span>Add to Watchlist</span>
             </MudButton>
             <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
         </div>
@@ -103,4 +63,38 @@
 else
 {
     <LoadingSpinner IsCentered="true"/>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private MovieDetail? Movie { get; set; }
+    private List<MovieDetail> SimilarMovies { get; set; } = new();
+    private MovieWatchlist WatchlistMovie { get; } = new();
+    private bool _isMovieInWatchlist;
+
+    private string WatchlistButtonClass =>
+        "mud-auth-button mud-movie-detail-button scale-on-interaction"
+        + (_isMovieInWatchlist ? " mud-auth-button-disabled" : "");
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Movie = await MovieService.GetMovieDetailByIdAsync(Id);
+        SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
+        _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
+    }
+
+    protected async Task AddMovieToWatchlist()
+    {
+        if (Movie != null && !_isMovieInWatchlist)
+        {
+            WatchlistMovie.MovieId = Movie.Id;
+            WatchlistMovie.Title = Movie.Title;
+            WatchlistMovie.PosterPath = Movie.PosterPath ?? string.Empty;
+            WatchlistMovie.VoteAverage = Movie.VoteAverage;
+            await MovieService.AddToWatchlist(WatchlistMovie);
+            _isMovieInWatchlist = true;
+            StateHasChanged();
+        }
+    }
+
 }

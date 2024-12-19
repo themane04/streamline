@@ -1,8 +1,4 @@
-﻿@code {
-    private readonly Type _layoutType = typeof(MainLayout);
-}
-
-<Router AppAssembly="@typeof(MauiProgram).Assembly">
+﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <CascadingValue Value="this">
             <RouteView RouteData="@routeData" DefaultLayout="_layoutType"/>
@@ -14,3 +10,7 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private readonly Type _layoutType = typeof(MainLayout);
+}
