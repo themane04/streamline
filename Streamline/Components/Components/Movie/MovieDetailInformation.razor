@@ -102,7 +102,7 @@
                     PosterMl="30px"
                     RatingVoteMt="-100px"
                     RatingVoteMl="25px"
-                    OnMovieSelected="() => NavigateToSimilarMovie(similarMovie.Id)"
+                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}", forceLoad: true))"
                 />
             }
         </div>

@@ -103,11 +103,6 @@
         _dotNetRef?.Dispose();
     }
 
-    private void NavigateToMovie(int movieId)
-    {
-        NavigationManager?.NavigateTo(AppRoutes.MovieDetailView + $"/{movieId}");
-    }
-
 }
 
 
@@ -149,7 +144,7 @@
             {
                 <MovieItem
                     Movies="_movies"
-                    OnMovieSelected="NavigateToMovie"
+                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
                     PosterWidth="175px"
                     PosterHeight="244px"
                 />

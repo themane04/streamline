@@ -37,13 +37,6 @@
     text-decoration: none;
 }
 
-.mud-movie-detail-button {
-    width: 150px;
-    height: 30px;
-    font-size: 0.813rem;
-    margin-top: 0;
-}
-
 .mud-auth-button:hover,
 .mud-auth-button:visited,
 .mud-auth-button:active,
@@ -51,6 +44,27 @@
 .mud-movie-detail-button:visited,
 .mud-movie-detail-button:active {
     color: var(--text-color);
+}
+
+.mud-auth-button-disabled {
+    background-color: var(--light-gray-color);
+    color: #A0A0A0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.mud-auth-button-disabled:hover,
+.mud-auth-button-disabled:visited,
+.mud-auth-button-disabled:active {
+    background-color: var(--light-gray-color);
+    color: #A0A0A0;
+}
+
+.mud-movie-detail-button {
+    width: 150px;
+    height: 30px;
+    font-size: 0.813rem;
+    margin-top: 0;
 }
 
 .mud-back-arrow-button {

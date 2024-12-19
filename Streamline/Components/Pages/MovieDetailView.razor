@@ -5,22 +5,30 @@
     private MovieDetail? Movie { get; set; }
     private List<MovieDetail> SimilarMovies { get; set; } = new();
     private MovieWatchlist WatchlistMovie { get; } = new();
+    private bool _isMovieInWatchlist;
+
+    private string WatchlistButtonClass =>
+        "mud-auth-button mud-movie-detail-button scale-on-interaction"
+        + (_isMovieInWatchlist ? " mud-auth-button-disabled" : "");
 
     protected override async Task OnParametersSetAsync()
     {
         Movie = await MovieService.GetMovieDetailByIdAsync(Id);
         SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
+        _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
     }
 
     protected async Task AddMovieToWatchlist()
     {
-        if (Movie != null)
+        if (Movie != null && !_isMovieInWatchlist)
         {
             WatchlistMovie.MovieId = Movie.Id;
             WatchlistMovie.Title = Movie.Title;
             WatchlistMovie.PosterPath = Movie.PosterPath ?? string.Empty;
             WatchlistMovie.VoteAverage = Movie.VoteAverage;
             await MovieService.AddToWatchlist(WatchlistMovie);
+            _isMovieInWatchlist = true;
+            StateHasChanged();
         }
     }
 
@@ -38,7 +46,8 @@
                 PosterWidth="138px"
                 PosterMt="-100px"
                 PosterMl="30px"
-                ShowRating="false"/>
+                ShowRating="false"
+            />
             <MovieRating
                 VoteAverage="@Movie.VoteAverage.ToString("0.0")"
                 VoteMt="180px"
@@ -64,9 +73,18 @@
             </div>
         </div>
         <div class="movie-detail-button-container">
-            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction"
-                       OnClick="AddMovieToWatchlist">
-                Add To Watchlist
+            <MudButton
+                Class="@WatchlistButtonClass"
+                Disabled="@_isMovieInWatchlist"
+                OnClick="@(_isMovieInWatchlist ? EventCallback.Empty : new EventCallback(this, AddMovieToWatchlist))">
+                @if (_isMovieInWatchlist)
+                {
+                    <span>Added to Watchlist</span>
+                }
+                else
+                {
+                    <span>Add to Watchlist</span>
+                }
             </MudButton>
             <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
         </div>

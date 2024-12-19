@@ -4,16 +4,42 @@
     <div class="bookmark-page-inner-container">
         <div>
             <LogoTitle/>
-            <MovieItem WatchlistMovies="@_watchlistMovies"/>
+            <p class="bookmark-page-header-text">Your Watchlist</p>
+        </div>
+        <div class="bookmark-movies-grid">
+            @if (_isLoading)
+            {
+                <LoadingSpinner/>
+            }
+            else
+            {
+                <MovieItem
+                    WatchlistMovies="@_watchlistMovies"
+                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+                    PosterHeight="244px"
+                    PosterWidth="175px"
+                />
+            }
         </div>
     </div>
 </div>
 
 @code {
     private List<MovieWatchlist>? _watchlistMovies;
+    private bool _isLoading;
 
     protected override async Task OnInitializedAsync()
     {
-        _watchlistMovies = await MovieService.GetWatchlist();
+        _isLoading = true;
+        try
+        {
+            _watchlistMovies = await MovieService.GetWatchlist();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
     }
+
 }

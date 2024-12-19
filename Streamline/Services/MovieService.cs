@@ -145,4 +145,9 @@ public class MovieService
     {
         return await _dbContext.WatchlistMovies.ToListAsync();
     }
+    
+    public async Task<bool> IsMovieInWatchlist(int movieId)
+    {
+        return await _dbContext.WatchlistMovies.AnyAsync(m => m.MovieId == movieId);
+    }
 }
