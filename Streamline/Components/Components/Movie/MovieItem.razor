@@ -1,6 +1,7 @@
 ﻿@code {
     [Parameter] public List<Movie>? Movies { get; set; }
     [Parameter] public MovieDetail? SingleMovie { get; set; }
+    [Parameter] public List<MovieWatchlist>? WatchlistMovies { get; set; }
     [Parameter] public EventCallback<int> OnMovieSelected { get; set; }
     [Parameter] public string? PosterHeight { get; set; } = "";
     [Parameter] public string? PosterWidth { get; set; } = "";
@@ -16,10 +17,18 @@
     {
         if (SingleMovie != null)
         {
-            return new List<Movie>
+            return new List<Movie> { MapMovieDetailToMovie(SingleMovie) };
+        }
+
+        if (WatchlistMovies != null)
+        {
+            return WatchlistMovies.Select(w => new Movie
             {
-                MapMovieDetailToMovie(SingleMovie)
-            };
+                Id = w.MovieId,
+                Title = w.Title,
+                PosterPath = w.FullPosterPath,
+                VoteAverage = w.VoteAverage
+            });
         }
 
         return Movies ?? Enumerable.Empty<Movie>();

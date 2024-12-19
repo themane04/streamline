@@ -12,7 +12,7 @@
 
     private async Task NavigateToSimilarMovie(int movieId)
     {
-        NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true);
+        await Task.Run(() => NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true));
     }
 
 }

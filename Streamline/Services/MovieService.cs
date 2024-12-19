@@ -2,6 +2,7 @@
 using Streamline.Utilities;
 using Streamline.Models;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Streamline.Contexts;
 
 namespace Streamline.Services;
@@ -10,7 +11,12 @@ public class MovieService
 {
     private readonly string _apiKey = Environments.GetApiKey();
     private readonly string _baseUrl = Environments.GetDbUrl();
-    private readonly MovieDbContext _dbContext = new();
+    private readonly MovieDbContext _dbContext;
+
+    public MovieService(MovieDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public async Task<List<Movie>> GetPopularMoviesAsync(int page)
     {
@@ -128,10 +134,15 @@ public class MovieService
 
         return new List<MovieDetail>();
     }
-    
+
     public async Task AddToWatchlist(MovieWatchlist movie)
     {
         _dbContext.WatchlistMovies.Add(movie);
         await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task<List<MovieWatchlist>> GetWatchlist()
+    {
+        return await _dbContext.WatchlistMovies.ToListAsync();
     }
 }

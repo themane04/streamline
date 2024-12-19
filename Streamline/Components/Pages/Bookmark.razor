@@ -4,10 +4,16 @@
     <div class="bookmark-page-inner-container">
         <div>
             <LogoTitle/>
+            <MovieItem WatchlistMovies="@_watchlistMovies"/>
         </div>
     </div>
 </div>
 
 @code {
+    private List<MovieWatchlist>? _watchlistMovies;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _watchlistMovies = await MovieService.GetWatchlist();
+    }
 }

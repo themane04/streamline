@@ -4,12 +4,26 @@
     [Parameter] public int Id { get; set; }
     private MovieDetail? Movie { get; set; }
     private List<MovieDetail> SimilarMovies { get; set; } = new();
+    private MovieWatchlist WatchlistMovie { get; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Movie = await MovieService.GetMovieDetailByIdAsync(Id);
         SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
     }
+
+    protected async Task AddMovieToWatchlist()
+    {
+        if (Movie != null)
+        {
+            WatchlistMovie.MovieId = Movie.Id;
+            WatchlistMovie.Title = Movie.Title;
+            WatchlistMovie.PosterPath = Movie.PosterPath ?? string.Empty;
+            WatchlistMovie.VoteAverage = Movie.VoteAverage;
+            await MovieService.AddToWatchlist(WatchlistMovie);
+        }
+    }
+
 }
 
 @if (Movie is not null)
@@ -50,7 +64,10 @@
             </div>
         </div>
         <div class="movie-detail-button-container">
-            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Watchlist</MudButton>
+            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction"
+                       OnClick="AddMovieToWatchlist">
+                Add To Watchlist
+            </MudButton>
             <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
         </div>
         <MovieDetailInformation
