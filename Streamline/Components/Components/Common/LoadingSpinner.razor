@@ -1,3 +1,14 @@
-﻿<div class="loading-spinner-container">
+﻿@code{
+    [Parameter] public bool IsCentered { get; set; } = false;
+}
+
+<div
+    class="loading-spinner-container"
+    style="
+        margin-top: @(IsCentered ? "30%" : "20px");
+    transform: @(IsCentered ? "translateY(-50%)" : "none");
+    position: @(IsCentered ? "absolute" : "");
+    "
+>
     <div class="loading-spinner"></div>
 </div>

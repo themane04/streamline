@@ -6,6 +6,9 @@
     [Parameter] public string? PosterWidth { get; set; } = "";
     [Parameter] public string? PosterMt { get; set; } = "";
     [Parameter] public string? PosterMl { get; set; } = "";
+    [Parameter] public string? RatingVoteMt { get; set; } = "";
+    [Parameter] public string? RatingVoteMl { get; set; } = "";
+    [Parameter] public bool ShowRating { get; set; } = true;
 
     private bool IsMovieNull => SingleMovie == null;
 
@@ -54,9 +57,13 @@
             margin-top: @PosterMt;
             margin-left: @PosterMl;"
         />
-        @if (IsMovieNull)
+        @if (IsMovieNull || ShowRating)
         {
-            <MovieRating VoteAverage="@movie.VoteAverage.ToString("0.0")"/>
+            <MovieRating
+                VoteAverage="@movie.VoteAverage.ToString("0.0")"
+                VoteMt="@RatingVoteMt"
+                VoteMl="@RatingVoteMl"
+            />
         }
     </div>
 }

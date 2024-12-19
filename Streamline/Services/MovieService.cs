@@ -65,7 +65,7 @@ public class MovieService
 
         return new List<Movie>();
     }
-    
+
     public async Task<MovieDetail?> GetMovieDetailByIdAsync(int id)
     {
         using HttpClient client = new();
@@ -87,5 +87,44 @@ public class MovieService
         }
 
         return null;
+    }
+
+    public async Task<List<MovieDetail>> GetSimilarMoviesAsync(int movieId)
+    {
+        using HttpClient client = new();
+        string url = $"{_baseUrl}movie/{movieId}/similar?api_key={_apiKey}&language=en-US";
+
+        try
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
+
+                if (result?.Results != null)
+                {
+                    List<MovieDetail> similarMovies = new List<MovieDetail>();
+
+                    foreach (var movie in result.Results)
+                    {
+                        MovieDetail? movieDetail = await GetMovieDetailByIdAsync(movie.Id);
+                        if (movieDetail != null)
+                        {
+                            similarMovies.Add(movieDetail);
+                        }
+                    }
+
+                    return similarMovies;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+
+        return new List<MovieDetail>();
     }
 }

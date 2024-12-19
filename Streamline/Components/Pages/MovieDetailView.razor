@@ -2,23 +2,20 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    private Models.MovieDetail? Movie { get; set; }
+    private MovieDetail? Movie { get; set; }
+    private List<MovieDetail> SimilarMovies { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Movie = await MovieService.GetMovieDetailByIdAsync(Id);
+        SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
     }
-
-    private void NavigateBack()
-    {
-        NavigationManager.NavigateTo(AppRoutes.HomeUrl);
-    }
-
 }
 
 @if (Movie is not null)
 {
-    <div class="movie-detail-page-container" style="padding-bottom: 200px; height: 100vh">
+    <div class="movie-detail-page-container">
+        <BackArrowButton BackUrl="@AppRoutes.HomeUrl"/>
         <img src="@Movie.FullBackdropPath" alt="@Movie.Title" class="movie-detail-backdrop-image"/>
         <div class="movie-detail-inner-container">
             <MovieItem
@@ -27,12 +24,11 @@
                 PosterWidth="138px"
                 PosterMt="-100px"
                 PosterMl="30px"
-            />
+                ShowRating="false"/>
             <MovieRating
                 VoteAverage="@Movie.VoteAverage.ToString("0.0")"
                 VoteMt="180px"
-                VoteMl="40%"
-            />
+                VoteMl="40%"/>
             <div class="movie-detail-content">
                 <p class="movie-detail-movie-title">
                     @StringTruncation.Truncate(Movie.Title, 16)
@@ -66,10 +62,10 @@
             MovieRuntime="@Movie.Runtime"
             MovieOverview="@Movie.Overview"
             MoviePopularity="@Movie.Popularity"
-        />
+            SimilarMovies="@SimilarMovies"/>
     </div>
 }
 else
 {
-    <LoadingSpinner/>
+    <LoadingSpinner IsCentered="true"/>
 }

@@ -7,6 +7,14 @@
     [Parameter] public int MovieRuntime { get; set; }
     [Parameter] public string MovieOverview { get; set; } = "";
     [Parameter] public double MoviePopularity { get; set; }
+    [Parameter] public List<MovieDetail> SimilarMovies { get; set; } = new();
+    [Parameter] public EventCallback<MovieDetail> OnMovieSelected { get; set; }
+
+    private async Task NavigateToSimilarMovie(int movieId)
+    {
+        NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true);
+    }
+
 }
 
 <div class="movie-detail-information-text-content-container">
@@ -77,8 +85,26 @@
     <div class="movie-detail-information-text-details-container">
         <p>@MovieOverview</p>
     </div>
-    <div class="movie-detail-information-text-details-container" style="align-items: center">
+    <div class="movie-detail-information-text-details-container movie-detail-information-popularity-container">
         <p class="movie-detail-information-header-text">Popularity:</p>
         <MoviePopularityChart MoviePopularity="MoviePopularity"/>
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <p class="movie-detail-information-header-text">More Like This:</p>
+        <div class="movie-detail-information-similar-movies-container">
+            @foreach (var similarMovie in SimilarMovies)
+            {
+                <MovieItem
+                    SingleMovie="similarMovie"
+                    PosterHeight="195px"
+                    PosterWidth="138px"
+                    PosterMt="-100px"
+                    PosterMl="30px"
+                    RatingVoteMt="-100px"
+                    RatingVoteMl="25px"
+                    OnMovieSelected="() => NavigateToSimilarMovie(similarMovie.Id)"
+                />
+            }
+        </div>
     </div>
 </div>

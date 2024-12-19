@@ -7,6 +7,7 @@
     text-align: left;
     align-items: center;
     color: var(--text-color);
+    padding-bottom: 200px;
 }
 
 .movie-detail-information-text-details-container {
@@ -17,6 +18,10 @@
     margin-top: 10px;
     justify-content: left;
     align-items: start;
+}
+
+.movie-detail-information-popularity-container {
+    align-items: center;
 }
 
 .movie-detail-information-tagline-container {
@@ -48,4 +53,11 @@
 .movie-detail-information-company-inner-container {
     white-space: normal;
     flex-wrap: wrap;
+}
+
+.movie-detail-information-similar-movies-container {
+    overflow-y: auto;
+    display: flex;
+    max-width: 400px;
+    padding: 110px 20px 10px;
 }

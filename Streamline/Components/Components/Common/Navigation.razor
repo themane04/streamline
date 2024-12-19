@@ -31,19 +31,23 @@
             : $"images/assets/navigation/{page}.png";
     }
 
+    private void NavigateTo(string url)
+    {
+        NavigationManager.NavigateTo(url, forceLoad: true);
+    }
 }
 
 <nav class="navigation-bottom-nav">
-    <a href="@AppRoutes.HomeUrl" class="navigation-nav-item scale-on-interaction">
+    <a @onclick="(() => NavigateTo(AppRoutes.HomeUrl))" class="navigation-nav-item scale-on-interaction">
         <img src="@GetIcon("home")" alt="Home" class="navigation-nav-icon"/>
     </a>
-    <a href="@AppRoutes.BookmarkUrl" class="navigation-nav-item scale-on-interaction">
+    <a @onclick="(() => NavigateTo(AppRoutes.BookmarkUrl))" class="navigation-nav-item scale-on-interaction">
         <img src="@GetIcon("bookmark")" alt="Bookmark" class="navigation-nav-icon"/>
     </a>
-    <a href="@AppRoutes.FavoritesUrl" class="navigation-nav-item scale-on-interaction">
+    <a @onclick="(() => NavigateTo(AppRoutes.FavoritesUrl))" class="navigation-nav-item scale-on-interaction">
         <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
     </a>
-    <a href="@AppRoutes.ProfileUrl" class="navigation-nav-item scale-on-interaction">
+    <a @onclick="(() => NavigateTo(AppRoutes.ProfileUrl))" class="navigation-nav-item scale-on-interaction">
         <img src="@GetIcon("profile")" alt="Profile" class="navigation-nav-icon"/>
     </a>
 </nav>
