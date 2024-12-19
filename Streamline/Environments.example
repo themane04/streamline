@@ -1,0 +1,19 @@
+﻿namespace Streamline.Utilities;
+
+public static class Environments
+{
+    public static string GetApiKey()
+    {
+        return "";  // Insert your API key here
+    }
+
+    public static string GetDbUrl()
+    {
+        return "";  // Insert your database URL here
+    }
+    
+    public static string GetConnectionString()
+    {
+        return "Host=*;Database=*;Username=*;Password=*";  // Insert your connection string here
+    }
+}
