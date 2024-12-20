@@ -2,7 +2,8 @@
 using Streamline.Utilities;
 using Streamline.Models;
 using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Text;
 using Streamline.Contexts;
 
 namespace Streamline.Services;
@@ -10,18 +11,19 @@ namespace Streamline.Services;
 public class MovieService
 {
     private readonly string _apiKey = Environments.GetApiKey();
-    private readonly string _baseUrl = Environments.GetDbUrl();
-    private readonly MovieDbContext _dbContext;
+    private readonly string _movieDbApiUrl = Environments.MovieDbApiUrl();
+    private readonly string _backendApiUrl = Environments.GetBackendApiUrl();
+    private readonly HttpClient _httpClient;
 
-    public MovieService(MovieDbContext dbContext)
+    public MovieService(HttpClient httpClient)
     {
-        _dbContext = dbContext;
+        _httpClient = httpClient;
     }
 
     public async Task<List<Movie>> GetPopularMoviesAsync(int page)
     {
         using HttpClient client = new();
-        string url = $"{_baseUrl}movie/popular?api_key={_apiKey}&language=en-US&page={page}";
+        string url = $"{_movieDbApiUrl}movie/popular?api_key={_apiKey}&language=en-US&page={page}";
 
         try
         {
@@ -49,7 +51,8 @@ public class MovieService
     public async Task<List<Movie>> SearchMoviesAsync(string query)
     {
         using HttpClient client = new();
-        string url = $"{_baseUrl}search/movie?api_key={_apiKey}&language=en-US&query={Uri.EscapeDataString(query)}";
+        string url =
+            $"{_movieDbApiUrl}search/movie?api_key={_apiKey}&language=en-US&query={Uri.EscapeDataString(query)}";
 
         try
         {
@@ -76,7 +79,7 @@ public class MovieService
     public async Task<MovieDetail?> GetMovieDetailByIdAsync(int id)
     {
         using HttpClient client = new();
-        string url = $"{_baseUrl}movie/{id}?api_key={_apiKey}&language=en-US";
+        string url = $"{_movieDbApiUrl}movie/{id}?api_key={_apiKey}&language=en-US";
 
         try
         {
@@ -99,7 +102,7 @@ public class MovieService
     public async Task<List<MovieDetail>> GetSimilarMoviesAsync(int movieId)
     {
         using HttpClient client = new();
-        string url = $"{_baseUrl}movie/{movieId}/similar?api_key={_apiKey}&language=en-US";
+        string url = $"{_movieDbApiUrl}movie/{movieId}/similar?api_key={_apiKey}&language=en-US";
 
         try
         {
@@ -137,27 +140,66 @@ public class MovieService
 
     public async Task AddToWatchlist(MovieWatchlist movie)
     {
-        _dbContext.WatchlistMovies.Add(movie);
-        await _dbContext.SaveChangesAsync();
+        var json = JsonSerializer.Serialize(movie);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        Console.WriteLine("Content sending to the backend: " + content);
+        var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}", content);
+        response.EnsureSuccessStatusCode();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Failed to add movie to watchlist");
+        }
+        else
+        {
+            Console.WriteLine("Movie added to watchlist");
+        }
     }
 
     public async Task<List<MovieWatchlist>> GetWatchlist()
     {
-        return await _dbContext.WatchlistMovies.ToListAsync();
+        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}");
+        response.EnsureSuccessStatusCode();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<MovieWatchlist>>(json) ?? new List<MovieWatchlist>();
+        }
+
+        return new List<MovieWatchlist>();
     }
 
     public async Task<bool> IsMovieInWatchlist(int movieId)
     {
-        return await _dbContext.WatchlistMovies.AnyAsync(m => m.MovieId == movieId);
+        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}/{movieId}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return false;
+        }
+
+        throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
     }
 
     public async Task RemoveFromWatchlist(int movieId)
     {
-        var movieToRemove = await _dbContext.WatchlistMovies.FirstOrDefaultAsync(m => m.MovieId == movieId);
-        if (movieToRemove != null)
+        var response = await _httpClient.DeleteAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}/{movieId}");
+        response.EnsureSuccessStatusCode();
+        Console.WriteLine(response);
+
+        if (!response.IsSuccessStatusCode)
         {
-            _dbContext.WatchlistMovies.Remove(movieToRemove);
-            await _dbContext.SaveChangesAsync();
+            Console.WriteLine("Failed to remove movie from watchlist");
+        }
+        else
+        {
+            Console.WriteLine("Movie removed from watchlist");
         }
     }
 }

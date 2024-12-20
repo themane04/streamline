@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Streamline.Contexts;
+﻿using Microsoft.Extensions.Logging;
 using Streamline.Services;
-using Streamline.Utilities;
 
 namespace Streamline;
 
@@ -13,16 +10,14 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>();
         builder.Services.AddMauiBlazorWebView();
-        builder.Services.AddDbContext<MovieDbContext>(options =>
-            options.UseNpgsql(Environments.GetConnectionString()));
-        builder.Services.AddScoped<MovieService>(serviceProvider =>
-            new MovieService(serviceProvider.GetRequiredService<MovieDbContext>()));
-        
+        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<MovieService>();
+    
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
 #endif
-
+    
         return builder.Build();
     }
 }

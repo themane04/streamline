@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Text.Json.Serialization;
 
 namespace Streamline.Models;
 
 public class MovieWatchlist
 {
     public string FullPosterPath => $"https://image.tmdb.org/t/p/w500{PosterPath}";
-
-    public int Id { get; set; }
-    public int MovieId { get; set; }
-    [StringLength(255)] public string Title { get; set; } = null!;
-    [StringLength(255)] public string PosterPath { get; set; } = null!;
-    public double VoteAverage { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
+    [JsonPropertyName("movie_id")] public int MovieId { get; set; }
+    [JsonPropertyName("title")] public string Title { get; set; } = null!;
+    [JsonPropertyName("poster_path")] public string PosterPath { get; set; } = null!;
+    [JsonPropertyName("vote_average")] public double VoteAverage { get; set; }
 }

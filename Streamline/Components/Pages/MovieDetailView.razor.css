@@ -21,6 +21,11 @@
     z-index: 0;
 }
 
+.movie-detail-backdrop-placeholder-image {
+    width: 500px;
+    height: 280px;
+}
+
 .movie-detail-inner-container {
     display: flex;
     align-items: end;

@@ -4,7 +4,15 @@
 {
     <div class="movie-detail-page-container">
         <BackArrowButton BackUrl="@AppRoutes.HomeUrl"/>
-        <img src="@Movie.FullBackdropPath" alt="@Movie.Title" class="movie-detail-backdrop-image"/>
+        @if (String.ImageStringAvailable(Movie.FullPosterPath))
+        {
+            <img src="@Movie.FullBackdropPath" alt="@Movie.Title" class="movie-detail-backdrop-image"/>
+        }
+        else
+        {
+            <img src="images/assets/movie-item/no-image-placeholder.png" alt="No image for @Movie?.Title"
+                 class="movie-detail-backdrop-image movie-detail-backdrop-placeholder-image"/>
+        }
         <div class="movie-detail-inner-container">
             <MovieItem
                 SingleMovie="Movie"
@@ -15,12 +23,12 @@
                 ShowRating="false"
             />
             <MovieRating
-                VoteAverage="@Movie.VoteAverage.ToString("0.0")"
+                VoteAverage="@Movie?.VoteAverage.ToString("0.0")"
                 VoteMt="180px"
                 VoteMl="40%"/>
             <div class="movie-detail-content">
                 <p class="movie-detail-movie-title">
-                    @StringTruncation.Truncate(Movie.Title, 16)
+                    @String.Truncate(Movie.Title, 16)
                 </p>
                 <div class="movie-detail-genre-container">
                     @foreach (var genre in Movie.Genres)
@@ -83,7 +91,7 @@ else
         _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
     }
 
-    protected async Task AddMovieToWatchlist()
+    private async Task AddMovieToWatchlist()
     {
         if (Movie != null && !_isMovieInWatchlist)
         {

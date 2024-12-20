@@ -1,16 +1,32 @@
 ﻿@foreach (var movie in GetMoviesToRender())
 {
     <div class="movie-item-container scale-on-interaction" @onclick="() => OnMovieSelected.InvokeAsync(movie.Id)">
-        <img
-            src="@movie.FullPosterPath"
-            alt="@movie.Title"
-            class="movie-item-movie-poster"
-            style="
+        @if (String.ImageStringAvailable(movie.FullPosterPath))
+        {
+            <img
+                src="@movie.FullPosterPath"
+                alt="@movie.Title"
+                class="movie-item-movie-poster"
+                style="
                 height: @PosterHeight;
             width: @PosterWidth;
             margin-top: @PosterMt;
             margin-left: @PosterMl;"
-        />
+            />   
+        }
+        else
+        {
+            <img
+                src="images/assets/movie-item/no-image-placeholder.png"
+                alt="No image for @movie.Title"
+                class="movie-item-movie-poster"
+                style="
+                height: @PosterHeight;
+            width: @PosterWidth;
+            margin-top: @PosterMt;
+            margin-left: @PosterMl;"
+            />
+        }
         @if (IsMovieNull || ShowRating)
         {
             <MovieRating

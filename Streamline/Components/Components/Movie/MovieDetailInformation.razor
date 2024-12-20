@@ -5,7 +5,7 @@
             <q>@MovieTagline</q>
         </p>
     </div>
-    @if (!string.IsNullOrEmpty(MovieBelongsToCollection?.FullPosterPath) && MovieBelongsToCollection?.FullPosterPath.Length > "https://image.tmdb.org/t/p/w500".Length)
+    @if (String.ImageStringAvailable(MovieBelongsToCollection?.FullPosterPath))
     {
         <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
              class="movie-detail-information-collection-image scale-on-interaction"/>
@@ -26,16 +26,23 @@
     }
     <div class="movie-detail-information-text-details-container">
         <p class="movie-detail-information-header-text">Production Companies:</p>
-        <p class="movie-detail-information-company-inner-container">
-            @for (var i = 0; i < MovieProductionCompanies?.Count; i++)
-            {
-                @MovieProductionCompanies[i].Name
-                @if (i < MovieProductionCompanies.Count - 1)
+        @if (MovieProductionCompanies?.Count > 0)
+        {
+            <p class="movie-detail-information-company-inner-container">
+                @for (var i = 0; i < MovieProductionCompanies?.Count; i++)
                 {
-                    <text>, </text>
+                    @MovieProductionCompanies[i].Name
+                    @if (i < MovieProductionCompanies.Count - 1)
+                    {
+                        <text>, </text>
+                    }
                 }
-            }
-        </p>
+            </p>
+        }
+        else
+        {
+            <p>No Production Companies</p>
+        }
     </div>
     <div class="movie-detail-information-text-details-container">
         <p class="movie-detail-information-header-text">Budget:</p>
@@ -71,29 +78,51 @@
         }
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p>@MovieOverview</p>
+        <p class="movie-detail-information-header-text">Overview:</p>
+        @if (!string.IsNullOrWhiteSpace(MovieOverview))
+        {
+            <p>@MovieOverview</p>
+        }
+        else
+        {
+            <p>No Overview</p>
+        }
     </div>
     <div class="movie-detail-information-text-details-container movie-detail-information-popularity-container">
         <p class="movie-detail-information-header-text">Popularity:</p>
-        <MoviePopularityChart MoviePopularity="MoviePopularity"/>
+        @if (MoviePopularity != 0)
+        {
+            <MoviePopularityChart MoviePopularity="MoviePopularity"/>
+        }
+        else
+        {
+            <p>No Popularity</p>
+        }
     </div>
     <div class="movie-detail-information-text-details-container">
         <p class="movie-detail-information-header-text">More Like This:</p>
-        <div class="movie-detail-information-similar-movies-container">
-            @foreach (var similarMovie in SimilarMovies)
-            {
-                <MovieItem
-                    SingleMovie="similarMovie"
-                    PosterHeight="195px"
-                    PosterWidth="138px"
-                    PosterMt="-100px"
-                    PosterMl="30px"
-                    RatingVoteMt="-100px"
-                    RatingVoteMl="25px"
-                    OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}", forceLoad: true))"
-                />
-            }
-        </div>
+        @if (SimilarMovies.Count > 0)
+        {
+            <div class="movie-detail-information-similar-movies-container">
+                @foreach (var similarMovie in SimilarMovies)
+                {
+                    <MovieItem
+                        SingleMovie="similarMovie"
+                        PosterHeight="195px"
+                        PosterWidth="138px"
+                        PosterMt="-100px"
+                        PosterMl="30px"
+                        RatingVoteMt="-100px"
+                        RatingVoteMl="25px"
+                        OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}", forceLoad: true))"
+                    />
+                }
+            </div>
+        }
+        else
+        {
+            <p>No Similar Movies</p>
+        }
     </div>
 </div>
 
