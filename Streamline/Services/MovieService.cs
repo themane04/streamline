@@ -142,28 +142,22 @@ public class MovieService
     {
         var json = JsonSerializer.Serialize(movie);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        Console.WriteLine("Content sending to the backend: " + content);
-        var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}", content);
+        var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}", content);
         response.EnsureSuccessStatusCode();
-
-        if (!response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Failed to add movie to watchlist");
-        }
-        else
-        {
-            Console.WriteLine("Movie added to watchlist");
-        }
     }
 
     public async Task<List<MovieWatchlist>> GetWatchlist()
     {
-        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}");
-        response.EnsureSuccessStatusCode();
+        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}");
+
+        if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            return new List<MovieWatchlist>();
+        }
 
         if (response.IsSuccessStatusCode)
         {
-            var json = await response.Content.ReadAsStringAsync();
+            string json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<MovieWatchlist>>(json) ?? new List<MovieWatchlist>();
         }
 
@@ -172,7 +166,7 @@ public class MovieService
 
     public async Task<bool> IsMovieInWatchlist(int movieId)
     {
-        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}/{movieId}");
+        var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}/{movieId}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -189,17 +183,7 @@ public class MovieService
 
     public async Task RemoveFromWatchlist(int movieId)
     {
-        var response = await _httpClient.DeleteAsync($"{_backendApiUrl}{BackendEndpoints.MovieEndpoint}/{movieId}");
+        var response = await _httpClient.DeleteAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}/{movieId}");
         response.EnsureSuccessStatusCode();
-        Console.WriteLine(response);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("Failed to remove movie from watchlist");
-        }
-        else
-        {
-            Console.WriteLine("Movie removed from watchlist");
-        }
     }
 }

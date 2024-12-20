@@ -2,5 +2,5 @@
 
 public class BackendEndpoints
 {
-    public const string MovieEndpoint = "movies";
+    public const string Watchlist = "watchlists";
 }
