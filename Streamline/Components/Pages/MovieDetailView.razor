@@ -77,7 +77,7 @@ else
     [Parameter] public int Id { get; set; }
     private MovieDetail? Movie { get; set; }
     private List<MovieDetail> SimilarMovies { get; set; } = new();
-    private MovieWatchlist WatchlistMovie { get; } = new();
+    private MovieShort ShortMovie { get; } = new();
     private bool _isMovieInWatchlist;
 
     private string WatchlistButtonClass =>
@@ -95,11 +95,11 @@ else
     {
         if (Movie != null && !_isMovieInWatchlist)
         {
-            WatchlistMovie.MovieId = Movie.Id;
-            WatchlistMovie.Title = Movie.Title;
-            WatchlistMovie.PosterPath = Movie.PosterPath ?? string.Empty;
-            WatchlistMovie.VoteAverage = Movie.VoteAverage;
-            await MovieService.AddToWatchlist(WatchlistMovie);
+            ShortMovie.MovieId = Movie.Id;
+            ShortMovie.Title = Movie.Title;
+            ShortMovie.PosterPath = Movie.PosterPath ?? string.Empty;
+            ShortMovie.VoteAverage = Movie.VoteAverage;
+            await MovieService.AddToWatchlist(ShortMovie);
             _isMovieInWatchlist = true;
             StateHasChanged();
         }

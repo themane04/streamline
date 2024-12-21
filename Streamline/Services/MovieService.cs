@@ -156,7 +156,7 @@ public class MovieService
         return new List<MovieDetail>();
     }
 
-    public async Task AddToWatchlist(MovieWatchlist movie)
+    public async Task AddToWatchlist(MovieShort movie)
     {
         string methodName = nameof(AddToWatchlist);
         _logger.LogInformation($"{methodName}: Adding movie to watchlist");
@@ -184,7 +184,7 @@ public class MovieService
         }
     }
 
-    public async Task<List<MovieWatchlist>> GetWatchlist()
+    public async Task<List<MovieShort>> GetWatchlist()
     {
         string methodName = nameof(GetWatchlist);
         _logger.LogInformation($"{methodName}: Retrieving the watchlist");
@@ -196,19 +196,19 @@ public class MovieService
             if (response.StatusCode == HttpStatusCode.NoContent)
             {
                 _logger.LogInformation($"{methodName}: Watchlist is empty");
-                return new List<MovieWatchlist>();
+                return new List<MovieShort>();
             }
 
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var watchlist = JsonSerializer.Deserialize<List<MovieWatchlist>>(json) ?? new List<MovieWatchlist>();
+                var watchlist = JsonSerializer.Deserialize<List<MovieShort>>(json) ?? new List<MovieShort>();
                 _logger.LogInformation($"{methodName}: Retrieved {watchlist.Count} movies in the watchlist");
                 return watchlist;
             }
 
             _logger.LogWarning($"{methodName}: Failed to retrieve watchlist: {response.StatusCode}");
-            return new List<MovieWatchlist>();
+            return new List<MovieShort>();
         }
         catch (Exception ex)
         {

@@ -2,7 +2,7 @@
 
 namespace Streamline.Models;
 
-public class MovieWatchlist
+public class MovieShort
 {
     public string FullPosterPath => $"https://image.tmdb.org/t/p/w500{PosterPath}";
     [JsonPropertyName("id")] public int Id { get; set; }
