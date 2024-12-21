@@ -1,6 +1,6 @@
 ﻿@page "/movie/{id:int}"
 
-@if (Movie is not null)
+@if (Movie != null)
 {
     <div class="movie-detail-page-container">
         <BackArrowButton BackUrl="@AppRoutes.HomeUrl"/>
@@ -28,21 +28,27 @@
                 VoteMl="40%"/>
             <div class="movie-detail-content">
                 <p class="movie-detail-movie-title">
-                    @String.Truncate(Movie.Title, 16)
+                    @String.Truncate(Movie?.Title, 16)
                 </p>
                 <div class="movie-detail-genre-container">
-                    @foreach (var genre in Movie.Genres)
+                    @if (Movie?.Genres != null)
                     {
-                        <div class="movie-detail-genre-inner-container">
-                            <p class="movie-detail-genre-name">
-                                @genre.Name
-                            </p>
-                        </div>
+                        @foreach (var genre in Movie.Genres)
+                        {
+                            <div class="movie-detail-genre-inner-container">
+                                <p class="movie-detail-genre-name">
+                                    @genre.Name
+                                </p>
+                            </div>
+                        }
                     }
                 </div>
                 <div class="movie-detail-release-date-container">
                     <p class="movie-detail-release-date-text">Release Date:</p>
-                    <p>@(DateTime.Parse(Movie.ReleaseDate).ToString("dd.MM.yyyy"))</p>
+                    @if (Movie?.ReleaseDate != null)
+                    {
+                        <p>@(DateTime.Parse(Movie.ReleaseDate).ToString("dd.MM.yyyy"))</p>
+                    }
                 </div>
             </div>
         </div>
@@ -58,19 +64,19 @@
                 Class="@FavoritesButtonClass"
                 Disabled="@_isMovieInFavorites"
                 OnClick="@(_isMovieInFavorites ? EventCallback.Empty : new EventCallback(this, AddMovieToFavorites))"
-                >
+            >
                 Add To Favorites
             </MudButton>
         </div>
         <MovieDetailInformation
-            MovieTagline="@Movie.Tagline"
-            MovieBelongsToCollection="@Movie.BelongsToCollection"
-            MovieProductionCompanies="@Movie.ProductionCompanies"
-            MovieBudget="@Movie.Budget"
-            MovieRevenue="@Movie.Revenue"
-            MovieRuntime="@Movie.Runtime"
-            MovieOverview="@Movie.Overview"
-            MoviePopularity="@Movie.Popularity"
+            MovieTagline="@Movie?.Tagline"
+            MovieBelongsToCollection="@Movie?.BelongsToCollection"
+            MovieProductionCompanies="@Movie?.ProductionCompanies"
+            MovieBudget="@(Movie?.Budget ?? 0)"
+            MovieRevenue="@(Movie?.Revenue ?? 0)"
+            MovieRuntime="@(Movie?.Runtime ?? 0)"
+            MovieOverview="@Movie?.Overview"
+            MoviePopularity="@(Movie?.Popularity ?? 0)"
             SimilarMovies="@SimilarMovies"/>
     </div>
 }
@@ -90,7 +96,7 @@ else
     private string WatchlistButtonClass =>
         "mud-auth-button mud-movie-detail-button scale-on-interaction"
         + (_isMovieInWatchlist ? " mud-auth-button-disabled" : "");
-    
+
     private string FavoritesButtonClass =>
         "mud-auth-button mud-movie-detail-button scale-on-interaction"
         + (_isMovieInFavorites ? " mud-auth-button-disabled" : "");
@@ -116,7 +122,7 @@ else
             StateHasChanged();
         }
     }
-    
+
     private async Task AddMovieToFavorites()
     {
         if (Movie != null && !_isMovieInFavorites)

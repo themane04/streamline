@@ -13,7 +13,7 @@ public class MovieDetail
 
     [JsonPropertyName("belongs_to_collection")] public MovieCollection? BelongsToCollection { get; set; }
 
-    [JsonPropertyName("budget")] public int Budget { get; set; }
+    [JsonPropertyName("budget")] public long Budget { get; set; }
 
     [JsonPropertyName("genres")] public List<MovieGenre> Genres { get; set; } = new();
 

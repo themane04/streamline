@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Streamline.Services;
+using Streamline.Services.Helper;
 
 namespace Streamline;
 
@@ -11,6 +12,7 @@ public static class MauiProgram
         builder.UseMauiApp<App>();
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<MovieServiceHelper>();
         builder.Services.AddSingleton<MovieService>();
 
         ConfigureLogging(builder.Logging);
