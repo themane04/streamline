@@ -1,9 +1,9 @@
-﻿@page "/bookmark"
+﻿@page "/watchlist"
 
 <div>
     <LogoTitle Title="Watchlist"/>
 </div>
-<div class="bookmark-movies-grid">
+<div class="watchlist-movies-grid">
     @if (_isLoading)
     {
         <LoadingSpinner/>
@@ -13,7 +13,7 @@
         @if (_watchlistMovies == null || _watchlistMovies.Count == 0)
         {
             <NoItemFound
-                ImagePath="images/assets/bookmark/broken-heart.png"
+                ImagePath="images/assets/watchlist/broken-heart.png"
                 Text="Nothing in your watchlist"
             />
         }

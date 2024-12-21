@@ -1,4 +1,4 @@
-﻿.bookmark-page-header-text {
+﻿.watchlist-page-header-text {
     font-size: 1.438rem;
     font-weight: var(--font-weight-extrabold);
     font-family: var(--font-open-sans-family), sans-serif;
@@ -7,7 +7,7 @@
     margin-top: 30px;
 }
 
-.bookmark-movies-grid {
+.watchlist-movies-grid {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;

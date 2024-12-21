@@ -6,7 +6,7 @@ public static class AppRoutes
     public const  string SignupUrl = "/signup";
     public const  string HomeUrl = "/home";
     public const  string MovieDetailView = "/movie";
-    public const  string BookmarkUrl = "/bookmark";
+    public const  string WatchlistUrl = "/watchlist";
     public const  string FavoritesUrl = "/favorites";
     public const  string ProfileUrl = "/profile";
 
