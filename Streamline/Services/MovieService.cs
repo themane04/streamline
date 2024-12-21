@@ -36,7 +36,7 @@ public class MovieService
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
+                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponseTmdb);
 
                 if (result?.Results != null)
                 {
@@ -69,7 +69,7 @@ public class MovieService
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
+                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponseTmdb);
                 if (result?.Results != null)
                 {
                     _logger.LogInformation($"{methodName}: Got {result.Results.Count} search results");
@@ -127,7 +127,7 @@ public class MovieService
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponse);
+                var result = JsonSerializer.Deserialize(json, MovieJsonContext.Default.MovieResponseTmdb);
 
                 if (result?.Results != null)
                 {
@@ -156,30 +156,86 @@ public class MovieService
         return new List<MovieDetail>();
     }
 
-    public async Task AddToWatchlist(MovieShort movie)
+    public async Task AddOrUpdateMovieAndAddToWatchlist(MovieShort movie)
     {
-        string methodName = nameof(AddToWatchlist);
-        _logger.LogInformation($"{methodName}: Adding movie to watchlist");
+        string methodName = nameof(AddOrUpdateMovieAndAddToWatchlist);
+        _logger.LogInformation($"{methodName}: Starting process to add or update movie and add it to watchlist");
 
         try
         {
-            var json = JsonSerializer.Serialize(movie);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}", content);
+            var (isSuccess, alreadyExists) = await AddOrUpdateMovie(movie);
 
-            if (response.IsSuccessStatusCode)
+            if (isSuccess || alreadyExists)
             {
-                _logger.LogInformation($"{methodName}: Movie successfully added to watchlist");
+                if (alreadyExists)
+                {
+                    _logger.LogInformation($"{methodName}: Movie already exists. Proceeding to add to watchlist.");
+                }
+
+                var addToWatchlistResponse = await _httpClient.PostAsync(
+                    $"{_backendApiUrl}{BackendEndpoints.Movies}/{movie.MovieId}/add_to_watchlist", null);
+
+                if (addToWatchlistResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"{methodName}: Movie successfully added to watchlist");
+                }
+                else
+                {
+                    _logger.LogError(
+                        $"{methodName}: Failed to add movie to watchlist with status: {addToWatchlistResponse.StatusCode}");
+                    addToWatchlistResponse.EnsureSuccessStatusCode();
+                }
             }
             else
             {
-                _logger.LogWarning($"{methodName}: Failed to add movie to watchlist: {response.StatusCode}");
-                response.EnsureSuccessStatusCode();
+                _logger.LogError($"{methodName}: Failed to add movie with unknown issue.");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"{methodName}: Exception occurred while adding movie to watchlist");
+            _logger.LogError(ex, $"{methodName}: Exception occurred during the process");
+            throw;
+        }
+    }
+
+    public async Task AddOrUpdateMovieAndMarkAsFavorite(MovieShort movie)
+    {
+        string methodName = nameof(AddOrUpdateMovieAndMarkAsFavorite);
+        _logger.LogInformation($"{methodName}: Starting process to add or update movie and mark it as favorite");
+
+        try
+        {
+            var (isSuccess, alreadyExists) = await AddOrUpdateMovie(movie);
+
+            if (isSuccess || alreadyExists)
+            {
+                if (alreadyExists)
+                {
+                    _logger.LogInformation($"{methodName}: Movie already exists. Proceeding to mark as favorite.");
+                }
+
+                var markFavoriteResponse = await _httpClient.PostAsync(
+                    $"{_backendApiUrl}{BackendEndpoints.Movies}/{movie.MovieId}/mark_favorite", null);
+
+                if (markFavoriteResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"{methodName}: Movie successfully marked as favorite");
+                }
+                else
+                {
+                    _logger.LogError(
+                        $"{methodName}: Failed to mark movie as favorite with status: {markFavoriteResponse.StatusCode}");
+                    markFavoriteResponse.EnsureSuccessStatusCode();
+                }
+            }
+            else
+            {
+                _logger.LogError($"{methodName}: Failed to add movie with unknown issue");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"{methodName}: Exception occurred during the process");
             throw;
         }
     }
@@ -191,63 +247,118 @@ public class MovieService
 
         try
         {
-            var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}");
+            var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Movies}?watchlist=true");
 
-            if (response.StatusCode == HttpStatusCode.NoContent)
+            if (!response.IsSuccessStatusCode)
             {
-                _logger.LogInformation($"{methodName}: Watchlist is empty");
+                _logger.LogError($"{methodName}: Failed to retrieve watchlist with status code {response.StatusCode}");
                 return new List<MovieShort>();
             }
 
-            if (response.IsSuccessStatusCode)
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse))
             {
-                string json = await response.Content.ReadAsStringAsync();
-                var watchlist = JsonSerializer.Deserialize<List<MovieShort>>(json) ?? new List<MovieShort>();
-                _logger.LogInformation($"{methodName}: Retrieved {watchlist.Count} movies in the watchlist");
-                return watchlist;
+                _logger.LogWarning($"{methodName}: No movies found in response.");
+                return new List<MovieShort>();
             }
 
-            _logger.LogWarning($"{methodName}: Failed to retrieve watchlist: {response.StatusCode}");
-            return new List<MovieShort>();
+            try
+            {
+                if (jsonResponse.StartsWith("["))
+                {
+                    var movies = JsonSerializer.Deserialize<List<MovieShort>>(jsonResponse,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return movies ?? new List<MovieShort>();
+                }
+
+                var structuredResponse = JsonSerializer.Deserialize<MovieResponse<List<MovieShort>>>(jsonResponse,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (structuredResponse?.Data != null)
+                {
+                    return structuredResponse.Data;
+                }
+
+                _logger.LogWarning($"{methodName}: No movies found.");
+                return new List<MovieShort>();
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, $"{methodName}: Error parsing JSON response");
+                return new List<MovieShort>();
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"{methodName}: Exception occurred while retrieving the watchlist");
+            _logger.LogError(ex, $"{methodName}: Exception occurred while retrieving movies from the watchlist");
             throw;
         }
     }
 
-    public async Task<bool> IsMovieInWatchlist(int movieId)
+    public async Task<List<MovieShort>> GetFavorites()
     {
-        string methodName = nameof(IsMovieInWatchlist);
-        _logger.LogInformation($"{methodName}: Checking if movie with MovieID: {movieId} is in the watchlist");
+        string methodName = nameof(GetFavorites);
+        _logger.LogInformation($"{methodName}: Retrieving the favorites");
 
         try
         {
-            var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}/{movieId}");
+            var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Movies}?favorites=true");
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} is in the watchlist");
-                return true;
+                _logger.LogError($"{methodName}: Failed to retrieve favorites with status code {response.StatusCode}");
+                return new List<MovieShort>();
             }
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse))
             {
-                _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} is not in the watchlist");
-                return false;
+                _logger.LogWarning($"{methodName}: No favorite movies found in response.");
+                return new List<MovieShort>();
             }
 
-            _logger.LogError(
-                $"{methodName}: Unexpected status code {response.StatusCode} when checking movie with MovieID: {movieId} in watchlist");
-            throw new HttpRequestException($"Unexpected status code: {response.StatusCode}");
+            try
+            {
+                if (jsonResponse.StartsWith("["))
+                {
+                    var movies = JsonSerializer.Deserialize<List<MovieShort>>(jsonResponse,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    return movies ?? new List<MovieShort>();
+                }
+
+                var structuredResponse = JsonSerializer.Deserialize<MovieResponse<List<MovieShort>>>(jsonResponse,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (structuredResponse?.Data != null)
+                {
+                    return structuredResponse.Data;
+                }
+
+                _logger.LogWarning($"{methodName}: No favorite movies found.");
+                return new List<MovieShort>();
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, $"{methodName}: Error parsing JSON response");
+                return new List<MovieShort>();
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex,
-                $"{methodName}: Exception occurred while checking if movie with MovieID: {movieId} is in the watchlist");
+            _logger.LogError(ex, $"{methodName}: Exception occurred while retrieving the favorites");
             throw;
         }
+    }
+
+    public Task<bool> IsMovieInWatchlist(int movieId)
+    {
+        return IsMoviePropertyTrue(movieId, "IsWatchlisted");
+    }
+
+    public Task<bool> IsMovieInFavorites(int movieId)
+    {
+        return IsMoviePropertyTrue(movieId, "IsFavorite");
     }
 
     public async Task RemoveFromWatchlist(int movieId)
@@ -257,22 +368,131 @@ public class MovieService
 
         try
         {
-            var response = await _httpClient.DeleteAsync($"{_backendApiUrl}{BackendEndpoints.Watchlist}/{movieId}");
+            var response =
+                await _httpClient.PostAsync(
+                    $"{_backendApiUrl}{BackendEndpoints.Movies}/{movieId}/remove_from_watchlist",
+                    null);
+
             if (response.IsSuccessStatusCode)
             {
                 _logger.LogInformation(
-                    $"{methodName}: Movie with MovieID: {movieId} successfully removed from watchlist");
+                    $"{methodName}: Movie with MovieID: {movieId} successfully removed from the watchlist");
             }
             else
             {
-                _logger.LogWarning(
-                    $"{methodName}: Failed to remove movie with MovieID: {movieId} from watchlist: {response.StatusCode}");
+                _logger.LogError(
+                    $"{methodName}: Failed to remove movie with MovieID: {movieId} from the watchlist, status code: {response.StatusCode}");
                 response.EnsureSuccessStatusCode();
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Exception occurred while removing movie with MovieID: {movieId} from the watchlist");
+            _logger.LogError(ex,
+                $"{methodName}: Exception occurred while removing movie with MovieID: {movieId} from the watchlist");
+            throw;
+        }
+    }
+
+    public async Task RemoveFromFavorites(int movieId)
+    {
+        string methodName = nameof(RemoveFromFavorites);
+        _logger.LogInformation($"{methodName}: Removing movie with MovieID: {movieId} from the favorites");
+
+        try
+        {
+            var response =
+                await _httpClient.PostAsync(
+                    $"{_backendApiUrl}{BackendEndpoints.Movies}/{movieId}/unmark_favorite",
+                    null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _logger.LogInformation(
+                    $"{methodName}: Movie with MovieID: {movieId} successfully removed from the favorites");
+            }
+            else
+            {
+                _logger.LogError(
+                    $"{methodName}: Failed to remove movie with MovieID: {movieId} from the favorites, status code: {response.StatusCode}");
+                response.EnsureSuccessStatusCode();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                $"{methodName}: Exception occurred while removing movie with MovieID: {movieId} from the favorites");
+            throw;
+        }
+    }
+
+    private async Task<(bool isSuccess, bool alreadyExists)> AddOrUpdateMovie(MovieShort movie)
+    {
+        var json = JsonSerializer.Serialize(movie);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.Movies}", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return (true, false);
+        }
+
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            try
+            {
+                var errorResponse = JsonSerializer.Deserialize<MovieResponseNoInterface>(responseContent);
+                if (errorResponse?.Message.Contains("already exists") == true)
+                {
+                    return (false, true);
+                }
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Exception occurred while adding or updating a movie");
+            }
+        }
+
+        return (false, false);
+    }
+
+    public async Task<bool> IsMoviePropertyTrue(int movieId, string propertyName)
+    {
+        string methodName = $"IsMovie{propertyName}True";
+        _logger.LogInformation($"{methodName}: Checking if movie with MovieID: {movieId} has {propertyName} true");
+
+        try
+        {
+            var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Movies}/{movieId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var movie = JsonSerializer.Deserialize<MovieShort>(responseContent);
+
+                var propertyValue = movie?.GetType().GetProperty(propertyName)?.GetValue(movie, null);
+                bool isPropertyTrue = propertyValue is bool boolValue && boolValue;
+
+                if (isPropertyTrue)
+                {
+                    _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} has {propertyName} true");
+                    return true;
+                }
+                else
+                {
+                    _logger.LogInformation(
+                        $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true");
+                    return false;
+                }
+            }
+
+            _logger.LogError(
+                $"{methodName}: Failed to fetch movie with MovieID: {movieId}, status code: {response.StatusCode}");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                $"{methodName}: Exception occurred while checking if movie with MovieID: {movieId} has {propertyName} true");
             throw;
         }
     }

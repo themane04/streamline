@@ -57,7 +57,7 @@
     [Parameter] public string? RatingVoteMl { get; set; } = "";
     [Parameter] public bool ShowRating { get; set; } = true;
     [Parameter] public bool ShowCloseButton { get; set; }
-    [Parameter] public EventCallback<int> RemoveMovieFromWatchlist { get; set; }
+    [Parameter] public EventCallback<int> OnCloseIconClick { get; set; }
 
     private bool IsMovieNull => SingleMovie == null;
 
@@ -101,7 +101,7 @@
 
     private async Task TriggerRemoveFromWatchlist(int movieId)
     {
-        await RemoveMovieFromWatchlist.InvokeAsync(movieId);
+        await OnCloseIconClick.InvokeAsync(movieId);
         StateHasChanged();
     }
 }

@@ -1,6 +1,67 @@
 ﻿@page "/favorites"
-<h3>Favorites</h3>
+
+<div>
+    <LogoTitle Title="Favorites"/>
+</div>
+<div class="favorites-movies-grid">
+    @if (_isLoading)
+    {
+        <LoadingSpinner/>
+    }
+    else
+    {
+        @if (_favoriteMovies == null || _favoriteMovies.Count == 0)
+        {
+            <NoItemFound
+                ImagePath="images/assets/watchlist/broken-heart.png"
+                Text="You have no movies in your favorites yet."
+            />
+        }
+        else
+        {
+            <MovieItem
+                WatchlistMovies="@_favoriteMovies"
+                OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+                PosterHeight="244px"
+                PosterWidth="175px"
+                ShowCloseButton="true"
+                OnCloseIconClick="RemoveMovieFromFavorites"
+            />
+        }
+    }
+</div>
+
 
 @code {
-    
+    private bool _isLoading;
+    private List<MovieShort>? _favoriteMovies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _favoriteMovies = await MovieService.GetFavorites();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task RemoveMovieFromFavorites(int movieId)
+    {
+        await MovieService.RemoveFromFavorites(movieId);
+        if (_favoriteMovies != null)
+        {
+            var movieToRemove = _favoriteMovies.FirstOrDefault(m => m.MovieId == movieId);
+            if (movieToRemove != null)
+            {
+                _favoriteMovies.Remove(movieToRemove);
+                StateHasChanged();
+            }
+        }
+    }
+
 }

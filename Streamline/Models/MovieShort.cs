@@ -10,4 +10,6 @@ public class MovieShort
     [JsonPropertyName("title")] public string Title { get; set; } = null!;
     [JsonPropertyName("poster_path")] public string PosterPath { get; set; } = null!;
     [JsonPropertyName("vote_average")] public double VoteAverage { get; set; }
+    [JsonPropertyName("is_watchlisted")] public bool IsWatchlisted { get; set; }
+    [JsonPropertyName("is_favorite")] public bool IsFavorite { get; set; }
 }

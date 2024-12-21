@@ -3,7 +3,7 @@ using Streamline.Models;
 
 namespace Streamline.Contexts;
 
-[JsonSerializable(typeof(MovieResponse))]
+[JsonSerializable(typeof(MovieResponseTmdb))]
 [JsonSerializable(typeof(Movie))]
 public partial class MovieJsonContext : JsonSerializerContext
 {

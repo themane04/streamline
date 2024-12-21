@@ -54,7 +54,13 @@
             >
                 <span>Add to Watchlist</span>
             </MudButton>
-            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">Add To Favorites</MudButton>
+            <MudButton
+                Class="@FavoritesButtonClass"
+                Disabled="@_isMovieInFavorites"
+                OnClick="@(_isMovieInFavorites ? EventCallback.Empty : new EventCallback(this, AddMovieToFavorites))"
+                >
+                Add To Favorites
+            </MudButton>
         </div>
         <MovieDetailInformation
             MovieTagline="@Movie.Tagline"
@@ -79,16 +85,22 @@ else
     private List<MovieDetail> SimilarMovies { get; set; } = new();
     private MovieShort ShortMovie { get; } = new();
     private bool _isMovieInWatchlist;
+    private bool _isMovieInFavorites;
 
     private string WatchlistButtonClass =>
         "mud-auth-button mud-movie-detail-button scale-on-interaction"
         + (_isMovieInWatchlist ? " mud-auth-button-disabled" : "");
+    
+    private string FavoritesButtonClass =>
+        "mud-auth-button mud-movie-detail-button scale-on-interaction"
+        + (_isMovieInFavorites ? " mud-auth-button-disabled" : "");
 
     protected override async Task OnParametersSetAsync()
     {
         Movie = await MovieService.GetMovieDetailByIdAsync(Id);
         SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
         _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
+        _isMovieInFavorites = await MovieService.IsMovieInFavorites(Id);
     }
 
     private async Task AddMovieToWatchlist()
@@ -99,8 +111,22 @@ else
             ShortMovie.Title = Movie.Title;
             ShortMovie.PosterPath = Movie.PosterPath ?? string.Empty;
             ShortMovie.VoteAverage = Movie.VoteAverage;
-            await MovieService.AddToWatchlist(ShortMovie);
+            await MovieService.AddOrUpdateMovieAndAddToWatchlist(ShortMovie);
             _isMovieInWatchlist = true;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task AddMovieToFavorites()
+    {
+        if (Movie != null && !_isMovieInFavorites)
+        {
+            ShortMovie.MovieId = Movie.Id;
+            ShortMovie.Title = Movie.Title;
+            ShortMovie.PosterPath = Movie.PosterPath ?? string.Empty;
+            ShortMovie.VoteAverage = Movie.VoteAverage;
+            await MovieService.AddOrUpdateMovieAndMarkAsFavorite(ShortMovie);
+            _isMovieInFavorites = true;
             StateHasChanged();
         }
     }

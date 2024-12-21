@@ -1,13 +1,4 @@
-﻿.watchlist-page-header-text {
-    font-size: 1.438rem;
-    font-weight: var(--font-weight-extrabold);
-    font-family: var(--font-open-sans-family), sans-serif;
-    color: var(--text-color);
-    text-align: left;
-    margin-top: 30px;
-}
-
-.watchlist-movies-grid {
+﻿.watchlist-movies-grid {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;

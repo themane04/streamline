@@ -2,13 +2,18 @@
 
 namespace Streamline.Models;
 
-public class MovieResponse
+public class MovieResponse<T>
 {
-    [JsonPropertyName("results")] public List<Movie>? Results { get; set; }
+    [JsonPropertyName("code")] public int Code { get; set; }
+    [JsonPropertyName("message")] public string Message { get; set; }
+    [JsonPropertyName("endpoint")] public string Endpoint { get; set; }
+    [JsonPropertyName("data")] public T Data { get; set; }
+}
 
-    [JsonPropertyName("page")] public int Page { get; set; }
-
-    [JsonPropertyName("total_pages")] public int TotalPages { get; set; }
-
-    [JsonPropertyName("total_results")] public int TotalResults { get; set; }
+public class MovieResponseNoInterface
+{
+    [JsonPropertyName("code")] public int Code { get; set; }
+    [JsonPropertyName("message")] public string Message { get; set; }
+    [JsonPropertyName("endpoint")] public string Endpoint { get; set; }
+    [JsonPropertyName("data")] public Object Data { get; set; }
 }
