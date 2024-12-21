@@ -25,7 +25,7 @@
                 PosterHeight="244px"
                 PosterWidth="175px"
                 ShowCloseButton="true"
-                RemoveMovieFromWishlist="RemoveMovieFromWishlist"
+                RemoveMovieFromWatchlist="RemoveMovieFromWatchlist"
             />
         }
     }
@@ -49,7 +49,7 @@
         }
     }
 
-    private async Task RemoveMovieFromWishlist(int movieId)
+    private async Task RemoveMovieFromWatchlist(int movieId)
     {
         await MovieService.RemoveFromWatchlist(movieId);
         if (_watchlistMovies != null)

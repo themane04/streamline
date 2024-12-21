@@ -37,7 +37,7 @@
         }
         @if (ShowCloseButton)
         {
-            <MudButton Class="movie-item-close-button scale-on-interaction" OnClick="() => TriggerRemoveFromWishlist(movie.Id)">
+            <MudButton Class="movie-item-close-button scale-on-interaction" OnClick="() => TriggerRemoveFromWatchlist(movie.Id)">
                 <img src="images/assets/movie-item/close-button.png" alt="Close" class="movie-item-close-button-image"/>
             </MudButton>
         }
@@ -57,7 +57,7 @@
     [Parameter] public string? RatingVoteMl { get; set; } = "";
     [Parameter] public bool ShowRating { get; set; } = true;
     [Parameter] public bool ShowCloseButton { get; set; }
-    [Parameter] public EventCallback<int> RemoveMovieFromWishlist { get; set; }
+    [Parameter] public EventCallback<int> RemoveMovieFromWatchlist { get; set; }
 
     private bool IsMovieNull => SingleMovie == null;
 
@@ -99,9 +99,9 @@
         };
     }
 
-    private async Task TriggerRemoveFromWishlist(int movieId)
+    private async Task TriggerRemoveFromWatchlist(int movieId)
     {
-        await RemoveMovieFromWishlist.InvokeAsync(movieId);
+        await RemoveMovieFromWatchlist.InvokeAsync(movieId);
         StateHasChanged();
     }
 }
