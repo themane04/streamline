@@ -47,7 +47,7 @@
 @code {
     [Parameter] public List<Movie>? Movies { get; set; }
     [Parameter] public MovieDetail? SingleMovie { get; set; }
-    [Parameter] public List<MovieShort>? WatchlistMovies { get; set; }
+    [Parameter] public List<MovieShort>? ShortMovie { get; set; }
     [Parameter] public EventCallback<int> OnMovieSelected { get; set; }
     [Parameter] public string? PosterHeight { get; set; } = "";
     [Parameter] public string? PosterWidth { get; set; } = "";
@@ -68,9 +68,9 @@
             return new List<Movie> { MapMovieDetailToMovie(SingleMovie) };
         }
 
-        if (WatchlistMovies != null)
+        if (ShortMovie != null)
         {
-            return WatchlistMovies.Select(w => new Movie
+            return ShortMovie.Select(w => new Movie
             {
                 Id = w.MovieId,
                 Title = w.Title,
