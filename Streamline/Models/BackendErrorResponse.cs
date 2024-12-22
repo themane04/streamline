@@ -2,7 +2,7 @@
 
 namespace Streamline.Models;
 
-public class MovieResponse<T>
+public class BackendErrorResponse<T>
 {
     [JsonPropertyName("code")] public int Code { get; set; }
     [JsonPropertyName("message")] public string Message { get; set; } = "";

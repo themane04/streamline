@@ -115,7 +115,7 @@ public class MovieServiceHelper
                     return movies ?? new List<MovieShort>();
                 }
 
-                var structuredResponse = JsonSerializer.Deserialize<MovieResponse<List<MovieShort>>>(jsonResponse,
+                var structuredResponse = JsonSerializer.Deserialize<BackendErrorResponse<List<MovieShort>>>(jsonResponse,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 if (structuredResponse?.Data != null)
