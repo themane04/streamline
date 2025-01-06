@@ -1,0 +1,54 @@
+﻿@code {
+    public bool IsVisible { get; private set; }
+    public string Message { get; private set; }
+    public string Status { get; private set; }
+
+    public void Show(string message, string status)
+    {
+        Message = message;
+        Status = status switch
+        {
+            "success" => "toast-success",
+            "error" => "toast-error",
+            "warning" => "toast-warning",
+            "info" => "toast-info",
+            _ => "toast-success"
+        };
+        IsVisible = true;
+        StateHasChanged();
+        StartTimer();
+    }
+
+    private void StartTimer()
+    {
+        var timer = new System.Timers.Timer(5000);
+        timer.Elapsed += (sender, args) =>
+        {
+            IsVisible = false;
+            timer.Dispose();
+            InvokeAsync(StateHasChanged);
+        };
+        timer.Start();
+    }
+
+}
+
+@if (IsVisible)
+{
+    <div class="toast @Status">
+        <div
+            style="
+                position:fixed;
+                bottom:20px;
+                right:20px;
+                padding:10px;
+                color:white;
+                border-radius:5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.5);
+                font-family: var(--font-open-sans-family), sans-serif;
+            "
+        >
+            @Message
+        </div>
+    </div>
+}

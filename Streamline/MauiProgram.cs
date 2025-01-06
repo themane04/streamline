@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using MudBlazor;
+using MudBlazor.Services;
 using Streamline.Services;
 using Streamline.Services.Helper;
 
@@ -14,6 +16,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<MovieServiceHelper>();
         builder.Services.AddSingleton<MovieService>();
+        builder.Services.AddSingleton<UserService>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG
