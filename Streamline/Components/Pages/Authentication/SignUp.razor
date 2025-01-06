@@ -11,16 +11,16 @@
     {
         try
         {
-            var user = await UserService.RegisterUserAsync(username, email, password, confirmPassword);
+            var user = await UserService.SignUpUserAsync(username, email, password, confirmPassword);
             if (user != null)
             {
-                toastComponent.Show("User registered successfully!", "success");
+                toastComponent.Show("User signed up successfully!", "success");
                 NavigationManager.NavigateTo(AppRoutes.LoginUrl);
             }
         }
         catch (Exception ex)
         {
-            toastComponent.Show($"SignUp failed: {ex.Message}", "error");
+            toastComponent.Show($"Sign Up failed: {ex.Message}", "error");
         }
     }
 

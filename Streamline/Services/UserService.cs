@@ -18,7 +18,7 @@ public class UserService
         _logger = logger;
     }
 
-    public async Task<User?> RegisterUserAsync(string username, string email, string password, string confirmPassword)
+    public async Task<User?> SignUpUserAsync(string username, string email, string password, string confirmPassword)
     {
         var userData = new
         {
@@ -49,5 +49,25 @@ public class UserService
         string errorDetails =
             JsonSerializer.Serialize(errorResponse, new JsonSerializerOptions { WriteIndented = true });
         throw new Exception($"Failed to register: {errorDetails}");
+    }
+
+    public async Task<SignInResponse?> SignInUserAsync(string email, string password)
+    {
+        var userData = new { email, password };
+        var jsonRequest = JsonSerializer.Serialize(userData,
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignIn, content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _logger.LogInformation("User signed in successfully");
+            return await response.Content.ReadFromJsonAsync<SignInResponse>();
+        }
+
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        _logger.LogError($"Failed to sign in: {errorResponse}");
+        throw new Exception($"Failed to sign in: {errorResponse}");
     }
 }
