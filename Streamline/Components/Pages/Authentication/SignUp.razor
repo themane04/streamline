@@ -1,6 +1,5 @@
 ﻿@page "/signup"
 
-<Toast @ref="toastComponent"/>
 <LogoTitle Title="Sign Up"/>
 <div class="sign-up-form">
     <input type="text" placeholder="Username" class="sign-up-input-field scale-on-interaction" @bind="username"/>
@@ -18,22 +17,10 @@
 </div>
 
 @code {
-    private Toast toastComponent;
     private string username;
     private string email;
     private string password;
     private string confirmPassword;
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            toastComponent.Show("This is a Success Toast", ToastStatus.Success);
-            toastComponent.Show("This is a Error Toast", ToastStatus.Error);
-            toastComponent.Show("This is a Warning Toast", ToastStatus.Warning);
-            toastComponent.Show("This is a Info Toast", ToastStatus.Info);
-        }
-    }
 
     private async Task HandleSignUp()
     {
@@ -42,13 +29,13 @@
             var user = await UserService.SignUpUserAsync(username, email, password, confirmPassword);
             if (user != null)
             {
-                toastComponent.Show("User signed up successfully!", ToastStatus.Success);
+                ToastService.ShowToast($"Account created for {username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.LoginUrl);
             }
         }
         catch (Exception ex)
         {
-            toastComponent.Show($"Sign Up failed: {ex.Message}", ToastStatus.Error);
+            ToastService.ShowToast($"Sign Up failed: {ex.Message}", ToastStatus.Error);
         }
     }
 

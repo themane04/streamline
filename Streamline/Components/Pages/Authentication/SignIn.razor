@@ -1,6 +1,5 @@
 ﻿@page "/"
 
-<Toast @ref="toastComponent"/>
 <div>
     <img src="images/logo/streamline_transparent.png" alt="Streamline Logo" class="sign-in-logo"/>
     <p class="sign-in-streamline-title">Sign In</p>
@@ -16,7 +15,6 @@
 </div>
 
 @code {
-    private Toast toastComponent;
     private string email;
     private string password;
 
@@ -25,20 +23,15 @@
         try
         {
             var signInResponse = await UserService.SignInUserAsync(email, password);
-            Console.WriteLine("Sign-in attempt completed.");
             if (signInResponse != null)
             {
-                Console.WriteLine("Sign-in response is not null.");
-                toastComponent.Show("User signed in successfully!", ToastStatus.Success);
-                Console.WriteLine("Navigating to home page.");
+                ToastService.ShowToast($"Welcome Back {signInResponse.User.Username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.HomeUrl);
-                Console.WriteLine("Navigation called.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Exception occurred: " + ex);
-            toastComponent.Show($"Sign In failed: {ex.Message}", ToastStatus.Error);
+            ToastService.ShowToast($"Sign In failed: {ex.Message}", ToastStatus.Error);
         }
     }
 

@@ -4,7 +4,7 @@
         <div class="toast @toast.Status @(toast.IsVisible ? "" : "toast-hide")">
             <div class="toast-content">
                 <MudIcon Icon="@GetIcon(toast.Status)" Class="toast-component-message-icon"/>
-                <span>@toast.Message</span>
+                <span>@toast.Message!</span>
             </div>
         </div>
     }
@@ -13,7 +13,12 @@
 @code {
     private List<ToastMessage> Toasts { get; set; } = new();
 
-    public void Show(string message, ToastStatus status)
+    protected override void OnInitialized()
+    {
+        ToastService.OnShowToast += Show;
+    }
+
+    private void Show(string message, ToastStatus status)
     {
         var toast = new ToastMessage
         {
@@ -31,7 +36,6 @@
 
         Toasts.Add(toast);
         StateHasChanged();
-
         StartTimer(toast);
     }
 
@@ -49,7 +53,7 @@
 
     private void StartTimer(ToastMessage toast)
     {
-        var timer = new System.Timers.Timer(10000);
+        var timer = new System.Timers.Timer(4500);
         timer.Elapsed += async (sender, args) =>
         {
             toast.IsVisible = false;
@@ -61,6 +65,11 @@
             timer.Dispose();
         };
         timer.Start();
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnShowToast -= Show;
     }
 
 }

@@ -17,6 +17,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<MovieServiceHelper>();
         builder.Services.AddSingleton<MovieService>();
         builder.Services.AddSingleton<UserService>();
+        builder.Services.AddSingleton<ToastService>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG
