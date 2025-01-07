@@ -1,4 +1,40 @@
-﻿.toast-success {
+﻿.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    z-index: 9999;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    max-width: 450px;
+    text-align: left;
+    font-family: var(--font-poppins-family), sans-serif;
+    font-weight: var(--font-weight-bold);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.8);
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.toast-hide {
+    opacity: 0;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-success {
     background-color: rgb(22, 163, 74);
 }
 

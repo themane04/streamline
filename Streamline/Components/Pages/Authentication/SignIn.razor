@@ -29,7 +29,7 @@
             if (signInResponse != null)
             {
                 Console.WriteLine("Sign-in response is not null.");
-                toastComponent.Show("User signed in successfully!", "success");
+                toastComponent.Show("User signed in successfully!", ToastStatus.Success);
                 Console.WriteLine("Navigating to home page.");
                 NavigationManager.NavigateTo(AppRoutes.HomeUrl);
                 Console.WriteLine("Navigation called.");
@@ -38,7 +38,7 @@
         catch (Exception ex)
         {
             Console.WriteLine("Exception occurred: " + ex);
-            toastComponent.Show($"Sign In failed: {ex.Message}", "error");
+            toastComponent.Show($"Sign In failed: {ex.Message}", ToastStatus.Error);
         }
     }
 

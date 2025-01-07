@@ -88,3 +88,10 @@
     border: none;
     border-radius: 20px;
 }
+
+.toast-component-message-icon {
+    fill: var(--white-color) !important;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}

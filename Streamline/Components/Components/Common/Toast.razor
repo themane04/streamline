@@ -1,52 +1,64 @@
-﻿@if (IsVisible)
-{
-    <div class="toast @Status">
-        <div
-            style="
-                position:fixed;
-                bottom:20px;
-                right:20px;
-                padding:10px;
-                color:white;
-                border-radius:5px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.5);
-                font-family: var(--font-open-sans-family), sans-serif;
-            "
-        >
-            @Message
+﻿<div class="toast-container">
+    @foreach (var toast in Toasts)
+    {
+        <div class="toast @toast.Status @(toast.IsVisible ? "" : "toast-hide")">
+            <div class="toast-content">
+                <MudIcon Icon="@GetIcon(toast.Status)" Class="toast-component-message-icon"/>
+                <span>@toast.Message</span>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 @code {
-    public bool IsVisible { get; private set; }
-    public string Message { get; private set; }
-    public string Status { get; private set; }
+    private List<ToastMessage> Toasts { get; set; } = new();
 
-    public void Show(string message, string status)
+    public void Show(string message, ToastStatus status)
     {
-        Message = message;
-        Status = status switch
+        var toast = new ToastMessage
         {
-            "success" => "toast-success",
-            "error" => "toast-error",
-            "warning" => "toast-warning",
-            "info" => "toast-info",
-            _ => "toast-success"
+            Message = message,
+            Status = status switch
+            {
+                ToastStatus.Success => "toast-success",
+                ToastStatus.Error => "toast-error",
+                ToastStatus.Warning => "toast-warning",
+                ToastStatus.Info => "toast-info",
+                _ => "toast-success"
+            },
+            IsVisible = true
         };
-        IsVisible = true;
+
+        Toasts.Add(toast);
         StateHasChanged();
-        StartTimer();
+
+        StartTimer(toast);
     }
 
-    private void StartTimer()
+    private string GetIcon(string status)
     {
-        var timer = new System.Timers.Timer(5000);
-        timer.Elapsed += (sender, args) =>
+        return status switch
         {
-            IsVisible = false;
+            "toast-success" => Icons.Material.Filled.CheckCircle,
+            "toast-error" => Icons.Material.Filled.Error,
+            "toast-warning" => Icons.Material.Filled.Warning,
+            "toast-info" => Icons.Material.Filled.Info,
+            _ => Icons.Material.Filled.Info
+        };
+    }
+
+    private void StartTimer(ToastMessage toast)
+    {
+        var timer = new System.Timers.Timer(10000);
+        timer.Elapsed += async (sender, args) =>
+        {
+            toast.IsVisible = false;
+            await InvokeAsync(StateHasChanged);
+
+            await Task.Delay(500);
+            await InvokeAsync(() => Toasts.Remove(toast));
+
             timer.Dispose();
-            InvokeAsync(StateHasChanged);
         };
         timer.Start();
     }

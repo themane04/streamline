@@ -23,6 +23,17 @@
     private string email;
     private string password;
     private string confirmPassword;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            toastComponent.Show("This is a Success Toast", ToastStatus.Success);
+            toastComponent.Show("This is a Error Toast", ToastStatus.Error);
+            toastComponent.Show("This is a Warning Toast", ToastStatus.Warning);
+            toastComponent.Show("This is a Info Toast", ToastStatus.Info);
+        }
+    }
 
     private async Task HandleSignUp()
     {
@@ -31,13 +42,13 @@
             var user = await UserService.SignUpUserAsync(username, email, password, confirmPassword);
             if (user != null)
             {
-                toastComponent.Show("User signed up successfully!", "success");
+                toastComponent.Show("User signed up successfully!", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.LoginUrl);
             }
         }
         catch (Exception ex)
         {
-            toastComponent.Show($"Sign Up failed: {ex.Message}", "error");
+            toastComponent.Show($"Sign Up failed: {ex.Message}", ToastStatus.Error);
         }
     }
 
