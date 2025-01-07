@@ -1,1 +1,44 @@
-﻿
+﻿.profile-page-profile-picture {
+    width: 207px;
+    height: 207px;
+    border-radius: 50%;
+    border: none;
+    margin: 0 auto;
+    display: block;
+    box-shadow: var(--action-box-shadow);
+}
+
+.profile-page-form {
+    max-width: 369px;
+}
+
+.profile-page-input-field {
+    width: 100%;
+    height: 70px;
+    margin-top: 20px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    border-radius: 30px;
+    border: none;
+    box-shadow: var(--action-box-shadow);
+    padding: 15px;
+}
+
+.profile-page-input-field::placeholder {
+    color: var(--text-color);
+}
+
+.profile-page-input-field:focus {
+    outline: none;
+}
+
+.profile-page-button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}

@@ -1,6 +1,58 @@
 ﻿@page "/profile"
-<h3>Profile</h3>
+
+<LogoTitle Title="Profile"/>
+<div>
+    @if (AuthService.User != null)
+    {
+        <img src="@AuthService.User.ProfileImage" alt="@AuthService.User.Username's Profile Picture"
+             class="profile-page-profile-picture scale-on-interaction"/>
+        <div class="profile-page-form">
+            <input type="text" class="profile-page-input-field scale-on-interaction"
+                   @bind-value="_editedUsername" @bind-value:event="oninput"/>
+            <input type="text" class="profile-page-input-field scale-on-interaction"
+                   @bind-value="_editedEmail" @bind-value:event="oninput"/>
+        </div>
+        <div class="profile-page-button-container">
+            <MudButton Class="@SaveButtonClass" Disabled="@IsSaveDisabled">
+                <MudIcon Icon="@Icons.Material.Filled.Save" Style="@SaveIconStyle"/>
+                Save Data
+            </MudButton>
+            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">
+                <MudIcon Icon="@Icons.Material.Filled.Lock" Style="width: 20px;height: 20px;"/>
+                Password
+            </MudButton>
+        </div>
+    }
+    else
+    {
+        <LoadingSpinner/>
+    }
+</div>
 
 @code {
-    
+    [Inject] private AuthService AuthService { get; set; } = default!;
+
+    private string _editedUsername = string.Empty;
+    private string _editedEmail = string.Empty;
+
+    private string SaveButtonClass =>
+        "mud-auth-button mud-movie-detail-button scale-on-interaction" + (IsSaveDisabled ? " mud-auth-button-disabled" : "");
+
+    private string SaveIconStyle => $"width: 20px; height: 20px; fill: {(IsSaveDisabled ? "var(--grayed-out-color)" : "var(--text-color)")};";
+
+
+    protected override void OnInitialized()
+    {
+        if (AuthService.User != null)
+        {
+            _editedUsername = AuthService.User.Username;
+            _editedEmail = AuthService.User.Email;
+        }
+    }
+
+    private bool IsSaveDisabled =>
+        AuthService.User != null &&
+        _editedUsername == AuthService.User.Username &&
+        _editedEmail == AuthService.User.Email;
+
 }

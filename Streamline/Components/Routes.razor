@@ -1,16 +1,19 @@
-﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
-    <Found Context="routeData">
-        <CascadingValue Value="this">
-            <RouteView RouteData="@routeData" DefaultLayout="_layoutType"/>
-        </CascadingValue>
-    </Found>
-    <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p>Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿<CascadingValue Value="AuthService">
+    <Router AppAssembly="@typeof(MauiProgram).Assembly">
+        <Found Context="routeData">
+            <CascadingValue Value="this">
+                <RouteView RouteData="@routeData" DefaultLayout="_layoutType"/>
+            </CascadingValue>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
 
 @code {
+    [Inject] private AuthService AuthService { get; set; } = default!;
     private readonly Type _layoutType = typeof(MainLayout);
 }

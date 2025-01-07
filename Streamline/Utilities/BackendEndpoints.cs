@@ -6,4 +6,5 @@ public class BackendEndpoints
     public const string SignUp = "signup";
     public const string SignIn = "token";
     public const string GetUserFromToken = "get-user-from-token";
+    public const string RefreshToken = "token/refresh";
 }

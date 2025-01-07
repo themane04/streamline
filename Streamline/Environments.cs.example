@@ -1,19 +1,20 @@
 ﻿namespace Streamline.Utilities;
 
+
 public static class Environments
 {
     public static string GetApiKey()
     {
-        return "";  // Insert your API key here
+        return ""; // API Key
     }
 
-    public static string GetDbUrl()
+    public static string MovieDbApiUrl()
     {
-        return "";  // Insert your database URL here
+        return ""; // TMDB API URL
     }
     
-    public static string GetConnectionString()
+    public static string GetBackendApiUrl()
     {
-        return "Host=*;Database=*;Username=*;Password=*";  // Insert your connection string here
+        return ""; // BACKEND API URL
     }
 }

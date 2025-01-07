@@ -1,0 +1,23 @@
+﻿@inject AppService AppService
+
+@if (AppService.IsInitialLoading)
+{
+    <div class="app-component-container">
+        <div class="app-component-inner-container">
+            <LoadingSpinner IsCentered="true"/>
+        </div>
+    </div>
+}
+else
+{
+    <Routes/>
+}
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AppService.InitializeAsync();
+    }
+
+}

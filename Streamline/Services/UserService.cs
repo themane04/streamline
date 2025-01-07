@@ -87,20 +87,53 @@ public class UserService
         _logger.LogError($"Failed to sign in: {errorResponse}");
         throw new Exception($"Failed to sign in: {errorResponse}");
     }
-    
+
     public async Task<AuthenticatedUser?> GetUserFromToken(string accessToken)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{Environments.GetBackendApiUrl()}{BackendEndpoints.GetUserFromToken}");
+        var request = new HttpRequestMessage(HttpMethod.Get,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.GetUserFromToken}");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        try
+        {
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _logger.LogWarning("Access token is invalid or expired.");
+                throw new Exception("Token is invalid or expired. Please log in again.");
+            }
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Failed to fetch user from token: {errorResponse}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in GetUserFromToken: {ex.Message}");
+            throw;
+        }
+    }
+
+    public async Task<SignInResponse?> RefreshTokenAsync(string refreshToken)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.RefreshToken}");
+        request.Content = new StringContent(JsonSerializer.Serialize(new { refresh = refreshToken }), Encoding.UTF8,
+            "application/json");
 
         var response = await _httpClient.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
         {
-            return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
+            return await response.Content.ReadFromJsonAsync<SignInResponse>();
         }
 
         var errorResponse = await response.Content.ReadAsStringAsync();
-        throw new Exception($"Failed to fetch user from token: {errorResponse}");
+        throw new Exception($"Failed to refresh token: {errorResponse}");
     }
 }

@@ -12,6 +12,7 @@
     --white-color: #FFFFFF;
     --light-gray-color: #F0F0F0;
     --black-color: #000000;
+    --grayed-out-color: #A0A0A0;
 
     /* Custom Properties */
     --input-field-background-color: rgba(250, 129, 47, 0.3);

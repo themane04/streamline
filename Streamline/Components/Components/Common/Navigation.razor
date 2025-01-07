@@ -9,11 +9,12 @@
         <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
     </a>
     <a @onclick="() => NavigateTo(AppRoutes.ProfileUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("profile")" alt="Profile" class="navigation-nav-icon"/>
+        <img src="@AuthService?.User?.ProfileImage" alt="Profile" class="navigation-nav-icon navigation-profile-image"/>
     </a>
 </nav>
 
 @code {
+    [Inject] private AuthService AuthService { get; set; } = default!;
     private string CurrentUrl { get; set; } = string.Empty;
 
     protected override void OnInitialized()
@@ -48,6 +49,7 @@
 
     private void NavigateTo(string url)
     {
-        NavigationManager.NavigateTo(url, forceLoad: true);
+        NavigationManager.NavigateTo(url);
     }
+
 }
