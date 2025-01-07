@@ -7,7 +7,7 @@
     <input type="password" placeholder="Password" class="sign-up-input-field scale-on-interaction" @bind="_password"/>
     <input type="password" placeholder="Confirm Password" class="sign-up-input-field scale-on-interaction"
            @bind="_confirmPassword"/>
-    <MudButton Class="mud-auth-button scale-on-interaction" OnClick="HandleSignUp">
+    <MudButton Class="@SignUpButtonClass" Disabled="@_isLoading" OnClick="HandleSignUp">
         Sign Up
     </MudButton>
 </div>
@@ -21,9 +21,14 @@
     private string _email = string.Empty;
     private string _password = string.Empty;
     private string _confirmPassword = string.Empty;
+    private bool _isLoading;
+    
+    private string SignUpButtonClass =>
+        "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
 
     private async Task HandleSignUp()
     {
+        _isLoading = true;
         try
         {
             var user = await UserService.SignUpUserAsync(_username, _email, _password, _confirmPassword);
@@ -36,6 +41,10 @@
         catch (Exception ex)
         {
             ToastService.ShowToast($"Sign Up failed: {ex.Message}", ToastStatus.Error);
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 
