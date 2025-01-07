@@ -18,7 +18,7 @@ public class UserService
         _logger = logger;
     }
 
-    public async Task<User?> SignUpUserAsync(string username, string email, string password, string confirmPassword)
+    public async Task<AuthenticatedUser?> SignUpUserAsync(string username, string email, string password, string confirmPassword)
     {
         var userData = new
         {
@@ -37,11 +37,11 @@ public class UserService
 
         var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignUp,
             content);
-
+        
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("User registered successfully");
-            return await response.Content.ReadFromJsonAsync<User>();
+            return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
         }
 
         var errorResponse =
