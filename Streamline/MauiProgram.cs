@@ -18,6 +18,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<MovieService>();
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<ToastService>();
+        builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<AppService>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG

@@ -1,21 +1,30 @@
 ﻿@page "/"
 
-<div>
-    <img src="images/logo/streamline_transparent.png" alt="Streamline Logo" class="sign-in-logo"/>
-    <p class="sign-in-streamline-title">Sign In</p>
-</div>
-<div class="sign-in-form">
-    <input type="text" placeholder="E-Mail" class="@String.GetSignInInputFieldClass(_hasEmailError)" @bind="_email"/>
-    <input type="password" placeholder="Password" class="@String.GetSignInInputFieldClass(_hasPasswordError)"
-           @bind="_password"/>
-    <MudButton Class="@SignInButtonClass" Disabled="@_isLoading" OnClick="HandleSignIn">Sign In</MudButton>
-</div>
-<div class="sign-in-link-container">
-    <p class="sign-in-question-text">Don’t have an account?</p>
-    <a href="@AppRoutes.SignupUrl" class="sign-in-link scale-on-interaction">Sign Up</a>
-</div>
+@if (AppService.IsInitialLoading)
+{
+    <LoadingSpinner/>
+}
+else
+{
+    <div>
+        <img src="images/logo/streamline_transparent.png" alt="Streamline Logo" class="sign-in-logo"/>
+        <p class="sign-in-streamline-title">Sign In</p>
+    </div>
+    <div class="sign-in-form">
+        <input type="text" placeholder="E-Mail" class="@String.GetSignInInputFieldClass(_hasEmailError)"
+               @bind="_email"/>
+        <input type="password" placeholder="Password" class="@String.GetSignInInputFieldClass(_hasPasswordError)"
+               @bind="_password"/>
+        <MudButton Class="@SignInButtonClass" Disabled="@_isLoading" OnClick="HandleSignIn">Sign In</MudButton>
+    </div>
+    <div class="sign-in-link-container">
+        <p class="sign-in-question-text">Don’t have an account?</p>
+        <a href="@AppRoutes.SignupUrl" class="sign-in-link scale-on-interaction">Sign Up</a>
+    </div>
+}
 
 @code {
+    [Inject] private AppService AppService { get; set; } = default!;
     private string _email = string.Empty;
     private string _password = string.Empty;
     private bool _isLoading;
@@ -24,6 +33,11 @@
 
     private string SignInButtonClass =>
         "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await AppService.InitializeAsync();
+    }
 
     private async Task HandleSignIn()
     {
@@ -53,6 +67,9 @@
             var signInResponse = await UserService.SignInUserAsync(_email, _password);
             if (signInResponse != null)
             {
+                await SecureStorage.SetAsync("refreshToken", signInResponse.Refresh);
+                await SecureStorage.SetAsync("accessToken", signInResponse.Access);
+                AuthService.SetAuthState(signInResponse);
                 ToastService.ShowToast($"Welcome Back {signInResponse.User.Username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.HomeUrl);
             }

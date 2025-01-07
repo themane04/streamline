@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -85,5 +86,21 @@ public class UserService
         var errorResponse = await response.Content.ReadAsStringAsync();
         _logger.LogError($"Failed to sign in: {errorResponse}");
         throw new Exception($"Failed to sign in: {errorResponse}");
+    }
+    
+    public async Task<AuthenticatedUser?> GetUserFromToken(string accessToken)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{Environments.GetBackendApiUrl()}{BackendEndpoints.GetUserFromToken}");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
+        }
+
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        throw new Exception($"Failed to fetch user from token: {errorResponse}");
     }
 }

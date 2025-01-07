@@ -19,6 +19,18 @@ public class MovieServiceHelper
         _logger = logger;
     }
 
+    private void SetAuthorizationHeader(string? accessToken)
+    {
+        if (!string.IsNullOrEmpty(accessToken))
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+        }
+        else
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+        }
+    }
 
     public async Task PerformActionAfterAddOrUpdateMovie(string methodName, MovieShort movie,
         Func<Task<HttpResponseMessage>> action, string successMessage, string failureMessage)
@@ -65,6 +77,9 @@ public class MovieServiceHelper
 
         try
         {
+            var accessToken = await SecureStorage.GetAsync("accessToken");
+            SetAuthorizationHeader(accessToken);
+
             var response = await _httpClient.PostAsync($"{_backendApiUrl}{endpointSuffix}", null);
 
             if (response.IsSuccessStatusCode)
@@ -91,6 +106,9 @@ public class MovieServiceHelper
 
         try
         {
+            var accessToken = await SecureStorage.GetAsync("accessToken");
+            SetAuthorizationHeader(accessToken);
+
             var response = await _httpClient.GetAsync($"{_backendApiUrl}{urlSuffix}");
 
             if (!response.IsSuccessStatusCode)
@@ -115,7 +133,8 @@ public class MovieServiceHelper
                     return movies ?? new List<MovieShort>();
                 }
 
-                var structuredResponse = JsonSerializer.Deserialize<BackendErrorResponse<List<MovieShort>>>(jsonResponse,
+                var structuredResponse = JsonSerializer.Deserialize<BackendErrorResponse<List<MovieShort>>>(
+                    jsonResponse,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 if (structuredResponse?.Data != null)
@@ -143,6 +162,10 @@ public class MovieServiceHelper
     {
         var json = JsonSerializer.Serialize(movie);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var accessToken = await SecureStorage.GetAsync("accessToken");
+        SetAuthorizationHeader(accessToken);
+
         var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.Movies}", content);
 
         if (response.IsSuccessStatusCode)
@@ -177,6 +200,9 @@ public class MovieServiceHelper
 
         try
         {
+            var accessToken = await SecureStorage.GetAsync("accessToken");
+            SetAuthorizationHeader(accessToken);
+
             var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Movies}/{movieId}");
             if (response.IsSuccessStatusCode)
             {
@@ -191,12 +217,10 @@ public class MovieServiceHelper
                     _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} has {propertyName} true");
                     return true;
                 }
-                else
-                {
-                    _logger.LogInformation(
-                        $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true");
-                    return false;
-                }
+
+                _logger.LogInformation(
+                    $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true");
+                return false;
             }
 
             _logger.LogError(
