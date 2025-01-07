@@ -18,7 +18,8 @@ public class UserService
         _logger = logger;
     }
 
-    public async Task<AuthenticatedUser?> SignUpUserAsync(string username, string email, string password, string confirmPassword)
+    public async Task<AuthenticatedUser?> SignUpUserAsync(string username, string email, string password,
+        string confirmPassword)
     {
         var userData = new
         {
@@ -35,8 +36,9 @@ public class UserService
 
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignUp, content);
-    
+        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignUp,
+            content);
+
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("User registered successfully");
@@ -45,13 +47,14 @@ public class UserService
 
         var errorResponse =
             await response.Content.ReadFromJsonAsync<BackendErrorResponse<Dictionary<string, List<string>>>>();
-    
+
         if (errorResponse?.Data != null)
         {
             if (errorResponse.Data.TryGetValue("username", out var usernameErrors) && usernameErrors.Any())
             {
                 throw new Exception($"UsernameError: {usernameErrors.First()}");
             }
+
             if (errorResponse.Data.TryGetValue("email", out var emailErrors) && emailErrors.Any())
             {
                 throw new Exception($"EmailError: {emailErrors.First()}");
@@ -70,7 +73,8 @@ public class UserService
             new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignIn, content);
+        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignIn,
+            content);
 
         if (response.IsSuccessStatusCode)
         {

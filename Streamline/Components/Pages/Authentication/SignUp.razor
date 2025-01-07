@@ -1,12 +1,14 @@
 ﻿@page "/signup"
-@using System.Text.RegularExpressions
 
 <LogoTitle Title="Sign Up"/>
 <div class="sign-up-form">
-    <input type="text" placeholder="Username" class="sign-up-input-field scale-on-interaction" @bind="_username"/>
-    <input type="email" placeholder="E-Mail" class="sign-up-input-field scale-on-interaction" @bind="_email"/>
-    <input type="password" placeholder="Password" class="sign-up-input-field scale-on-interaction" @bind="_password"/>
-    <input type="password" placeholder="Confirm Password" class="sign-up-input-field scale-on-interaction"
+    <input type="text" placeholder="Username" class="@String.GetSignUpInputFieldClass(_hasUsernameError)"
+           @bind="_username"/>
+    <input type="email" placeholder="E-Mail" class="@String.GetSignUpInputFieldClass(_hasEmailError)" @bind="_email"/>
+    <input type="password" placeholder="Password" class="@String.GetSignUpInputFieldClass(_hasPasswordError)"
+           @bind="_password"/>
+    <input type="password" placeholder="Confirm Password"
+           class="@String.GetSignUpInputFieldClass(_hasConfirmPasswordError)"
            @bind="_confirmPassword"/>
     <MudButton Class="@SignUpButtonClass" Disabled="@_isLoading" OnClick="HandleSignUp">
         Sign Up
@@ -23,6 +25,10 @@
     private string _password = string.Empty;
     private string _confirmPassword = string.Empty;
     private bool _isLoading;
+    private bool _hasUsernameError;
+    private bool _hasEmailError;
+    private bool _hasPasswordError;
+    private bool _hasConfirmPasswordError;
 
     private string SignUpButtonClass =>
         "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
@@ -30,11 +36,16 @@
     private async Task HandleSignUp()
     {
         _isLoading = true;
+        _hasUsernameError = false;
+        _hasEmailError = false;
+        _hasPasswordError = false;
+        _hasConfirmPasswordError = false;
 
         if (string.IsNullOrWhiteSpace(_username) || !Validation.IsUsernameValid(_username))
         {
             ToastService.ShowToast("Invalid username. Must be 3-16 characters and can include letters, numbers, underscores, or hyphens", ToastStatus.Warning);
             _isLoading = false;
+            _hasUsernameError = true;
             return;
         }
 
@@ -42,14 +53,16 @@
         {
             ToastService.ShowToast("Invalid Email Format. Please enter a valid email address", ToastStatus.Warning);
             _isLoading = false;
+            _hasEmailError = true;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(_password) || !Validation.IsPasswordValid(_password))
         {
-            ToastService.ShowToast("Password must be 8-255 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
+            ToastService.ShowToast("Password must be 8-255 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character"
                 , ToastStatus.Warning);
             _isLoading = false;
+            _hasPasswordError = true;
             return;
         }
 
@@ -57,6 +70,7 @@
         {
             ToastService.ShowToast("Passwords do not match", ToastStatus.Warning);
             _isLoading = false;
+            _hasConfirmPasswordError = true;
             return;
         }
 
@@ -75,10 +89,12 @@
             if (ex.Message.StartsWith("UsernameError:"))
             {
                 ToastService.ShowToast("Username is already taken", ToastStatus.Error);
+                _hasUsernameError = true;
             }
             else if (ex.Message.StartsWith("EmailError:"))
             {
                 ToastService.ShowToast("Email is already taken", ToastStatus.Error);
+                _hasEmailError = true;
             }
             else
             {

@@ -67,3 +67,7 @@
 .sign-up-link:active {
     color: var(--primary-color);
 }
+
+.sign-up-field-error-border {
+    border: 2px solid var(--primary-color);
+}

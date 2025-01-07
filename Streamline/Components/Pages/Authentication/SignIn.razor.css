@@ -67,3 +67,7 @@
 .sign-in-link:active {
     color: var(--primary-color);
 }
+
+.sign-in-field-error-border {
+    border: 2px solid var(--primary-color);
+}

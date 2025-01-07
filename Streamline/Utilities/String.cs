@@ -12,4 +12,10 @@ public class String
     {
         return !string.IsNullOrEmpty(input) && input.Length > "https://image.tmdb.org/t/p/w500".Length;
     }
+    
+    public static string GetSignUpInputFieldClass(bool hasError) =>
+        "sign-up-input-field scale-on-interaction" + (hasError ? " sign-up-field-error-border" : "");
+    
+    public static string GetSignInInputFieldClass(bool hasError) =>
+        "sign-in-input-field scale-on-interaction" + (hasError ? " sign-in-field-error-border" : "");
 }

@@ -5,7 +5,7 @@
         <div class="toast @toast.Status @(toast.IsVisible ? "" : "toast-hide") @(toast.NeedsSlideUp ? "slide-up" : "")">
             <div class="toast-content">
                 <MudIcon Icon="@GetIcon(toast.Status)" Class="toast-component-message-icon" />
-                <span>@toast.Message</span>
+                <span>@toast.Message!</span>
             </div>
         </div>
     }
