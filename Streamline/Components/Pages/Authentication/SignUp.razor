@@ -2,11 +2,11 @@
 
 <LogoTitle Title="Sign Up"/>
 <div class="sign-up-form">
-    <input type="text" placeholder="Username" class="sign-up-input-field scale-on-interaction" @bind="username"/>
-    <input type="email" placeholder="E-Mail" class="sign-up-input-field scale-on-interaction" @bind="email"/>
-    <input type="password" placeholder="Password" class="sign-up-input-field scale-on-interaction" @bind="password"/>
+    <input type="text" placeholder="Username" class="sign-up-input-field scale-on-interaction" @bind="_username"/>
+    <input type="email" placeholder="E-Mail" class="sign-up-input-field scale-on-interaction" @bind="_email"/>
+    <input type="password" placeholder="Password" class="sign-up-input-field scale-on-interaction" @bind="_password"/>
     <input type="password" placeholder="Confirm Password" class="sign-up-input-field scale-on-interaction"
-           @bind="confirmPassword"/>
+           @bind="_confirmPassword"/>
     <MudButton Class="mud-auth-button scale-on-interaction" OnClick="HandleSignUp">
         Sign Up
     </MudButton>
@@ -17,19 +17,19 @@
 </div>
 
 @code {
-    private string username;
-    private string email;
-    private string password;
-    private string confirmPassword;
+    private string _username = string.Empty;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _confirmPassword = string.Empty;
 
     private async Task HandleSignUp()
     {
         try
         {
-            var user = await UserService.SignUpUserAsync(username, email, password, confirmPassword);
+            var user = await UserService.SignUpUserAsync(_username, _email, _password, _confirmPassword);
             if (user != null)
             {
-                ToastService.ShowToast($"Account created for {username}", ToastStatus.Success);
+                ToastService.ShowToast($"Account created for {_username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.LoginUrl);
             }
         }

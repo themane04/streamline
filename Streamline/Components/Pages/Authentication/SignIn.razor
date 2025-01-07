@@ -5,8 +5,8 @@
     <p class="sign-in-streamline-title">Sign In</p>
 </div>
 <div class="sign-in-form">
-    <input type="text" placeholder="E-Mail" class="sign-in-input-field scale-on-interaction" @bind="email"/>
-    <input type="password" placeholder="Password" class="sign-in-input-field scale-on-interaction" @bind="password"/>
+    <input type="text" placeholder="E-Mail" class="sign-in-input-field scale-on-interaction" @bind="_email"/>
+    <input type="password" placeholder="Password" class="sign-in-input-field scale-on-interaction" @bind="_password"/>
     <MudButton Class="mud-auth-button scale-on-interaction" OnClick="HandleSignIn">Sign In</MudButton>
 </div>
 <div class="sign-in-link-container">
@@ -15,14 +15,14 @@
 </div>
 
 @code {
-    private string email;
-    private string password;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
 
     private async Task HandleSignIn()
     {
         try
         {
-            var signInResponse = await UserService.SignInUserAsync(email, password);
+            var signInResponse = await UserService.SignInUserAsync(_email, _password);
             if (signInResponse != null)
             {
                 ToastService.ShowToast($"Welcome Back {signInResponse.User.Username}", ToastStatus.Success);
