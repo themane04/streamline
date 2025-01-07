@@ -1,4 +1,5 @@
 ﻿@page "/signup"
+@using System.Text.RegularExpressions
 
 <LogoTitle Title="Sign Up"/>
 <div class="sign-up-form">
@@ -22,16 +23,47 @@
     private string _password = string.Empty;
     private string _confirmPassword = string.Empty;
     private bool _isLoading;
-    
+
     private string SignUpButtonClass =>
         "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
 
     private async Task HandleSignUp()
     {
         _isLoading = true;
+
+        if (string.IsNullOrWhiteSpace(_username) || !Validation.IsUsernameValid(_username))
+        {
+            ToastService.ShowToast("Invalid username. Must be 3-16 characters and can include letters, numbers, underscores, or hyphens", ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_email) || !Validation.IsEmailValid(_email))
+        {
+            ToastService.ShowToast("Invalid Email Format. Please enter a valid email address", ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_password) || !Validation.IsPasswordValid(_password))
+        {
+            ToastService.ShowToast("Password must be 8-255 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
+                , ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
+        if (!Validation.IsPasswordMatch(_password, _confirmPassword))
+        {
+            ToastService.ShowToast("Passwords do not match", ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
         try
         {
             var user = await UserService.SignUpUserAsync(_username, _email, _password, _confirmPassword);
+
             if (user != null)
             {
                 ToastService.ShowToast($"Account created for {_username}", ToastStatus.Success);
@@ -40,7 +72,18 @@
         }
         catch (Exception ex)
         {
-            ToastService.ShowToast($"Sign Up failed: {ex.Message}", ToastStatus.Error);
+            if (ex.Message.StartsWith("UsernameError:"))
+            {
+                ToastService.ShowToast("Username is already taken", ToastStatus.Error);
+            }
+            else if (ex.Message.StartsWith("EmailError:"))
+            {
+                ToastService.ShowToast("Email is already taken", ToastStatus.Error);
+            }
+            else
+            {
+                ToastService.ShowToast($"Sign Up failed: {ex.Message}", ToastStatus.Error);
+            }
         }
         finally
         {

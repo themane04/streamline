@@ -35,9 +35,8 @@ public class UserService
 
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignUp,
-            content);
-        
+        var response = await _httpClient.PostAsync(Environments.GetBackendApiUrl() + BackendEndpoints.SignUp, content);
+    
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("User registered successfully");
@@ -46,6 +45,19 @@ public class UserService
 
         var errorResponse =
             await response.Content.ReadFromJsonAsync<BackendErrorResponse<Dictionary<string, List<string>>>>();
+    
+        if (errorResponse?.Data != null)
+        {
+            if (errorResponse.Data.TryGetValue("username", out var usernameErrors) && usernameErrors.Any())
+            {
+                throw new Exception($"UsernameError: {usernameErrors.First()}");
+            }
+            if (errorResponse.Data.TryGetValue("email", out var emailErrors) && emailErrors.Any())
+            {
+                throw new Exception($"EmailError: {emailErrors.First()}");
+            }
+        }
+
         string errorDetails =
             JsonSerializer.Serialize(errorResponse, new JsonSerializerOptions { WriteIndented = true });
         throw new Exception($"Failed to register: {errorDetails}");

@@ -18,13 +18,28 @@
     private string _email = string.Empty;
     private string _password = string.Empty;
     private bool _isLoading;
-    
+
     private string SignInButtonClass =>
         "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
 
     private async Task HandleSignIn()
     {
         _isLoading = true;
+
+        if (string.IsNullOrWhiteSpace(_email) || string.IsNullOrWhiteSpace(_password))
+        {
+            ToastService.ShowToast("Please fill in all fields", ToastStatus.Info);
+            _isLoading = false;
+            return;
+        }
+
+        if (!Validation.IsEmailValid(_email))
+        {
+            ToastService.ShowToast("Please enter a valid email address", ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
         try
         {
             var signInResponse = await UserService.SignInUserAsync(_email, _password);
@@ -36,7 +51,14 @@
         }
         catch (Exception ex)
         {
-            ToastService.ShowToast($"Sign In failed: {ex.Message}", ToastStatus.Error);
+            if (ex.Message.Contains("No active account found with the given credentials"))
+            {
+                ToastService.ShowToast("No account found with the provided email and password. Please try again", ToastStatus.Error);
+            }
+            else
+            {
+                ToastService.ShowToast("Sign-in failed. Please try again later", ToastStatus.Error);
+            }
         }
         finally
         {

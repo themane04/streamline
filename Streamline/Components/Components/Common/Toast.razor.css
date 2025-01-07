@@ -1,11 +1,22 @@
-﻿.toast-container {
+﻿@keyframes slide-up {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+.toast-container {
     position: fixed;
     top: 20px;
-    right: 20px;
+    right: 50%;
+    transform: translateX(50%);
     display: flex;
     flex-direction: column;
     gap: 3px;
     z-index: 9999;
+    overflow: hidden;
 }
 
 .toast {
@@ -14,7 +25,7 @@
     padding: 10px;
     color: white;
     border-radius: 5px;
-    max-width: 450px;
+    width: 450px;
     text-align: left;
     font-family: var(--font-poppins-family), sans-serif;
     font-weight: var(--font-weight-bold);
@@ -24,8 +35,13 @@
     transition: opacity 0.5s ease-out;
 }
 
+.toast.slide-up {
+    animation: slide-up 0.5s ease-out;
+}
+
 .toast-hide {
     opacity: 0;
+    animation: none;
 }
 
 .toast-content {
