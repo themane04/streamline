@@ -18,4 +18,7 @@ public class String
     
     public static string GetSignInInputFieldClass(bool hasError) =>
         "sign-in-input-field scale-on-interaction" + (hasError ? " sign-in-field-error-border" : "");
+    
+    public static string GetProfilePasswordResetInputFieldClass(bool hasError) =>
+        "profile-page-input-field scale-on-interaction" + (hasError ? " profile-page-field-error-border" : "");
 }

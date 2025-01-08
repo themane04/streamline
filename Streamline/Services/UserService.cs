@@ -140,50 +140,6 @@ public class UserService
         throw new Exception($"Failed to refresh token: {errorResponse}");
     }
 
-    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfileAsync(int? id, string username, string email)
-    {
-        var accessToken = await SecureStorage.GetAsync("accessToken");
-        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
-
-        _logger.LogInformation($"Access Token: {accessToken}");
-
-        var userData = new
-        {
-            username,
-            email
-        };
-
-        var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
-
-        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
-        _logger.LogInformation($"Content for update profile: {jsonRequest}");
-
-        var request = new HttpRequestMessage(HttpMethod.Put,
-            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        request.Content = content;
-
-        var response = await _httpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
-            if (result == null)
-            {
-                throw new Exception("Failed to parse API response.");
-            }
-
-            return result;
-        }
-
-        var errorResponse = await response.Content.ReadAsStringAsync();
-        throw new Exception($"Failed to update user: {errorResponse}");
-    }
-
     public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfilePictureAsync(int? id, IBrowserFile file)
     {
         var accessToken = await SecureStorage.GetAsync("accessToken");
@@ -238,5 +194,97 @@ public class UserService
             Console.WriteLine($"Error while sending request: {ex.Message}");
             throw;
         }
+    }
+
+    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfileAsync(int? id, string username, string email)
+    {
+        var accessToken = await SecureStorage.GetAsync("accessToken");
+        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
+
+        _logger.LogInformation($"Access Token: {accessToken}");
+
+        var userData = new
+        {
+            username,
+            email
+        };
+
+        var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
+
+        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+        _logger.LogInformation($"Content for update profile: {jsonRequest}");
+
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        request.Content = content;
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
+            if (result == null)
+            {
+                throw new Exception("Failed to parse API response.");
+            }
+
+            return result;
+        }
+
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        throw new Exception($"Failed to update user: {errorResponse}");
+    }
+
+    public async Task<BackendResponse<JsonElement>> ResetPasswordAsync(int? id, string oldPassword, string newPassword, string confirmPassword)
+    {
+        var accessToken = await SecureStorage.GetAsync("accessToken");
+        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
+
+        var userData = new
+        {
+            old_password = oldPassword,
+            new_password = newPassword,
+            confirm_password = confirmPassword
+        };
+
+        var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
+
+        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.ResetPassword}/{id}");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        request.Content = content;
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<BackendResponse<JsonElement>>();
+            if (result == null)
+            {
+                throw new Exception("Failed to parse API response.");
+            }
+
+            return result;
+        }
+
+        var errorResponse = await response.Content.ReadFromJsonAsync<BackendResponse<JsonElement>>();
+        if (errorResponse?.Data.TryGetProperty("old_password", out var oldPasswordError) == true &&
+            oldPasswordError.ValueKind == JsonValueKind.Array &&
+            oldPasswordError.GetArrayLength() > 0)
+        {
+            throw new Exception($"PasswordError: {oldPasswordError[0].GetString()}");
+        }
+
+        throw new Exception($"Failed to change password: {JsonSerializer.Serialize(errorResponse)}");
     }
 }

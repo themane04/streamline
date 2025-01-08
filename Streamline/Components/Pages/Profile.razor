@@ -6,7 +6,7 @@
 <Modal
     Title="Change Profile Picture"
     Description="Upload a new profile picture"
-    IsVisible="_isModalVisible"
+    IsVisible="_isImageModalVisible"
     Width="400px"
     CloseOnOverlayClick="true"
     OnClose="CloseImageModal"
@@ -18,7 +18,24 @@
         <InputFile OnChange="HandleFileSelected" id="fileInput"/>
     </div>
 </Modal>
-
+<Modal
+    Title="Change Password"
+    Description="Change your password"
+    IsVisible="_isPasswordModalVisible"
+    Width="400px"
+    CloseOnOverlayClick="true"
+    OnClose="ClosePasswordModal"
+    PasswordResetIcon="true"
+    ButtonText="Change Password"
+    OnButtonClick="UpdatePassword"
+>
+    <input type="password" class="@String.GetProfilePasswordResetInputFieldClass(_oldPasswordHasError)"
+           @bind-value="_oldPassword" @bind-value:event="oninput" placeholder="Old Password"/>
+    <input type="password" class="@String.GetProfilePasswordResetInputFieldClass(_newPasswordHasError)"
+           @bind-value="_newPassword" @bind-value:event="oninput" placeholder="New Password"/>
+    <input type="password" class="@String.GetProfilePasswordResetInputFieldClass(_confirmNewPasswordHasError)"
+           @bind-value="_confirmNewPassword" @bind-value:event="oninput" placeholder="Confirm New Password"/>
+</Modal>
 <LogoTitle Title="Profile"/>
 <div>
     @if (AuthService.User != null)
@@ -38,7 +55,7 @@
                 <MudIcon Icon="@Icons.Material.Filled.Save" Style="@SaveIconStyle"/>
                 Save Data
             </MudButton>
-            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction">
+            <MudButton Class="mud-auth-button mud-movie-detail-button scale-on-interaction" OnClick="OpenPasswordModal">
                 <MudIcon Icon="@Icons.Material.Filled.Lock" Style="width: 20px;height: 20px;"/>
                 Password
             </MudButton>
@@ -54,9 +71,16 @@
     [Inject] private AuthService AuthService { get; set; } = default!;
     private IJSObjectReference? _module;
     private DotNetObjectReference<Profile>? _dotNetRef;
+    private bool _isImageModalVisible;
+    private bool _isPasswordModalVisible;
     private string _editedUsername = string.Empty;
     private string _editedEmail = string.Empty;
-    private bool _isModalVisible;
+    private string _oldPassword = string.Empty;
+    private string _newPassword = string.Empty;
+    private string _confirmNewPassword = string.Empty;
+    private bool _oldPasswordHasError;
+    private bool _newPasswordHasError;
+    private bool _confirmNewPasswordHasError;
 
     private string SaveButtonClass =>
         "mud-auth-button mud-movie-detail-button scale-on-interaction" + (IsSaveDisabled ? " mud-auth-button-disabled" : "");
@@ -71,12 +95,29 @@
 
     private void OpenImageModal()
     {
-        _isModalVisible = true;
+        _isImageModalVisible = true;
     }
 
     private void CloseImageModal()
     {
-        _isModalVisible = false;
+        _isImageModalVisible = false;
+    }
+
+    private void OpenPasswordModal()
+    {
+        _isPasswordModalVisible = true;
+    }
+
+    private void ClosePasswordModal()
+    {
+        _isPasswordModalVisible = false;
+    }
+
+    private void ClearPasswordFields()
+    {
+        _oldPassword = string.Empty;
+        _newPassword = string.Empty;
+        _confirmNewPassword = string.Empty;
     }
 
     protected override void OnInitialized()
@@ -135,7 +176,7 @@
                 {
                     AuthService.User.ProfileImage = response.Data.ProfileImage;
                     ToastService.ShowToast("Profile picture updated successfully", ToastStatus.Success);
-                    _isModalVisible = false;
+                    _isImageModalVisible = false;
                 }
                 else
                 {
@@ -158,7 +199,7 @@
             Console.WriteLine(detailedMessage.ToString());
 
             ToastService.ShowToast(
-                $"Failed to upload image. Error: {ex.Message}. Check logs for details.", 
+                $"Failed to upload image. Error: {ex.Message}. Check logs for details.",
                 ToastStatus.Error
             );
         }
@@ -200,6 +241,65 @@
                 Console.WriteLine(e.Message);
                 ToastService.ShowToast(e.Message, ToastStatus.Error);
                 throw;
+            }
+        }
+    }
+
+    private async Task UpdatePassword()
+    {
+        if (AuthService.User != null)
+        {
+            _oldPasswordHasError = false;
+            _newPasswordHasError = false;
+            _confirmNewPasswordHasError = false;
+
+            if (string.IsNullOrWhiteSpace(_oldPassword) || string.IsNullOrWhiteSpace(_newPassword) || string.IsNullOrWhiteSpace(_confirmNewPassword))
+            {
+                ToastService.ShowToast("All fields are required", ToastStatus.Info);
+                _oldPasswordHasError = true;
+                _newPasswordHasError = true;
+                _confirmNewPasswordHasError = true;
+                return;
+            }
+
+            if (!Validation.IsPasswordValid(_newPassword))
+            {
+                ToastService.ShowToast("Password must be 8-255 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character", ToastStatus.Warning);
+                _newPasswordHasError = true;
+                return;
+            }
+
+            if (!Validation.IsPasswordMatch(_newPassword, _confirmNewPassword))
+            {
+                ToastService.ShowToast("Passwords do not match", ToastStatus.Warning);
+                _confirmNewPasswordHasError = true;
+                return;
+            }
+
+            try
+            {
+                await UserService.ResetPasswordAsync(AuthService.User.Id, _oldPassword, _newPassword, _confirmNewPassword);
+                ToastService.ShowToast("Password updated successfully", ToastStatus.Success);
+                _isPasswordModalVisible = false;
+                ClearPasswordFields();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Caught exception: {ex.Message}");
+
+                if (ex.Message.Contains("PasswordError: Incorrect password", StringComparison.OrdinalIgnoreCase))
+                {
+                    ToastService.ShowToast("Old password is incorrect", ToastStatus.Error);
+                    _oldPasswordHasError = true;
+                }
+                else if (ex.Message.Contains("PasswordError:", StringComparison.OrdinalIgnoreCase))
+                {
+                    ToastService.ShowToast(ex.Message.Replace("PasswordError: ", ""), ToastStatus.Error);
+                }
+                else
+                {
+                    ToastService.ShowToast($"Password update failed: {ex.Message}", ToastStatus.Error);
+                }
             }
         }
     }
