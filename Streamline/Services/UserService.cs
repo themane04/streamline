@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using Streamline.Models;
 using Streamline.Services.Helper;
@@ -182,47 +183,60 @@ public class UserService
         var errorResponse = await response.Content.ReadAsStringAsync();
         throw new Exception($"Failed to update user: {errorResponse}");
     }
-    
-    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfilePictureAsync(int? id, string profilePicture)
+
+    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfilePictureAsync(int? id, IBrowserFile file)
     {
         var accessToken = await SecureStorage.GetAsync("accessToken");
         AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
-        _logger.LogInformation($"Access Token: {accessToken}");
-
-        var userData = new
+        var content = new MultipartFormDataContent();
+        try
         {
-            profile_picture = profilePicture
-        };
+            Console.WriteLine("Opening file stream...");
+            var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            Console.WriteLine($"Stream Length: {stream.Length}, Can Read: {stream.CanRead}");
 
-        var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions
+            var streamContent = new StreamContent(stream);
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+            content.Add(streamContent, "profile_image", file.Name);
+
+            content.Headers.ContentLength = stream.Length;
+        }
+        catch (Exception ex)
         {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
-
-        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
-        _logger.LogInformation($"Content for update profile picture: {jsonRequest}");
-
-        var request = new HttpRequestMessage(HttpMethod.Put,
-            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        request.Content = content;
-
-        var response = await _httpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
-            if (result == null)
-            {
-                throw new Exception("Failed to parse API response.");
-            }
-
-            return result;
+            Console.WriteLine($"Error while preparing stream content: {ex.Message}");
+            throw;
         }
 
-        var errorResponse = await response.Content.ReadAsStringAsync();
-        throw new Exception($"Failed to update user: {errorResponse}");
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}")
+        {
+            Content = content
+        };
+
+        try
+        {
+            Console.WriteLine("Sending request...");
+            var response = await _httpClient.SendAsync(request);
+            Console.WriteLine($"Response Status: {response.StatusCode}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response Content:");
+                Console.WriteLine(jsonResponse);
+
+                var result = JsonSerializer.Deserialize<BackendResponse<AuthenticatedUser>>(jsonResponse,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return result;
+            }
+
+            throw new Exception($"Failed to update profile picture: {await response.Content.ReadAsStringAsync()}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while sending request: {ex.Message}");
+            throw;
+        }
     }
 }

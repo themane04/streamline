@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
+﻿@using System.Text
+@using Microsoft.AspNetCore.Components.Forms
 
 @page "/profile"
 
@@ -13,7 +14,9 @@
     ButtonText="Upload Image"
     OnButtonClick="TriggerFileUpload"
 >
-    <input type="file" id="fileUpload" style="display:none" @onchange="HandleFileSelected"/>
+    <div style="display:none">
+        <InputFile OnChange="HandleFileSelected" id="fileInput"/>
+    </div>
 </Modal>
 
 <LogoTitle Title="Profile"/>
@@ -98,7 +101,7 @@
     {
         if (_module is not null)
         {
-            await _module.InvokeVoidAsync("triggerFileUpload", "fileUpload");
+            await _module.InvokeVoidAsync("triggerFileUpload", "fileInput");
         }
     }
 
@@ -110,28 +113,54 @@
         }
     }
 
-    private async Task HandleFileSelected(ChangeEventArgs e)
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        if (e.Value is IBrowserFile file)
+        var file = e.File;
+        Console.WriteLine($"Selected file: {file.Name}, Size: {file.Size} bytes");
+
+        if (file.Size > 5 * 1024 * 1024)
         {
-            using var stream = file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
-            using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
+            ToastService.ShowToast("File size exceeds 5 MB", ToastStatus.Warning);
+            return;
+        }
 
-            var base64String = Convert.ToBase64String(memoryStream.ToArray());
-
-            try
+        try
+        {
+            if (AuthService.User != null)
             {
-                if (AuthService.User != null)
+                Console.WriteLine("Calling UpdateProfilePictureAsync...");
+                var response = await UserService.UpdateProfilePictureAsync(AuthService.User.Id, file);
+
+                if (response?.Data != null)
                 {
-                    await UserService.UpdateProfilePictureAsync(AuthService.User.Id, base64String);
+                    AuthService.User.ProfileImage = response.Data.ProfileImage;
                     ToastService.ShowToast("Profile picture updated successfully", ToastStatus.Success);
+                    _isModalVisible = false;
+                }
+                else
+                {
+                    ToastService.ShowToast("Failed to update profile picture", ToastStatus.Error);
                 }
             }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            var detailedMessage = new StringBuilder();
+            detailedMessage.AppendLine($"Exception: {ex.Message}");
+            detailedMessage.AppendLine($"Stack Trace: {ex.StackTrace}");
+
+            if (ex.InnerException != null)
             {
-                ToastService.ShowToast($"Failed to upload image: {ex.Message}", ToastStatus.Error);
+                detailedMessage.AppendLine($"Inner Exception: {ex.InnerException.Message}");
+                detailedMessage.AppendLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
             }
+
+            Console.WriteLine(detailedMessage.ToString());
+
+            ToastService.ShowToast(
+                $"Failed to upload image. Error: {ex.Message}. Check logs for details.", 
+                ToastStatus.Error
+            );
         }
     }
 

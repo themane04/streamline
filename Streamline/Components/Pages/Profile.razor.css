@@ -6,6 +6,7 @@
     margin: 0 auto;
     display: block;
     box-shadow: var(--action-box-shadow);
+    object-fit: cover;
 }
 
 .profile-page-form {
