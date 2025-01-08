@@ -94,3 +94,12 @@
     width: 24px;
     height: 24px;
 }
+
+.modal-component-button-icon-container {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    height: 24px;
+    width: 24px;
+    fill: var(--text-color) !important;
+}

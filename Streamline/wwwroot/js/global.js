@@ -26,3 +26,12 @@ export function onScrollBottom(dotnetHelper) {
         }
     });
 }
+
+export function triggerFileUpload(elementId) {
+    const fileInput = document.getElementById(elementId);
+    if (fileInput) {
+        fileInput.click();
+    } else {
+        console.error(`Element with ID ${elementId} not found.`);
+    }
+}

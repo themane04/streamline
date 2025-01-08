@@ -1,0 +1,52 @@
+﻿@if (IsVisible)
+{
+    <div class="modal-overlay @ModalClass" @onclick="CloseModalOnOverlayClick">
+        <div class="modal-content" style="@ModalStyle" @onclick:stopPropagation>
+            <button class="close-button" @onclick="CloseModal">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Class="toast-component-message-icon scale-on-interaction"
+                         Style="fill: var(--text-color) !important;"/>
+            </button>
+            <h4>@Title</h4>
+            <p>@Description</p>
+            <button class="action-button scale-on-interaction" @onclick="OnButtonClick">
+                @if (ProfileImageIcon)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.UploadFile" Class="modal-component-button-icon-container"/>
+                }
+                <span>@ButtonText</span>
+            </button>
+            @ChildContent
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public string ButtonText { get; set; } = "Close";
+    [Parameter] public EventCallback OnButtonClick { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback<bool> OnClose { get; set; }
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public string Width { get; set; } = "500px";
+    [Parameter] public string Height { get; set; } = "auto";
+    [Parameter] public bool CloseOnOverlayClick { get; set; } = true;
+    [Parameter] public bool ProfileImageIcon { get; set; }
+
+    private string ModalClass => IsVisible ? "modal-show" : "modal-hide";
+    private string ModalStyle => $"width: {Width}; height: {Height};";
+
+    private async Task CloseModal()
+    {
+        await OnClose.InvokeAsync(false);
+    }
+
+    private async Task CloseModalOnOverlayClick()
+    {
+        if (CloseOnOverlayClick)
+        {
+            await CloseModal();
+        }
+    }
+
+}
