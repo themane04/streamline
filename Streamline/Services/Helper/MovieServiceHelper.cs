@@ -133,7 +133,7 @@ public class MovieServiceHelper
                     return movies ?? new List<MovieShort>();
                 }
 
-                var structuredResponse = JsonSerializer.Deserialize<BackendErrorResponse<List<MovieShort>>>(
+                var structuredResponse = JsonSerializer.Deserialize<BackendResponse<List<MovieShort>>>(
                     jsonResponse,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 

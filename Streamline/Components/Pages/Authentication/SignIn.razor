@@ -56,7 +56,7 @@
             if (signInResponse != null)
             {
                 await AuthService.SetAuthState(signInResponse);
-                ToastService.ShowToast($"Welcome Back {signInResponse.User?.Username}", ToastStatus.Success);
+                ToastService.ShowToast($"Welcome Back {signInResponse.Data.User?.Username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.HomeUrl);
             }
         }

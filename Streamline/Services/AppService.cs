@@ -64,11 +64,19 @@ public class AppService
 
             _logger.LogInformation($"Restoring user state: {JsonSerializer.Serialize(user)}");
 
-            await _authService.SetAuthState(new SignInResponse
+            var signInResponse = new SignInResponse
             {
                 Refresh = refreshToken,
                 Access = accessToken,
-                User = user
+                User = user.Data
+            };
+
+            await _authService.SetAuthState(new BackendResponse<SignInResponse>
+            {
+                Code = 200,
+                Message = "User restored from SecureStorage.",
+                Endpoint = "/api/auth/signin",
+                Data = signInResponse
             });
 
             _authService.NotifyStateChanged();

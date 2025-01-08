@@ -18,11 +18,11 @@ public class AuthService
 
     public event Action? OnChange;
 
-    public async Task SetAuthState(SignInResponse signInResponse)
+    public async Task SetAuthState(BackendResponse<SignInResponse> signInResponse)
     {
-        RefreshToken = signInResponse.Refresh;
-        AccessToken = signInResponse.Access;
-        User = signInResponse.User;
+        RefreshToken = signInResponse.Data.Refresh;
+        AccessToken = signInResponse.Data.Access;
+        User = signInResponse.Data.User;
 
         await SecureStorage.SetAsync("refreshToken", RefreshToken);
         await SecureStorage.SetAsync("accessToken", AccessToken);

@@ -19,7 +19,7 @@ public class UserService
         _logger = logger;
     }
 
-    public async Task<AuthenticatedUser?> SignUpUserAsync(string username, string email, string password,
+    public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(string username, string email, string password,
         string confirmPassword)
     {
         var userData = new
@@ -43,11 +43,11 @@ public class UserService
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("User registered successfully");
-            return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
+            return await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
         }
 
         var errorResponse =
-            await response.Content.ReadFromJsonAsync<BackendErrorResponse<Dictionary<string, List<string>>>>();
+            await response.Content.ReadFromJsonAsync<BackendResponse<Dictionary<string, List<string>>>>();
 
         if (errorResponse?.Data != null)
         {
@@ -67,7 +67,7 @@ public class UserService
         throw new Exception($"Failed to register: {errorDetails}");
     }
 
-    public async Task<SignInResponse?> SignInUserAsync(string email, string password)
+    public async Task<BackendResponse<SignInResponse>?> SignInUserAsync(string email, string password)
     {
         var userData = new { email, password };
         var jsonRequest = JsonSerializer.Serialize(userData,
@@ -80,7 +80,7 @@ public class UserService
         if (response.IsSuccessStatusCode)
         {
             _logger.LogInformation("User signed in successfully");
-            return await response.Content.ReadFromJsonAsync<SignInResponse>();
+            return await response.Content.ReadFromJsonAsync<BackendResponse<SignInResponse>>();
         }
 
         var errorResponse = await response.Content.ReadAsStringAsync();
@@ -88,7 +88,7 @@ public class UserService
         throw new Exception($"Failed to sign in: {errorResponse}");
     }
 
-    public async Task<AuthenticatedUser?> GetUserFromToken(string accessToken)
+    public async Task<BackendResponse<AuthenticatedUser>?> GetUserFromToken(string accessToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Get,
             $"{Environments.GetBackendApiUrl()}{BackendEndpoints.GetUserFromToken}");
@@ -100,7 +100,7 @@ public class UserService
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
+                return await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -119,7 +119,7 @@ public class UserService
         }
     }
 
-    public async Task<SignInResponse?> RefreshTokenAsync(string refreshToken)
+    public async Task<BackendResponse<SignInResponse>?> RefreshTokenAsync(string refreshToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"{Environments.GetBackendApiUrl()}{BackendEndpoints.RefreshToken}");
@@ -130,7 +130,7 @@ public class UserService
 
         if (response.IsSuccessStatusCode)
         {
-            return await response.Content.ReadFromJsonAsync<SignInResponse>();
+            return await response.Content.ReadFromJsonAsync<BackendResponse<SignInResponse>>();
         }
 
         var errorResponse = await response.Content.ReadAsStringAsync();
