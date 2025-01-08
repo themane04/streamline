@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -17,19 +18,6 @@ public class MovieServiceHelper
     {
         _httpClient = httpClient;
         _logger = logger;
-    }
-
-    private void SetAuthorizationHeader(string? accessToken)
-    {
-        if (!string.IsNullOrEmpty(accessToken))
-        {
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-        }
-        else
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = null;
-        }
     }
 
     public async Task PerformActionAfterAddOrUpdateMovie(string methodName, MovieShort movie,
@@ -78,7 +66,7 @@ public class MovieServiceHelper
         try
         {
             var accessToken = await SecureStorage.GetAsync("accessToken");
-            SetAuthorizationHeader(accessToken);
+            AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
             var response = await _httpClient.PostAsync($"{_backendApiUrl}{endpointSuffix}", null);
 
@@ -107,7 +95,7 @@ public class MovieServiceHelper
         try
         {
             var accessToken = await SecureStorage.GetAsync("accessToken");
-            SetAuthorizationHeader(accessToken);
+            AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
             var response = await _httpClient.GetAsync($"{_backendApiUrl}{urlSuffix}");
 
@@ -164,7 +152,7 @@ public class MovieServiceHelper
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var accessToken = await SecureStorage.GetAsync("accessToken");
-        SetAuthorizationHeader(accessToken);
+        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
         var response = await _httpClient.PostAsync($"{_backendApiUrl}{BackendEndpoints.Movies}", content);
 
@@ -201,7 +189,7 @@ public class MovieServiceHelper
         try
         {
             var accessToken = await SecureStorage.GetAsync("accessToken");
-            SetAuthorizationHeader(accessToken);
+            AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
             var response = await _httpClient.GetAsync($"{_backendApiUrl}{BackendEndpoints.Movies}/{movieId}");
             if (response.IsSuccessStatusCode)

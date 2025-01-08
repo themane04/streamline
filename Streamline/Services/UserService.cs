@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Streamline.Models;
+using Streamline.Services.Helper;
 using Streamline.Utilities;
 
 namespace Streamline.Services;
@@ -19,7 +20,8 @@ public class UserService
         _logger = logger;
     }
 
-    public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(string username, string email, string password,
+    public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(string username, string email,
+        string password,
         string confirmPassword)
     {
         var userData = new
@@ -135,5 +137,49 @@ public class UserService
 
         var errorResponse = await response.Content.ReadAsStringAsync();
         throw new Exception($"Failed to refresh token: {errorResponse}");
+    }
+
+    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfileAsync(int? id, string username, string email)
+    {
+        var accessToken = await SecureStorage.GetAsync("accessToken");
+        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
+
+        _logger.LogInformation($"Access Token: {accessToken}");
+
+        var userData = new
+        {
+            username,
+            email
+        };
+
+        var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
+
+        var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+        _logger.LogInformation($"Content for update profile: {jsonRequest}");
+
+        var request = new HttpRequestMessage(HttpMethod.Put,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        request.Content = content;
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
+            if (result == null)
+            {
+                throw new Exception("Failed to parse API response.");
+            }
+
+            return result;
+        }
+
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        throw new Exception($"Failed to update user: {errorResponse}");
     }
 }

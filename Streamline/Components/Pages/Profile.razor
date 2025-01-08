@@ -13,7 +13,7 @@
                    @bind-value="_editedEmail" @bind-value:event="oninput"/>
         </div>
         <div class="profile-page-button-container">
-            <MudButton Class="@SaveButtonClass" Disabled="@IsSaveDisabled">
+            <MudButton Class="@SaveButtonClass" Disabled="@IsSaveDisabled" OnClick="SaveData">
                 <MudIcon Icon="@Icons.Material.Filled.Save" Style="@SaveIconStyle"/>
                 Save Data
             </MudButton>
@@ -54,5 +54,45 @@
         AuthService.User != null &&
         _editedUsername == AuthService.User.Username &&
         _editedEmail == AuthService.User.Email;
+
+    private async Task SaveData()
+    {
+        if (AuthService.User != null)
+        {
+            if (string.IsNullOrWhiteSpace(_editedUsername) || string.IsNullOrWhiteSpace(_editedEmail))
+            {
+                ToastService.ShowToast("Username or email cannot be empty", ToastStatus.Warning);
+                _editedUsername = AuthService.User.Username;
+                _editedEmail = AuthService.User.Email;
+                return;
+            }
+
+            if (!Validation.IsUsernameValid(_editedUsername))
+            {
+                ToastService.ShowToast("Invalid username. Must be 3-16 characters and can include letters, numbers, underscores, or hyphens", ToastStatus.Warning);
+                return;
+            }
+            
+            if (!Validation.IsEmailValid(_editedEmail))
+            {
+                ToastService.ShowToast("Invalid Email Format. Please enter a valid email address", ToastStatus.Warning);
+                return;
+            }
+
+            try
+            {
+                await UserService.UpdateProfileAsync(AuthService.User.Id, _editedUsername, _editedEmail);
+                AuthService.User.Username = _editedUsername;
+                AuthService.User.Email = _editedEmail;
+                ToastService.ShowToast("Profile updated successfully", ToastStatus.Success);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ToastService.ShowToast(e.Message, ToastStatus.Error);
+                throw;
+            }
+        }
+    }
 
 }

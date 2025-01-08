@@ -20,6 +20,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ToastService>();
         builder.Services.AddScoped<AuthService>();
         builder.Services.AddScoped<AppService>();
+        builder.Services.AddScoped<AuthHeaderHelper>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG
