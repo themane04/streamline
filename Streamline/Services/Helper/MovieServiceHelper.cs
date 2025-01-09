@@ -182,7 +182,7 @@ public class MovieServiceHelper
         return (false, false);
     }
 
-    public async Task<BackendResponse<MovieShort>> IsMoviePropertyTrue(int movieId, string propertyName)
+    public async Task<BackendResponseNullableData<MovieShort>> IsMoviePropertyTrue(int movieId, string propertyName)
     {
         string methodName = $"IsMovie{propertyName}True";
         _logger.LogInformation($"{methodName}: Checking if movie with MovieID: {movieId} has {propertyName} true");
@@ -196,7 +196,7 @@ public class MovieServiceHelper
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var backendResponse = JsonSerializer.Deserialize<BackendResponse<MovieShort>>(responseContent);
+                var backendResponse = JsonSerializer.Deserialize<BackendResponseNullableData<MovieShort>>(responseContent);
 
                 if (backendResponse?.Data != null)
                 {
@@ -213,18 +213,18 @@ public class MovieServiceHelper
 
                 _logger.LogInformation(
                     $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true or is not in the backend.");
-                return new BackendResponse<MovieShort> { Data = null };
+                return new BackendResponseNullableData<MovieShort> { Data = null };
             }
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} not found in backend.");
-                return new BackendResponse<MovieShort> { Data = null };
+                return new BackendResponseNullableData<MovieShort> { Data = null };
             }
 
             _logger.LogError(
                 $"{methodName}: Failed to fetch movie with MovieID: {movieId}, status code: {response.StatusCode}");
-            return new BackendResponse<MovieShort> { Data = null };
+            return new BackendResponseNullableData<MovieShort> { Data = null };
         }
         catch (Exception ex)
         {
