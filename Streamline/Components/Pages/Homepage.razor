@@ -3,7 +3,7 @@
 <div>
     <LogoTitle Title="Showcase"/>
     <div class="homepage-button-container">
-        <MudButton OnClick="ToggleSearch" class="@ButtonClass">
+        <MudButton OnClick="ToggleSearch" class="@String.SearchButtonClass(_isSearchActive)">
             <div class="homepage-search-content">
                 <img
                     src="images/assets/homepage/search_icon_button.png"
@@ -58,10 +58,6 @@
     private DotNetObjectReference<Homepage>? _dotNetRef;
     private bool _isSearchActive;
     private string _searchQuery = "";
-
-    private string ButtonClass => _isSearchActive
-        ? "mud-search-button-container-hp expanded"
-        : "mud-search-button-container-hp scale-on-interaction";
 
     protected override async Task OnInitializedAsync()
     {

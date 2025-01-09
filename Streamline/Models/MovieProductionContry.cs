@@ -2,7 +2,7 @@
 
 namespace Streamline.Models;
 
-public class MovieProductionContry
+public class MovieProductionCountry
 {
     [JsonPropertyName("iso_3166_1")] public string Iso3166_1 { get; set; } = string.Empty;
 

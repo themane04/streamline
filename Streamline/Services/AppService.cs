@@ -25,6 +25,7 @@ public class AppService
         _userService = userService;
         _navigationManager = navigationManager;
         _logger = logger;
+        _logger.LogInformation("Initialized");
     }
 
     public async Task InitializeAsync()

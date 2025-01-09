@@ -10,7 +10,7 @@
     <input type="password" placeholder="Confirm Password"
            class="@String.GetSignUpInputFieldClass(_hasConfirmPasswordError)"
            @bind="_confirmPassword"/>
-    <MudButton Class="@SignUpButtonClass" Disabled="@_isLoading" OnClick="HandleSignUp">
+    <MudButton Class="@String.AuthButtonClass(_isLoading)" Disabled="@_isLoading" OnClick="HandleSignUp">
         Sign Up
     </MudButton>
 </div>
@@ -29,9 +29,6 @@
     private bool _hasEmailError;
     private bool _hasPasswordError;
     private bool _hasConfirmPasswordError;
-
-    private string SignUpButtonClass =>
-        "mud-auth-button scale-on-interaction" + (_isLoading ? " mud-auth-button-disabled" : "");
 
     private async Task HandleSignUp()
     {

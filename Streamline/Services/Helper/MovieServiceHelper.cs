@@ -18,6 +18,7 @@ public class MovieServiceHelper
     {
         _httpClient = httpClient;
         _logger = logger;
+        _logger.LogInformation("Initialized");
     }
 
     public async Task PerformActionAfterAddOrUpdateMovie(string methodName, MovieShort movie,

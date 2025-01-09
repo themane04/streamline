@@ -14,6 +14,7 @@ public class AuthService
     public AuthService(ILogger<AuthService> logger)
     {
         _logger = logger;
+        _logger.LogInformation("Initialized");
     }
 
     public event Action? OnChange;

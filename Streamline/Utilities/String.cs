@@ -26,4 +26,16 @@ public class String
     public static string ModalStyle(string width, string height) => $"width: {width}; height: {height};";
 
     public static string DrawerStyle(bool isDrawerOpen) => isDrawerOpen ? "right: 0;" : "right: -300px;";
+    
+    public static string AuthButtonClass(bool isLoading) =>
+        "mud-auth-button scale-on-interaction" + (isLoading ? " mud-auth-button-disabled" : "");
+    
+    public static string SearchButtonClass(bool isSearchActive) => isSearchActive
+        ? "mud-search-button-container-hp expanded"
+        : "mud-search-button-container-hp scale-on-interaction";
+    
+    public static string DetailPageButtonClass(bool isMovieIn) =>
+        "mud-auth-button mud-movie-detail-button scale-on-interaction"
+        + (isMovieIn ? " mud-auth-button-disabled" : "");
+
 }

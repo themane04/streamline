@@ -14,13 +14,13 @@ public static class MauiProgram
         builder.UseMauiApp<App>();
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddSingleton<HttpClient>();
-        builder.Services.AddSingleton<MovieServiceHelper>();
-        builder.Services.AddSingleton<MovieService>();
-        builder.Services.AddSingleton<UserService>();
-        builder.Services.AddSingleton<ToastService>();
-        builder.Services.AddScoped<AuthService>();
-        builder.Services.AddScoped<AppService>();
         builder.Services.AddScoped<AuthHeaderHelper>();
+        builder.Services.AddSingleton<MovieServiceHelper>();
+        builder.Services.AddScoped<AppService>();
+        builder.Services.AddScoped<AuthService>();
+        builder.Services.AddSingleton<MovieService>();
+        builder.Services.AddSingleton<ToastService>();
+        builder.Services.AddSingleton<UserService>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG

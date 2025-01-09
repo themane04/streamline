@@ -19,6 +19,7 @@ public class UserService
     {
         _httpClient = httpClient;
         _logger = logger;
+        _logger.LogInformation("Initialized");
     }
 
     public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(string username, string email,
