@@ -25,7 +25,7 @@ public class String
     public static string ModalClass(bool isVisible) => isVisible ? "modal-show" : "modal-hide";
     public static string ModalStyle(string width, string height) => $"width: {width}; height: {height};";
 
-    public static string DrawerStyle(bool isDrawerOpen) => isDrawerOpen ? "right: 0;" : "right: -300px;";
+    public static string DrawerStyle(bool isDrawerOpen) => isDrawerOpen ? "right: 0;" : "right: -400px;";
     
     public static string AuthButtonClass(bool isLoading) =>
         "mud-auth-button scale-on-interaction" + (isLoading ? " mud-auth-button-disabled" : "");

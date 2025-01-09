@@ -97,8 +97,30 @@ else
     {
         Movie = await MovieService.GetMovieDetailByIdAsync(Id);
         SimilarMovies = await MovieService.GetSimilarMoviesAsync(Id);
-        _isMovieInWatchlist = await MovieService.IsMovieInWatchlist(Id);
-        _isMovieInFavorites = await MovieService.IsMovieInFavorites(Id);
+
+        try
+        {
+            var watchlistResponse = await MovieService.IsMovieInWatchlist(Id);
+            _isMovieInWatchlist = watchlistResponse?.Data != null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            ToastService.ShowToast("An error occurred while checking if the movie is in the watchlist", ToastStatus.Error);
+            _isMovieInWatchlist = false;
+        }
+
+        try
+        {
+            var favoritesResponse = await MovieService.IsMovieInFavorites(Id);
+            _isMovieInFavorites = favoritesResponse?.Data != null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            ToastService.ShowToast("An error occurred while checking if the movie is in favorites", ToastStatus.Error);
+            _isMovieInFavorites = false;
+        }
     }
 
     private async Task AddMovieToWatchlist()
@@ -109,9 +131,19 @@ else
             ShortMovie.Title = Movie.Title;
             ShortMovie.PosterPath = Movie.PosterPath ?? string.Empty;
             ShortMovie.VoteAverage = Movie.VoteAverage;
-            await MovieService.AddOrUpdateMovieAndAddToWatchlist(ShortMovie);
-            _isMovieInWatchlist = true;
-            StateHasChanged();
+            try
+            {
+                await MovieService.AddOrUpdateMovieAndAddToWatchlist(ShortMovie);
+                ToastService.ShowToast("Movie added to watchlist", ToastStatus.Success);
+                _isMovieInWatchlist = true;
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ToastService.ShowToast("An error occurred while adding the movie to watchlist", ToastStatus.Error);
+                throw;
+            }
         }
     }
 
@@ -123,9 +155,19 @@ else
             ShortMovie.Title = Movie.Title;
             ShortMovie.PosterPath = Movie.PosterPath ?? string.Empty;
             ShortMovie.VoteAverage = Movie.VoteAverage;
-            await MovieService.AddOrUpdateMovieAndMarkAsFavorite(ShortMovie);
-            _isMovieInFavorites = true;
-            StateHasChanged();
+            try
+            {
+                await MovieService.AddOrUpdateMovieAndMarkAsFavorite(ShortMovie);
+                ToastService.ShowToast("Movie added to favorites", ToastStatus.Success);
+                _isMovieInFavorites = true;
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ToastService.ShowToast("An error occurred while adding the movie to favorites", ToastStatus.Error);
+                throw;
+            }
         }
     }
 

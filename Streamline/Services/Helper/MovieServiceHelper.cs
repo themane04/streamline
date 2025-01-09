@@ -182,7 +182,7 @@ public class MovieServiceHelper
         return (false, false);
     }
 
-    public async Task<bool> IsMoviePropertyTrue(int movieId, string propertyName)
+    public async Task<BackendResponse<MovieShort>> IsMoviePropertyTrue(int movieId, string propertyName)
     {
         string methodName = $"IsMovie{propertyName}True";
         _logger.LogInformation($"{methodName}: Checking if movie with MovieID: {movieId} has {propertyName} true");
@@ -196,25 +196,35 @@ public class MovieServiceHelper
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var movie = JsonSerializer.Deserialize<MovieShort>(responseContent);
+                var backendResponse = JsonSerializer.Deserialize<BackendResponse<MovieShort>>(responseContent);
 
-                var propertyValue = movie?.GetType().GetProperty(propertyName)?.GetValue(movie, null);
-                bool isPropertyTrue = propertyValue is bool boolValue && boolValue;
-
-                if (isPropertyTrue)
+                if (backendResponse?.Data != null)
                 {
-                    _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} has {propertyName} true");
-                    return true;
+                    var propertyValue = backendResponse.Data.GetType().GetProperty(propertyName)
+                        ?.GetValue(backendResponse.Data, null);
+                    bool isPropertyTrue = propertyValue is bool boolValue && boolValue;
+
+                    if (isPropertyTrue)
+                    {
+                        _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} has {propertyName} true");
+                        return backendResponse;
+                    }
                 }
 
                 _logger.LogInformation(
-                    $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true");
-                return false;
+                    $"{methodName}: Movie with MovieID: {movieId} does not have {propertyName} true or is not in the backend.");
+                return new BackendResponse<MovieShort> { Data = null };
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                _logger.LogInformation($"{methodName}: Movie with MovieID: {movieId} not found in backend.");
+                return new BackendResponse<MovieShort> { Data = null };
             }
 
             _logger.LogError(
                 $"{methodName}: Failed to fetch movie with MovieID: {movieId}, status code: {response.StatusCode}");
-            return false;
+            return new BackendResponse<MovieShort> { Data = null };
         }
         catch (Exception ex)
         {

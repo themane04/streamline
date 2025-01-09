@@ -183,12 +183,12 @@ public class MovieService
         return await _movieServiceHelper.GetMovieList($"{BackendEndpoints.Movies}?favorites=true", nameof(GetFavorites));
     }
 
-    public Task<bool> IsMovieInWatchlist(int movieId)
+    public Task<BackendResponse<MovieShort>> IsMovieInWatchlist(int movieId)
     {
         return _movieServiceHelper.IsMoviePropertyTrue(movieId, "IsWatchlisted");
     }
 
-    public Task<bool> IsMovieInFavorites(int movieId)
+    public Task<BackendResponse<MovieShort>> IsMovieInFavorites(int movieId)
     {
         return _movieServiceHelper.IsMoviePropertyTrue(movieId, "IsFavorite");
     }
