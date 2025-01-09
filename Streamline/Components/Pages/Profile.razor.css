@@ -1,5 +1,6 @@
 ﻿.profile-page-outer-container {
     padding-bottom: 150px;
+    font-family: var(--font-montserrat-family), sans-serif;
 }
 
 .profile-page-profile-picture {
@@ -63,4 +64,19 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.profile-page-user-info {
+    font-style: italic;
+}
+
+.profile-page-user-info h3 {
+    margin: 10px 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.profile-page-user-info p {
+    color: #555;
+    margin: 5px 0;
 }

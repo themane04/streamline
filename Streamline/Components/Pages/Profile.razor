@@ -75,9 +75,16 @@
 <div class="profile-page-outer-container">
     @if (AuthService.User != null)
     {
-        <div @onclick="OpenImageModal">
-            <img src="@AuthService.User.ProfileImage" alt="@AuthService.User.Username's Profile Picture"
-                 class="profile-page-profile-picture scale-on-interaction"/>
+        <div>
+            <div @onclick="OpenImageModal">
+                <img src="@AuthService.User.ProfileImage" alt="@AuthService.User.Username's Profile Picture"
+                     class="profile-page-profile-picture scale-on-interaction"/>
+            </div>
+            <div class="profile-page-user-info">
+                <h3>@AuthService.User.Username</h3>
+                <p>Email @AuthService.User.Email</p>
+                <p>Joined on @DateTime.Parse(AuthService.User.DateJoined).ToString("dd.MM.yyyy")</p>
+            </div>
         </div>
         <ProfilePageSideDrawer
             IsDrawerOpen="_isDrawerOpen"
