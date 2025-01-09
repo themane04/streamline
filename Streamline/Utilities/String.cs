@@ -22,12 +22,8 @@ public class String
     public static string GetProfilePasswordResetInputFieldClass(bool hasError) =>
         "profile-page-input-field scale-on-interaction" + (hasError ? " profile-page-field-error-border" : "");
 
-    public static string SaveButtonClass(bool isSaveDisabled) =>
-        "mud-auth-button mud-movie-detail-button scale-on-interaction" +
-        (isSaveDisabled ? " mud-auth-button-disabled" : "");
-
     public static string ModalClass(bool isVisible) => isVisible ? "modal-show" : "modal-hide";
     public static string ModalStyle(string width, string height) => $"width: {width}; height: {height};";
-    
+
     public static string DrawerStyle(bool isDrawerOpen) => isDrawerOpen ? "right: 0;" : "right: -300px;";
 }

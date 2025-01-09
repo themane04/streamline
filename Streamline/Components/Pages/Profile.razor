@@ -31,6 +31,7 @@
                @bind-value="_editedEmail" @bind-value:event="oninput"/>
     </div>
 </Modal>
+
 <Modal
     Title="Change Password"
     Description="Change your password"
@@ -120,10 +121,10 @@
     private bool _newPasswordHasError;
     private bool _confirmNewPasswordHasError;
 
-    // private bool IsEditUserInfoButtonDisabled =>
-    //     AuthService.User != null &&
-    //     _editedUsername == AuthService.User.Username &&
-    //     _editedEmail == AuthService.User.Email;
+    private bool HasUserDataChanged =>
+        AuthService.User != null &&
+        _editedUsername == AuthService.User.Username &&
+        _editedEmail == AuthService.User.Email;
 
     private void OpenImageModal()
     {
@@ -287,6 +288,12 @@
                 ToastService.ShowToast("Username or email cannot be empty", ToastStatus.Warning);
                 _editedUsername = AuthService.User.Username;
                 _editedEmail = AuthService.User.Email;
+                return;
+            }
+            
+            if (HasUserDataChanged)
+            {
+                ToastService.ShowToast("No changes detected", ToastStatus.Info);
                 return;
             }
 
