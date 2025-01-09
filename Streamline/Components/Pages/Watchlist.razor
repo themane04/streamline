@@ -19,7 +19,7 @@
         {
             <MovieItem
                 ShortMovie="@_watchlistMovies"
-                OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+                OnMovieSelected="@(id => NavigationManager.NavigateTo($"{AppRoutes.MovieDetailView}/{id}"))"
                 PosterHeight="244px"
                 PosterWidth="175px"
                 ShowCloseButton="true"

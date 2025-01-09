@@ -36,7 +36,7 @@
     {
         <MovieItem
             Movies="_movies"
-            OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}"))"
+            OnMovieSelected="@(id => NavigationManager.NavigateTo($"{AppRoutes.MovieDetailView}/{id}"))"
             PosterWidth="175px"
             PosterHeight="244px"
         />

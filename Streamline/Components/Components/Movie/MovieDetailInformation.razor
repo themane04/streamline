@@ -114,7 +114,7 @@
                         PosterMl="30px"
                         RatingVoteMt="-100px"
                         RatingVoteMl="25px"
-                        OnMovieSelected="@(id => NavigationManager.NavigateTo($"/movie/{id}", forceLoad: true))"
+                        OnMovieSelected="@(id => NavigationManager.NavigateTo($"{AppRoutes.MovieDetailView}/{id}", forceLoad: true))"
                     />
                 }
             </div>
