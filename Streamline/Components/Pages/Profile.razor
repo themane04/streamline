@@ -79,39 +79,14 @@
             <img src="@AuthService.User.ProfileImage" alt="@AuthService.User.Username's Profile Picture"
                  class="profile-page-profile-picture scale-on-interaction"/>
         </div>
-        <div class="profile-page-drawer-right" style="@String.DrawerStyle(_isDrawerOpen)">
-            <div class="profile-page-close-button-container">
-                <MudIcon Icon="@Icons.Material.Filled.Close" Class="mud-profile-page-button-icon scale-on-interaction"
-                         @onclick="CloseDrawer"/>
-            </div>
-            <div class="profile-page-drawer-content">
-                <div class="profile-page-drawer-buttons">
-                    <MudButton Class="mud-profile-page-button-link scale-on-interaction mt-3 fs-4"
-                               OnClick="OpenEditProfileInfoModal">
-                        <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mud-profile-page-button-icon"/>
-                        Edit Profile
-                    </MudButton>
-                    <MudButton Class="mud-profile-page-button-link scale-on-interaction mt-3 fs-4"
-                               OnClick="OpenPasswordModal">
-                        <MudIcon Icon="@Icons.Material.Filled.Lock" Class="mud-profile-page-button-icon"/>
-                        Password
-                    </MudButton>
-                    <MudButton Class="mud-profile-page-button-link scale-on-interaction mt-3 fs-4"
-                               OnClick="OpenSignOutModal">
-                        <MudIcon Icon="@Icons.Material.Filled.ExitToApp" Class="mud-profile-page-button-icon"/>
-                        Sign Out
-                    </MudButton>
-                </div>
-                <div class="mt-auto">
-                    <MudButton Class="mud-profile-page-button-link scale-on-interaction fs-4 text-danger"
-                               OnClick="OpenAccountDeletionModal">
-                        <MudIcon Icon="@Icons.Material.Filled.Delete"
-                                 Class="mud-profile-page-button-icon mud-profile-page-delete-icon"/>
-                        Delete Account
-                    </MudButton>
-                </div>
-            </div>
-        </div>
+        <ProfilePageSideDrawer
+            IsDrawerOpen="_isDrawerOpen"
+            CloseDrawer="CloseDrawer"
+            OpenEditProfileInfoModal="OpenEditProfileInfoModal"
+            OpenPasswordModal="OpenPasswordModal"
+            OpenSignOutModal="OpenSignOutModal"
+            OpenAccountDeletionModal="OpenAccountDeletionModal"
+        />
     }
     else
     {
