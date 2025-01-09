@@ -57,7 +57,7 @@
             {
                 await AuthService.SetAuthState(signInResponse);
                 ToastService.ShowToast($"Welcome Back {signInResponse.Data.User?.Username}", ToastStatus.Success);
-                NavigationManager.NavigateTo(AppRoutes.HomeUrl);
+                NavigationManager.NavigateTo(AppRoutes.HomeUrl, forceLoad: true);
             }
         }
         catch (Exception ex)

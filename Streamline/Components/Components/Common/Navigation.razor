@@ -49,7 +49,14 @@
 
     private void NavigateTo(string url)
     {
-        NavigationManager.NavigateTo(url);
+        if (url == AppRoutes.HomeUrl)
+        {
+            NavigationManager.NavigateTo(url, true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo(url);
+        }
     }
 
 }

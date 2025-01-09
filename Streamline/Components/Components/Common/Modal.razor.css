@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1001;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
@@ -47,25 +47,4 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
-}
-
-.action-button {
-    background-color: var(--button-color);
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-    width: fit-content;
-    height: 40px;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-shadow: var(--action-box-shadow);
-    font-family: var(--font-poppins-family), sans-serif;
-    font-weight: var(--font-weight-bold);
-    font-size: 1.1rem;
-    color: var(--text-color);
 }

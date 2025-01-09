@@ -1,25 +1,37 @@
 ﻿@if (IsVisible)
 {
-    <div class="modal-overlay @ModalClass" @onclick="CloseModalOnOverlayClick">
-        <div class="modal-content" style="@ModalStyle" @onclick:stopPropagation>
+    <div class="modal-overlay @String.ModalClass(IsVisible)" @onclick="CloseModalOnOverlayClick">
+        <div class="modal-content" style="@String.ModalStyle(Width,Height)" @onclick:stopPropagation>
             <button class="close-button" @onclick="CloseModal">
-                <MudIcon Icon="@Icons.Material.Filled.Close" Class="toast-component-message-icon scale-on-interaction"
+                <MudIcon Icon="@Icons.Material.Filled.Close" Class="mud-toast-component-message-icon scale-on-interaction"
                          Style="fill: var(--text-color) !important;"/>
             </button>
             <h4>@Title</h4>
             <p>@Description</p>
             @ChildContent
-            <button class="action-button scale-on-interaction" @onclick="OnButtonClick">
+            <MudButton Class="mud-modal-component-action-button scale-on-interaction" OnClick="OnButtonClick">
                 @if (ProfileImageIcon)
                 {
-                    <MudIcon Icon="@Icons.Material.Filled.UploadFile" Class="modal-component-button-icon-container"/>
+                    <MudIcon Icon="@Icons.Material.Filled.UploadFile" Class="mud-modal-component-button-icon-container"/>
+                }
+                @if (EditProfileInfoIcon)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mud-modal-component-button-icon-container"/>
                 }
                 @if (PasswordResetIcon)
                 {
-                    <MudIcon Icon="@Icons.Material.Filled.Lock" Class="modal-component-button-icon-container"/>
+                    <MudIcon Icon="@Icons.Material.Filled.Lock" Class="mud-modal-component-button-icon-container"/>
+                }
+                @if (SignOutIcon)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.ExitToApp" Class="mud-modal-component-button-icon-container"/>
+                }
+                @if (DeleteAccountIcon)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mud-modal-component-button-icon-container"/>
                 }
                 <span>@ButtonText</span>
-            </button>
+            </MudButton>
         </div>
     </div>
 }
@@ -36,10 +48,10 @@
     [Parameter] public string Height { get; set; } = "auto";
     [Parameter] public bool CloseOnOverlayClick { get; set; } = true;
     [Parameter] public bool ProfileImageIcon { get; set; }
+    [Parameter] public bool EditProfileInfoIcon { get; set; }
     [Parameter] public bool PasswordResetIcon { get; set; }
-
-    private string ModalClass => IsVisible ? "modal-show" : "modal-hide";
-    private string ModalStyle => $"width: {Width}; height: {Height};";
+    [Parameter] public bool SignOutIcon { get; set; }
+    [Parameter] public bool DeleteAccountIcon { get; set; }
 
     private async Task CloseModal()
     {

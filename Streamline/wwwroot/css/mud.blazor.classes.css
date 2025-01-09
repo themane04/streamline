@@ -55,7 +55,8 @@
 
 .mud-auth-button-disabled:hover,
 .mud-auth-button-disabled:visited,
-.mud-auth-button-disabled:active {    background-color: var(--light-gray-color);
+.mud-auth-button-disabled:active {
+    background-color: var(--light-gray-color);
     color: var(--grayed-out-color);
 }
 
@@ -77,7 +78,7 @@
     padding: 10px;
 }
 
-.movie-item-close-button {
+.mud-movie-item-close-button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -88,18 +89,65 @@
     border-radius: 20px;
 }
 
-.toast-component-message-icon {
+.mud-toast-component-message-icon {
     fill: var(--white-color) !important;
     flex-shrink: 0;
     width: 24px;
     height: 24px;
 }
 
-.modal-component-button-icon-container {
+.mud-modal-component-button-icon-container {
     display: inline-flex;
     align-items: center;
     margin-right: 8px;
     height: 24px;
     width: 24px;
     fill: var(--text-color) !important;
+}
+
+.mud-profile-page-button-icon {
+    width: 35px;
+    height: 35px;
+    fill: var(--text-color)
+}
+
+.mud-profile-page-delete-icon{
+    fill: rgba(220, 53, 69);
+}
+
+.mud-modal-component-action-button {
+    background-color: var(--button-color);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    width: fit-content;
+    height: 40px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: var(--action-box-shadow);
+    font-family: var(--font-poppins-family), sans-serif;
+    font-weight: var(--font-weight-bold);
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.mud-profile-page-button-link {
+    background: none;
+    border: none;
+    color: inherit;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mud-profile-page-button-link:hover {
+    background-color: transparent;
 }

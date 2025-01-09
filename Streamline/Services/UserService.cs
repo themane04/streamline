@@ -148,9 +148,7 @@ public class UserService
         var content = new MultipartFormDataContent();
         try
         {
-            Console.WriteLine("Opening file stream...");
             var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
-            Console.WriteLine($"Stream Length: {stream.Length}, Can Read: {stream.CanRead}");
 
             var streamContent = new StreamContent(stream);
             streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
@@ -160,7 +158,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while preparing stream content: {ex.Message}");
+            _logger.LogError($"Error while preparing stream content: {ex.Message}");
             throw;
         }
 
@@ -172,15 +170,11 @@ public class UserService
 
         try
         {
-            Console.WriteLine("Sending request...");
             var response = await _httpClient.SendAsync(request);
-            Console.WriteLine($"Response Status: {response.StatusCode}");
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(jsonResponse);
 
                 var result = JsonSerializer.Deserialize<BackendResponse<AuthenticatedUser>>(jsonResponse,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -191,7 +185,7 @@ public class UserService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while sending request: {ex.Message}");
+            _logger.LogError($"Error while sending request: {ex.Message}");
             throw;
         }
     }
@@ -286,5 +280,25 @@ public class UserService
         }
 
         throw new Exception($"Failed to change password: {JsonSerializer.Serialize(errorResponse)}");
+    }
+    
+    public async Task<BackendResponseNoData> DeleteAccountAsync(int? id)
+    {
+        var accessToken = await SecureStorage.GetAsync("accessToken");
+        AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
+
+        var request = new HttpRequestMessage(HttpMethod.Delete,
+            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return new BackendResponseNoData();
+        }
+
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        throw new Exception($"Failed to delete user: {errorResponse}");
     }
 }
