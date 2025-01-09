@@ -225,7 +225,7 @@ public class UserService
             var result = await response.Content.ReadFromJsonAsync<BackendResponse<AuthenticatedUser>>();
             if (result == null)
             {
-                throw new Exception("Failed to parse API response.");
+                _logger.LogWarning("Failed to parse API response.");
             }
 
             return result;
@@ -296,6 +296,7 @@ public class UserService
 
         if (response.IsSuccessStatusCode)
         {
+            _logger.LogInformation($"User with ID {id} deleted successfully");
             return new BackendResponseNoData();
         }
 

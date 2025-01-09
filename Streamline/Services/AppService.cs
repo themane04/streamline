@@ -36,7 +36,6 @@ public class AppService
 
         try
         {
-            _logger.LogInformation("Initializing AppService...");
             var refreshToken = await SecureStorage.GetAsync("refreshToken");
             var accessToken = await SecureStorage.GetAsync("accessToken");
             var userJson = await SecureStorage.GetAsync("user");
@@ -87,7 +86,7 @@ public class AppService
             if (_navigationManager.ToBaseRelativePath(_navigationManager.Uri).TrimEnd('/') ==
                 AppRoutes.LoginUrl.TrimStart('/'))
             {
-                _logger.LogInformation("Initialization successful. Redirecting to HomeUrl.");
+                _logger.LogInformation("Initialization successful. Redirecting to home page.");
                 _navigationManager.NavigateTo(AppRoutes.HomeUrl);
             }
         }
