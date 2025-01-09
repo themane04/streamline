@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     justify-content: end;
+    font-family: var(--font-montserrat-family), sans-serif;
 }
 
 .homepage-search-content {
@@ -35,6 +36,8 @@
 
 .homepage-search-input::placeholder {
     color: var(--black-color);
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
 }
 
 .homepage-movies-grid {
