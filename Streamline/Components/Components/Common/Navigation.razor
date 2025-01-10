@@ -14,7 +14,6 @@
 </nav>
 
 @code {
-    [Inject] private AuthService AuthService { get; set; } = default!;
     private string CurrentUrl { get; set; } = string.Empty;
     private AuthenticatedUser? User => AuthService.User;
 
