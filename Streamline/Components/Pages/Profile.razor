@@ -252,8 +252,7 @@
 
                 if (response?.Data != null)
                 {
-                    AuthService.User.ProfileImage = response.Data.ProfileImage;
-                    StateHasChanged();
+                    await AuthService.UpdateUserData(response.Data);
                     ToastService.ShowToast("Profile picture updated successfully", ToastStatus.Success);
                     _isImageModalVisible = false;
                 }
@@ -314,11 +313,17 @@
 
             try
             {
-                await UserService.UpdateProfileAsync(AuthService.User.Id, _editedUsername, _editedEmail);
-                AuthService.User.Username = _editedUsername;
-                AuthService.User.Email = _editedEmail;
-                _isEditProfileInfoModalVisible = false;
-                ToastService.ShowToast("Profile updated successfully", ToastStatus.Success);
+                var response = await UserService.UpdateProfileAsync(AuthService.User.Id, _editedUsername, _editedEmail);
+                if (response?.Data != null)
+                {
+                    await AuthService.UpdateUserData(response.Data);
+                    _isEditProfileInfoModalVisible = false;
+                    ToastService.ShowToast("Profile updated successfully", ToastStatus.Success);
+                }
+                else
+                {
+                    ToastService.ShowToast("Failed to update profile", ToastStatus.Error);
+                }
             }
             catch (Exception e)
             {

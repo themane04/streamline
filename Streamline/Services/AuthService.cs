@@ -35,6 +35,16 @@ public class AuthService
 
         NotifyStateChanged();
     }
+    
+    public async Task UpdateUserData(AuthenticatedUser userResponse)
+    {
+        User = userResponse;
+        await SecureStorage.SetAsync("user", JsonSerializer.Serialize(userResponse));
+
+        _logger.LogInformation($"Updated User: {JsonSerializer.Serialize(userResponse)}");
+
+        NotifyStateChanged();
+    }
 
     public void ClearAuthState()
     {

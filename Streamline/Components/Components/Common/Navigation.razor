@@ -9,13 +9,19 @@
         <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
     </a>
     <a @onclick="() => NavigateTo(AppRoutes.ProfileUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@AuthService?.User?.ProfileImage" alt="Profile" class="navigation-nav-icon navigation-profile-image"/>
+        <img src="@User?.ProfileImage" alt="Profile" class="navigation-nav-icon navigation-profile-image"/>
     </a>
 </nav>
 
 @code {
     [Inject] private AuthService AuthService { get; set; } = default!;
     private string CurrentUrl { get; set; } = string.Empty;
+    private AuthenticatedUser? User => AuthService.User;
+
+    public void Dispose()
+    {
+        AuthService.OnChange -= StateHasChanged;
+    }
 
     protected override void OnInitialized()
     {
@@ -26,6 +32,7 @@
             return;
         }
 
+        AuthService.OnChange += StateHasChanged;
         NavigationManager.LocationChanged += OnLocationChanged;
     }
 
