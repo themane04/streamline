@@ -1,6 +1,6 @@
 ﻿.navigation-bottom-nav {
     position: fixed;
-    bottom: 5vh;
+    bottom: 10px;
     left: 0;
     right: 0;
     max-width: 378px;

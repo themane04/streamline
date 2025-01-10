@@ -146,47 +146,54 @@ public class UserService
         var accessToken = await SecureStorage.GetAsync("accessToken");
         AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
 
-        var content = new MultipartFormDataContent();
+        byte[] fileBytes;
         try
         {
-            var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            if (file.Size > 50 * 1024 * 1024)
+            {
+                _logger.LogError("File size exceeds the maximum allowed limit of 50 MB.");
+                throw new InvalidOperationException("File size exceeds the maximum allowed limit of 50 MB.");
+            }
 
-            var streamContent = new StreamContent(stream);
+            using (var ms = new MemoryStream())
+            {
+                using (var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024))
+                {
+                    await stream.CopyToAsync(ms);
+                }
+
+                fileBytes = ms.ToArray();
+            }
+
+            var content = new MultipartFormDataContent();
+            var streamContent = new StreamContent(new MemoryStream(fileBytes));
             streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
             content.Add(streamContent, "profile_image", file.Name);
 
-            content.Headers.ContentLength = stream.Length;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error while preparing stream content: {ex.Message}");
-            throw;
-        }
+            var request = new HttpRequestMessage(HttpMethod.Put,
+                $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}")
+            {
+                Content = content
+            };
 
-        var request = new HttpRequestMessage(HttpMethod.Put,
-            $"{Environments.GetBackendApiUrl()}{BackendEndpoints.UpdateProfile}/{id}")
-        {
-            Content = content
-        };
-
-        try
-        {
             var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-
                 var result = JsonSerializer.Deserialize<BackendResponse<AuthenticatedUser>>(jsonResponse,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 return result;
             }
 
-            throw new Exception($"Failed to update profile picture: {await response.Content.ReadAsStringAsync()}");
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            _logger.LogError(
+                $"Failed to update profile picture. Status: {response.StatusCode}, Response: {errorResponse}");
+            throw new Exception($"Failed to update profile picture: {errorResponse}");
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error while sending request: {ex.Message}");
+            _logger.LogError($"Error: {ex.Message}");
             throw;
         }
     }
@@ -235,7 +242,8 @@ public class UserService
         throw new Exception($"Failed to update user: {errorResponse}");
     }
 
-    public async Task<BackendResponse<JsonElement>> ResetPasswordAsync(int? id, string oldPassword, string newPassword, string confirmPassword)
+    public async Task<BackendResponse<JsonElement>> ResetPasswordAsync(int? id, string oldPassword, string newPassword,
+        string confirmPassword)
     {
         var accessToken = await SecureStorage.GetAsync("accessToken");
         AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
@@ -282,7 +290,7 @@ public class UserService
 
         throw new Exception($"Failed to change password: {JsonSerializer.Serialize(errorResponse)}");
     }
-    
+
     public async Task<BackendResponseNoData> DeleteAccountAsync(int? id)
     {
         var accessToken = await SecureStorage.GetAsync("accessToken");

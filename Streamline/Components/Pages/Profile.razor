@@ -236,9 +236,9 @@
     {
         var file = e.File;
 
-        if (file.Size > 5 * 1024 * 1024)
+        if (file.Size > 50 * 1024 * 1024)
         {
-            ToastService.ShowToast("File size exceeds 5 MB", ToastStatus.Warning);
+            ToastService.ShowToast("File size exceeds 50 MB", ToastStatus.Warning);
             return;
         }
 
@@ -246,11 +246,14 @@
         {
             if (AuthService.User != null)
             {
+                ToastService.ShowToast("Uploading file...", ToastStatus.Info);
+
                 var response = await UserService.UpdateProfilePictureAsync(AuthService.User.Id, file);
 
                 if (response?.Data != null)
                 {
                     AuthService.User.ProfileImage = response.Data.ProfileImage;
+                    StateHasChanged();
                     ToastService.ShowToast("Profile picture updated successfully", ToastStatus.Success);
                     _isImageModalVisible = false;
                 }
@@ -290,7 +293,7 @@
                 _editedEmail = AuthService.User.Email;
                 return;
             }
-            
+
             if (HasUserDataChanged)
             {
                 ToastService.ShowToast("No changes detected", ToastStatus.Info);
