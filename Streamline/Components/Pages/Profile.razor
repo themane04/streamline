@@ -71,7 +71,8 @@
 />
 <LogoTitle Title="Profile"/>
 <div class="profile-page-drawer-toggle" @onclick="OpenDrawer">
-    <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mud-profile-page-button-icon scale-on-interaction"/>
+    <MudIcon Icon="@Icons.Material.Filled.Settings"
+             Class="mud-profile-page-button-icon mud-profile-page-settings-button-icon scale-on-interaction"/>
 </div>
 <div class="profile-page-outer-container">
     @if (AuthService.User != null)

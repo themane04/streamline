@@ -140,6 +140,7 @@
     {
         if (_module is not null)
         {
+            await _module.InvokeVoidAsync("disposeOnScrollBottom");
             await _module.DisposeAsync();
         }
 

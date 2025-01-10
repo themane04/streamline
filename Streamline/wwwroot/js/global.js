@@ -1,7 +1,12 @@
 let isThrottled = false;
+let scrollHandler = null;
 
 export function onScrollBottom(dotnetHelper) {
-    window.addEventListener('scroll', () => {
+    if (scrollHandler) {
+        window.removeEventListener('scroll', scrollHandler);
+    }
+
+    scrollHandler = () => {
         if (isThrottled) return;
 
         const scrollPosition = window.innerHeight + window.scrollY;
@@ -24,7 +29,16 @@ export function onScrollBottom(dotnetHelper) {
                 })
                 .catch(error => console.error("Error invoking LoadNextPage:", error));
         }
-    });
+    };
+
+    window.addEventListener('scroll', scrollHandler);
+}
+
+export function disposeOnScrollBottom() {
+    if (scrollHandler) {
+        window.removeEventListener('scroll', scrollHandler);
+        scrollHandler = null;
+    }
 }
 
 export function triggerFileUpload(elementId) {

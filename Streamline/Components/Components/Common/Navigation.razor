@@ -55,14 +55,7 @@
 
     private void NavigateTo(string url)
     {
-        if (url == AppRoutes.HomeUrl)
-        {
-            NavigationManager.NavigateTo(url, true);
-        }
-        else
-        {
-            NavigationManager.NavigateTo(url);
-        }
+        NavigationManager.NavigateTo(url);
     }
 
 }
