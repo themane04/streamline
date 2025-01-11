@@ -3,15 +3,16 @@
 <LogoTitle Title="Sign Up" LogoWidth="150px" LogoHeight="150px"/>
 <div class="sign-up-form">
     <input type="text" placeholder="Username" class="@String.GetSignUpInputFieldClass(_hasUsernameError)"
-           @bind="_username"/>
-    <input type="email" placeholder="E-Mail" class="@String.GetSignUpInputFieldClass(_hasEmailError)" @bind="_email"/>
+           @bind="_username" @bind:after="SaveDataToStorage"/>
+    <input type="email" placeholder="E-Mail" class="@String.GetSignUpInputFieldClass(_hasEmailError)" @bind="_email"
+           @bind:after="SaveDataToStorage"/>
     <input type="password" placeholder="Password" class="@String.GetSignUpInputFieldClass(_hasPasswordError)"
-           @bind="_password"/>
+           @bind="_password" @bind:after="SaveDataToStorage"/>
     <input type="password" placeholder="Confirm Password"
            class="@String.GetSignUpInputFieldClass(_hasConfirmPasswordError)"
-           @bind="_confirmPassword"/>
+           @bind="_confirmPassword" @bind:after="SaveDataToStorage"/>
     <div class="terms-container">
-        <input type="checkbox" id="termsCheckbox" @bind="_acceptedTerms"/>
+        <input type="checkbox" id="termsCheckbox" @bind="_acceptedTerms" @bind:after="SaveDataToStorage"/>
         <label for="termsCheckbox" class="terms-label">
             I accept the <a href="@AppRoutes.TermsUrl">Terms and Conditions</a>
         </label>
@@ -22,7 +23,10 @@
 </div>
 <div class="sign-up-link-container">
     <p class="sign-up-question-text">Already have an account?</p>
-    <a href="@AppRoutes.LogInUrl" class="sign-up-link scale-on-interaction">Sign In</a>
+    <a href="@AppRoutes.LogInUrl" class="sign-up-link scale-on-interaction"
+       @onclick="StorageService.ClearSignUpDataAsync">
+        Sign In
+    </a>
 </div>
 
 @code {
@@ -36,6 +40,31 @@
     private bool _hasPasswordError;
     private bool _hasConfirmPasswordError;
     private bool _acceptedTerms;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var formData = await StorageService.RetrieveSignUpDataAsync();
+
+        _username = formData.GetValueOrDefault("Username", string.Empty);
+        _email = formData.GetValueOrDefault("Email", string.Empty);
+        _password = formData.GetValueOrDefault("Password", string.Empty);
+        _confirmPassword = formData.GetValueOrDefault("ConfirmPassword", string.Empty);
+        _acceptedTerms = bool.TryParse(formData.GetValueOrDefault("AcceptedTerms", "false"), out var terms) && terms;
+    }
+
+    private async Task SaveDataToStorage()
+    {
+        var formData = new Dictionary<string, string>
+        {
+            { "Username", _username },
+            { "Email", _email },
+            { "Password", _password },
+            { "ConfirmPassword", _confirmPassword },
+            { "AcceptedTerms", _acceptedTerms.ToString() }
+        };
+
+        await StorageService.SaveSignUpDataAsync(formData);
+    }
 
     private async Task HandleSignUp()
     {
@@ -93,6 +122,7 @@
             {
                 ToastService.ShowToast($"Account created for {_username}", ToastStatus.Success);
                 NavigationManager.NavigateTo(AppRoutes.LogInUrl);
+                StorageService.ClearSignUpDataAsync();
             }
         }
         catch (Exception ex)

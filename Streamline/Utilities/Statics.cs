@@ -106,4 +106,6 @@ public class Statics
                 "Yes, the Profile page includes an option to delete your account. Be cautious as this action is irreversible and will remove all your data from the platform."
         }
     };
+    
+    public static readonly string SignUpDataStorageKey = "SignUpData";
 }
