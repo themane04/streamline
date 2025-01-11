@@ -1,15 +1,22 @@
 ﻿<nav class="navigation-bottom-nav">
-    <a @onclick="() => NavigateTo(AppRoutes.HomeUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("home")" alt="Home" class="navigation-nav-icon"/>
+    <a @onclick="() => NavigateTo(AppRoutes.HomeUrl)" class="navigation-nav-item">
+        <MudIcon Icon="@GetIcon("home")" Class="mud-navigation-component-icon"/>
     </a>
-    <a @onclick="() => NavigateTo(AppRoutes.WatchlistUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("watchlist")" alt="Watchlist" class="navigation-nav-icon"/>
+    <a @onclick="() => NavigateTo(AppRoutes.WatchlistUrl)" class="navigation-nav-item">
+        <MudIcon Icon="@GetIcon("watchlist")" Class="mud-navigation-component-icon"/>
     </a>
-    <a @onclick="() => NavigateTo(AppRoutes.FavoritesUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@GetIcon("favorites")" alt="Favorites" class="navigation-nav-icon"/>
+    <a @onclick="() => NavigateTo(AppRoutes.FavoritesUrl)" class="navigation-nav-item">
+        <MudIcon Icon="@GetIcon("favorites")" Class="mud-navigation-component-icon"/>
     </a>
-    <a @onclick="() => NavigateTo(AppRoutes.ProfileUrl)" class="navigation-nav-item scale-on-interaction">
-        <img src="@User?.ProfileImage" alt="Profile" class="navigation-nav-icon navigation-profile-image"/>
+    <a @onclick="() => NavigateTo(AppRoutes.ProfileUrl)" class="navigation-nav-item">
+        @if (!string.IsNullOrEmpty(User?.ProfileImage))
+        {
+            <img src="@User.ProfileImage" alt="Profile" class="mud-navigation-component-icon navigation-profile-image"/>
+        }
+        else
+        {
+            <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Class="mud-navigation-component-icon"/>
+        }
     </a>
 </nav>
 
@@ -43,14 +50,28 @@
 
     private string GetIcon(string page)
     {
-        if (page == "home" && (CurrentUrl.Contains(AppRoutes.HomeUrl) || CurrentUrl.Contains(AppRoutes.MovieDetailView)))
+        if (page == "home")
         {
-            return $"images/assets/navigation/active/{page}_active.png";
+            return CurrentUrl.Contains(AppRoutes.HomeUrl) || CurrentUrl.Contains(AppRoutes.MovieDetailView)
+                ? Icons.Material.Filled.Home
+                : Icons.Material.Outlined.Home;
         }
 
-        return CurrentUrl.Contains(page)
-            ? $"images/assets/navigation/active/{page}_active.png"
-            : $"images/assets/navigation/{page}.png";
+        if (page == "watchlist")
+        {
+            return CurrentUrl.Contains(AppRoutes.WatchlistUrl)
+                ? Icons.Material.Filled.Bookmark
+                : Icons.Material.Outlined.BookmarkBorder;
+        }
+
+        if (page == "favorites")
+        {
+            return CurrentUrl.Contains(AppRoutes.FavoritesUrl)
+                ? Icons.Material.Filled.Favorite
+                : Icons.Material.Outlined.FavoriteBorder;
+        }
+
+        return Icons.Material.Outlined.AccountCircle;
     }
 
     private void NavigateTo(string url)

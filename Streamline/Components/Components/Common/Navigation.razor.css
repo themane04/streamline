@@ -18,20 +18,10 @@
 
 .navigation-nav-item {
     text-decoration: none;
-}
-
-.navigation-nav-icon {
-    width: 35px;
-    height: 35px;
-    transition: transform 0.2s ease;
-    object-fit: cover;
+    cursor: pointer;
 }
 
 .navigation-profile-image {
     border: 2px solid var(--primary-color);
     border-radius: 50%;
-}
-
-.navigation-nav-icon:hover {
-    transform: scale(1.2);
 }

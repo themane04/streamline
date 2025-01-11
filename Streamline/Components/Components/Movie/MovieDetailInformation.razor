@@ -1,42 +1,36 @@
 ﻿<div class="movie-detail-information-text-content-container">
-    <div class="movie-detail-information-text-details-container movie-detail-information-tagline-container"
-         style="display: @(string.IsNullOrWhiteSpace(MovieTagline) ? "none" : "flex");">
-        <p class="movie-detail-information-tagline">
-            <q>@MovieTagline</q>
-        </p>
-    </div>
-    @if (String.ImageStringAvailable(MovieBelongsToCollection?.FullPosterPath))
+    @if (!string.IsNullOrWhiteSpace(MovieTagline))
     {
-        <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
-             class="movie-detail-information-collection-image scale-on-interaction"/>
-    }
-    else if (!string.IsNullOrWhiteSpace(MovieBelongsToCollection?.Name))
-    {
-        <div class="movie-detail-information-text-details-container">
-            <p class="movie-detail-information-header-text">Collection:</p>
-            <p>@MovieBelongsToCollection?.Name</p>
-        </div>
-    }
-    else
-    {
-        <div class="movie-detail-information-text-details-container">
-            <p class="movie-detail-information-header-text">Collection:</p>
-            <p>No Collection</p>
+        <div class="movie-detail-information-text-details-container movie-detail-information-tagline-container">
+            <p class="movie-detail-information-tagline">
+                <q>@MovieTagline</q>
+            </p>
         </div>
     }
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">Production Companies:</p>
+        @if (String.ImageStringAvailable(MovieBelongsToCollection?.FullPosterPath))
+        {
+            <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
+                 class="movie-detail-information-collection-image scale-on-interaction"/>
+        }
+        else if (!string.IsNullOrWhiteSpace(MovieBelongsToCollection?.Name))
+        {
+            <p>@MovieBelongsToCollection?.Name</p>
+        }
+        else
+        {
+            <p>No Collection</p>
+        }
+    </div>
+    <div class="movie-detail-information-text-details-container">
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Business" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Production Companies</p>
+        </div>
         @if (MovieProductionCompanies?.Count > 0)
         {
             <p class="movie-detail-information-company-inner-container">
-                @for (var i = 0; i < MovieProductionCompanies?.Count; i++)
-                {
-                    @MovieProductionCompanies[i].Name
-                    @if (i < MovieProductionCompanies.Count - 1)
-                    {
-                        <text>, </text>
-                    }
-                }
+                @string.Join(", ", MovieProductionCompanies.Select(company => company.Name))
             </p>
         }
         else
@@ -45,51 +39,38 @@
         }
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">Budget:</p>
-        @if (MovieBudget == 0)
-        {
-            <p>Not Available</p>
-        }
-        else
-        {
-            <p>@MovieBudget.ToString("C0", new CultureInfo("en-US"))</p>
-        }
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Budget</p>
+        </div>
+        <p>@(MovieBudget > 0 ? MovieBudget.ToString("C0", new CultureInfo("en-US")) : "Not Available")</p>
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">Revenue:</p>
-        @if (MovieRevenue == 0)
-        {
-            <p>Not Available</p>
-        }
-        else
-        {
-            <p>@MovieRevenue.ToString("C0", new CultureInfo("en-US"))</p>
-        }
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.MoneyOff" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Revenue</p>
+        </div>
+        <p>@(MovieRevenue > 0 ? MovieRevenue.ToString("C0", new CultureInfo("en-US")) : "Not Available")</p>
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">Runtime:</p>
-        @if (MovieRuntime == 0)
-        {
-            <p>Not Available</p>
-        }
-        else
-        {
-            <p>@MovieRuntime.ToString() minutes</p>
-        }
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Runtime</p>
+        </div>
+        <p>@(MovieRuntime > 0 ? $"{MovieRuntime} minutes" : "Not Available")</p>
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">Overview:</p>
-        @if (!string.IsNullOrWhiteSpace(MovieOverview))
-        {
-            <p>@MovieOverview</p>
-        }
-        else
-        {
-            <p>No Overview</p>
-        }
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Description" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Overview</p>
+        </div>
+        <p class="movie-detail-information-text-justify">@(string.IsNullOrWhiteSpace(MovieOverview) ? "No Overview" : MovieOverview)</p>
     </div>
     <div class="movie-detail-information-text-details-container movie-detail-information-popularity-container">
-        <p class="movie-detail-information-header-text">Popularity:</p>
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Star" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">Popularity</p>
+        </div>
         @if (MoviePopularity != 0)
         {
             <MoviePopularityChart MoviePopularity="MoviePopularity"/>
@@ -100,7 +81,10 @@
         }
     </div>
     <div class="movie-detail-information-text-details-container">
-        <p class="movie-detail-information-header-text">More Like This:</p>
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Movie" Class="mud-movie-detail-information-component-icon"/>
+            <p class="movie-detail-information-header-text">More Like This</p>
+        </div>
         @if (SimilarMovies.Count > 0)
         {
             <div class="movie-detail-information-similar-movies-container">
@@ -111,9 +95,7 @@
                         PosterHeight="195px"
                         PosterWidth="138px"
                         PosterMt="-100px"
-                        PosterMl="30px"
                         RatingVoteMt="-100px"
-                        RatingVoteMl="25px"
                         OnMovieSelected="@(id => NavigationManager.NavigateTo($"{AppRoutes.MovieDetailView}/{id}", forceLoad: true))"
                     />
                 }
@@ -140,7 +122,7 @@
 
     private async Task NavigateToSimilarMovie(int movieId)
     {
-        await Task.Run(() => NavigationManager.NavigateTo($"/movie/{movieId}", forceLoad: true));
+        await Task.Run(() => NavigationManager.NavigateTo($"{AppRoutes.MovieDetailView}/{movieId}", forceLoad: true));
     }
 
 }
