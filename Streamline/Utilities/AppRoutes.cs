@@ -9,6 +9,7 @@ public static class AppRoutes
     public const  string WatchlistUrl = "/watchlist";
     public const  string FavoritesUrl = "/favorites";
     public const  string ProfileUrl = "/profile";
+    public const  string FAQUrl = "/FAQ";
 
     public static readonly List<string> ExcludedRoutes = new()
     {

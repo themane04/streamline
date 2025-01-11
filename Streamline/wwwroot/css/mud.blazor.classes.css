@@ -156,3 +156,12 @@
 .mud-profile-page-button-link:hover {
     background-color: transparent;
 }
+
+.mud-faq-page-icon-left,
+.mud-faq-page-icon-right {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    fill: var(--text-color);
+    transition: transform 0.3s ease;
+}

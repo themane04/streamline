@@ -1,0 +1,37 @@
+﻿@page "/FAQ"
+
+<LogoTitle Title="FAQ"/>
+
+<div class="faq-page-inner-container">
+    @foreach (var faq in _faQs)
+    {
+        <div class="faq-page-item scale-on-interaction">
+            <button class="faq-page-question" @onclick="() => ToggleFaq(faq.Id)">
+                <MudIcon Icon="@Icons.Material.Filled.Help" Class="mud-faq-page-icon-left" />
+                <span>@faq.Question</span>
+                <MudIcon Icon="@faq.Icon" Class="mud-faq-page-icon-right" />
+            </button>
+            @if (faq.IsVisible)
+            {
+                <div class="faq-page-answer">
+                    @faq.Answer
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private readonly List<FAQItem> _faQs = String.FAQs;
+
+    private void ToggleFaq(int id)
+    {
+        var faq = _faQs.FirstOrDefault(f => f.Id == id);
+        if (faq != null)
+        {
+            faq.IsVisible = !faq.IsVisible;
+            faq.Icon = faq.IsVisible ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown;
+        }
+    }
+
+}
