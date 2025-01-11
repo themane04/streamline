@@ -390,6 +390,7 @@
     private Task SignOut()
     {
         AuthService.ClearAuthState();
+        HomepageService.ResetHomepageMovieState();
         ToastService.ShowToast("Signed out successfully", ToastStatus.Success);
         NavigationManager.NavigateTo(AppRoutes.LogInUrl);
         return Task.CompletedTask;

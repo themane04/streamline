@@ -23,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ToastService>();
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<StorageService>();
+        builder.Services.AddSingleton<HomepageService>();
 
         ConfigureLogging(builder.Logging);
 #if DEBUG

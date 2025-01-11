@@ -59,13 +59,27 @@
     private bool _isSearchActive;
     private string _searchQuery = "";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _dotNetRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (HomepageService.Movies != null && HomepageService.Movies.Any())
+        {
+            _movies = HomepageService.Movies;
+            _currentPage = HomepageService.CurrentPage;
+            return;
+        }
+
         _isInitialLoading = true;
+        _currentPage = 1;
         try
         {
             _movies = await MovieService.GetPopularMoviesAsync(_currentPage);
+            HomepageService.Movies = _movies;
+            HomepageService.CurrentPage = _currentPage;
         }
         finally
         {
@@ -88,6 +102,8 @@
             if (newMovies.Count > 0)
             {
                 _movies?.AddRange(newMovies);
+                HomepageService.Movies = _movies;
+                HomepageService.CurrentPage = _currentPage;
                 StateHasChanged();
             }
         }
@@ -125,21 +141,20 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/global.js");
+        _module ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/global.js");
 
-            if (_module is not null)
-            {
-                await _module.InvokeVoidAsync("onScrollBottom", _dotNetRef);
-            }
+        if (_module is not null)
+        {
+            await _module.InvokeVoidAsync("initializeScrollListener", _dotNetRef);
         }
     }
+
 
     public async ValueTask DisposeAsync()
     {
         if (_module is not null)
         {
+            await _module.InvokeVoidAsync("cleanupScrollListener");
             await _module.DisposeAsync();
         }
 

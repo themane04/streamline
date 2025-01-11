@@ -6,10 +6,10 @@ namespace Streamline.Services;
 
 public class StorageService
 {
-    private readonly ILogger<AuthService> _logger;
+    private readonly ILogger<StorageService> _logger;
 
 
-    public StorageService(ILogger<AuthService> logger)
+    public StorageService(ILogger<StorageService> logger)
     {
         _logger = logger;
         _logger.LogInformation("Initialized");

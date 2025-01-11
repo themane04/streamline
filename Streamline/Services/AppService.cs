@@ -11,6 +11,7 @@ public class AppService
 {
     private readonly AuthService _authService;
     private readonly UserService _userService;
+    private readonly HomepageService _homepageService;
     private readonly NavigationManager _navigationManager;
     private readonly ILogger<AppService> _logger;
     private Timer? _refreshTokenTimer;
@@ -19,10 +20,11 @@ public class AppService
     private bool IsInitialized { get; set; }
 
     public AppService(AuthService authService, UserService userService, NavigationManager navigationManager,
-        ILogger<AppService> logger)
+        ILogger<AppService> logger, HomepageService homepageService)
     {
         _authService = authService;
         _userService = userService;
+        _homepageService = homepageService;
         _navigationManager = navigationManager;
         _logger = logger;
         _logger.LogInformation("Initialized");
@@ -48,6 +50,7 @@ public class AppService
                 string.IsNullOrEmpty(userJson))
             {
                 _authService.ClearAuthState();
+                _homepageService.ResetHomepageMovieState();
                 _navigationManager.NavigateTo(AppRoutes.LogInUrl);
                 return;
             }
@@ -58,6 +61,7 @@ public class AppService
             {
                 _logger.LogWarning("User deserialization failed.");
                 _authService.ClearAuthState();
+                _homepageService.ResetHomepageMovieState();
                 _navigationManager.NavigateTo(AppRoutes.LogInUrl);
                 return;
             }
@@ -94,6 +98,7 @@ public class AppService
         {
             _logger.LogError($"Error during initialization: {ex.Message}");
             _authService.ClearAuthState();
+            _homepageService.ResetHomepageMovieState();
             _navigationManager.NavigateTo(AppRoutes.LogInUrl);
         }
         finally
@@ -148,6 +153,7 @@ public class AppService
         {
             _logger.LogError($"Token refresh failed: {ex.Message}");
             _authService.ClearAuthState();
+            _homepageService.ResetHomepageMovieState();
             _navigationManager.NavigateTo(AppRoutes.LogInUrl);
         }
     }

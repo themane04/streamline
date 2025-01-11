@@ -1,7 +1,12 @@
 let isThrottled = false;
+let scrollListener = null;
 
-export function onScrollBottom(dotnetHelper) {
-    window.addEventListener('scroll', () => {
+export function initializeScrollListener(dotnetHelper) {
+    if (scrollListener) {
+        window.removeEventListener('scroll', scrollListener);
+    }
+
+    scrollListener = () => {
         if (isThrottled) return;
 
         const scrollPosition = window.innerHeight + window.scrollY;
@@ -24,8 +29,18 @@ export function onScrollBottom(dotnetHelper) {
                 })
                 .catch(error => console.error("Error invoking LoadNextPage:", error));
         }
-    });
+    };
+
+    window.addEventListener('scroll', scrollListener);
 }
+
+export function cleanupScrollListener() {
+    if (scrollListener) {
+        window.removeEventListener('scroll', scrollListener);
+        scrollListener = null;
+    }
+}
+
 
 export function triggerFileUpload(elementId) {
     const fileInput = document.getElementById(elementId);
