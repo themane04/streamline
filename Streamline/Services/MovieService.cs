@@ -41,7 +41,7 @@ public class MovieService
 
                 if (result?.Results != null)
                 {
-                    _logger.LogInformation($"{methodName}: Got {result.Results.Count} popular movies for page {page}");
+                    _logger.LogInformation($"{methodName}: Got {result.Results.Count} popular movies for page {page} {DateTime.Now}");
                     return result.Results;
                 }
             }

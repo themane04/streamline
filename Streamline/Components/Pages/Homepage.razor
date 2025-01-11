@@ -125,14 +125,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_module == null)
+        if (firstRender)
         {
             _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/global.js");
-        }
 
-        if (_module is not null)
-        {
-            await _module.InvokeVoidAsync("onScrollBottom", _dotNetRef);
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("onScrollBottom", _dotNetRef);
+            }
         }
     }
 
@@ -140,7 +140,6 @@
     {
         if (_module is not null)
         {
-            await _module.InvokeVoidAsync("disposeOnScrollBottom");
             await _module.DisposeAsync();
         }
 
