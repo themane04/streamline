@@ -39,7 +39,4 @@
       <AndroidAsset Include="wwwroot\images\assets\homepage\rating_star.png" />
       <AndroidAsset Include="wwwroot\images\assets\homepage\search_icon_button.png" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="wwwroot\images\assets\navigation\" />
-    </ItemGroup>
 </Project>
