@@ -1,31 +1,24 @@
 ﻿<MudButton OnClick="NavigateBack"
-           Class="scale-on-interaction"
-           Style="
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1;
-    background: rgba(255, 255, 255, 0.31);
-    border: none;
-    border-radius: 50%;
-    padding: 10px;
-    width: 42px;
-    height: 42px;
-    box-shadow: var(--action-box-shadow);
-    align-items: center;
-    justify-content: center;
-    display: flex;
-"
->
-    <img src="images/assets/navigation/back-arrow.png" alt="Back" style="height: 20px;width: 20px"/>
+           Class="scale-on-interaction mud-back-arrow-button-component-button"
+           Style="@ButtonStyle">
+    <img src="images/assets/navigation/back-arrow.png" alt="Back" class="back-arrow-button-component-button-image"/>
 </MudButton>
 
 @code {
-    [Parameter] public string BackUrl { get; set; } = AppRoutes.HomeUrl;
+    [Parameter] public string BackUrl { get; set; } = string.Empty;
+    [Parameter] public string Position { get; set; } = "absolute";
+    [Parameter] public string Top { get; set; } = "20px";
+    [Parameter] public string Left { get; set; } = "20px";
+
+    private string ButtonStyle => $@"
+        position: {Position};
+        top: {Top};
+        left: {Left};
+    ";
 
     private void NavigateBack()
     {
-        NavigationManager.NavigateTo(BackUrl, forceLoad: true);
+        NavigationManager.NavigateTo(BackUrl);
     }
 
 }

@@ -26,6 +26,55 @@
     outline: none;
 }
 
+.terms-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-family: var(--font-open-sans-family), sans-serif;
+}
+
+.terms-container input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.terms-container input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.terms-container input[type="checkbox"]:checked::before {
+    content: "✔";
+    color: var(--white-color);
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.terms-label a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.terms-label a:hover {
+    text-decoration: underline;
+    color: var(--secondary-color);
+}
+
 .sign-up-link-container {
     margin-top: 20px;
     font-size: 1.25rem;

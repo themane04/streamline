@@ -165,3 +165,17 @@
     fill: var(--text-color);
     transition: transform 0.3s ease;
 }
+
+.mud-back-arrow-button-component-button {
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.31);
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    width: 42px;
+    height: 42px;
+    box-shadow: var(--action-box-shadow);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

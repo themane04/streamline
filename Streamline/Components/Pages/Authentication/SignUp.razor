@@ -1,6 +1,6 @@
 ﻿@page "/signup"
 
-<LogoTitle Title="Sign Up"/>
+<LogoTitle Title="Sign Up" LogoWidth="150px" LogoHeight="150px"/>
 <div class="sign-up-form">
     <input type="text" placeholder="Username" class="@String.GetSignUpInputFieldClass(_hasUsernameError)"
            @bind="_username"/>
@@ -10,13 +10,19 @@
     <input type="password" placeholder="Confirm Password"
            class="@String.GetSignUpInputFieldClass(_hasConfirmPasswordError)"
            @bind="_confirmPassword"/>
+    <div class="terms-container">
+        <input type="checkbox" id="termsCheckbox" @bind="_acceptedTerms"/>
+        <label for="termsCheckbox" class="terms-label">
+            I accept the <a href="@AppRoutes.TermsUrl">Terms and Conditions</a>
+        </label>
+    </div>
     <MudButton Class="@String.AuthButtonClass(_isLoading)" Disabled="@_isLoading" OnClick="HandleSignUp">
         Sign Up
     </MudButton>
 </div>
 <div class="sign-up-link-container">
     <p class="sign-up-question-text">Already have an account?</p>
-    <a href="@AppRoutes.LoginUrl" class="sign-up-link scale-on-interaction">Sign In</a>
+    <a href="@AppRoutes.LogInUrl" class="sign-up-link scale-on-interaction">Sign In</a>
 </div>
 
 @code {
@@ -29,6 +35,7 @@
     private bool _hasEmailError;
     private bool _hasPasswordError;
     private bool _hasConfirmPasswordError;
+    private bool _acceptedTerms;
 
     private async Task HandleSignUp()
     {
@@ -71,6 +78,13 @@
             return;
         }
 
+        if (!_acceptedTerms)
+        {
+            ToastService.ShowToast("Please accept the terms and conditions", ToastStatus.Warning);
+            _isLoading = false;
+            return;
+        }
+
         try
         {
             var user = await UserService.SignUpUserAsync(_username, _email, _password, _confirmPassword);
@@ -78,7 +92,7 @@
             if (user != null)
             {
                 ToastService.ShowToast($"Account created for {_username}", ToastStatus.Success);
-                NavigationManager.NavigateTo(AppRoutes.LoginUrl);
+                NavigationManager.NavigateTo(AppRoutes.LogInUrl);
             }
         }
         catch (Exception ex)

@@ -1,9 +1,6 @@
 ﻿@page "/"
 
-<div>
-    <img src="images/logo/streamline_transparent.png" alt="Streamline Logo" class="sign-in-logo"/>
-    <p class="sign-in-streamline-title">Sign In</p>
-</div>
+<LogoTitle Title="Sign In" LogoWidth="150px" LogoHeight="150px"/>
 <div class="sign-in-form">
     <input type="text" placeholder="E-Mail" class="@String.GetSignInInputFieldClass(_hasEmailError)"
            @bind="_email"/>
@@ -14,7 +11,7 @@
 </div>
 <div class="sign-in-link-container">
     <p class="sign-in-question-text">Don’t have an account?</p>
-    <a href="@AppRoutes.SignupUrl" class="sign-in-link scale-on-interaction">Sign Up</a>
+    <a href="@AppRoutes.SignUpUrl" class="sign-in-link scale-on-interaction">Sign Up</a>
 </div>
 
 @code {

@@ -391,7 +391,7 @@
     {
         AuthService.ClearAuthState();
         ToastService.ShowToast("Signed out successfully", ToastStatus.Success);
-        NavigationManager.NavigateTo(AppRoutes.LoginUrl);
+        NavigationManager.NavigateTo(AppRoutes.LogInUrl);
         return Task.CompletedTask;
     }
 
@@ -402,7 +402,7 @@
             await UserService.DeleteAccountAsync(AuthService.User?.Id);
             AuthService.ClearAuthState();
             ToastService.ShowToast("Account deleted successfully", ToastStatus.Success);
-            NavigationManager.NavigateTo(AppRoutes.LoginUrl);
+            NavigationManager.NavigateTo(AppRoutes.LogInUrl);
         }
         catch
         {

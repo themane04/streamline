@@ -48,7 +48,7 @@ public class AppService
                 string.IsNullOrEmpty(userJson))
             {
                 _authService.ClearAuthState();
-                _navigationManager.NavigateTo(AppRoutes.LoginUrl);
+                _navigationManager.NavigateTo(AppRoutes.LogInUrl);
                 return;
             }
 
@@ -58,7 +58,7 @@ public class AppService
             {
                 _logger.LogWarning("User deserialization failed.");
                 _authService.ClearAuthState();
-                _navigationManager.NavigateTo(AppRoutes.LoginUrl);
+                _navigationManager.NavigateTo(AppRoutes.LogInUrl);
                 return;
             }
 
@@ -84,7 +84,7 @@ public class AppService
             ScheduleTokenRefresh();
 
             if (_navigationManager.ToBaseRelativePath(_navigationManager.Uri).TrimEnd('/') ==
-                AppRoutes.LoginUrl.TrimStart('/'))
+                AppRoutes.LogInUrl.TrimStart('/'))
             {
                 _logger.LogInformation("Initialization successful. Redirecting to home page.");
                 _navigationManager.NavigateTo(AppRoutes.HomeUrl);
@@ -94,7 +94,7 @@ public class AppService
         {
             _logger.LogError($"Error during initialization: {ex.Message}");
             _authService.ClearAuthState();
-            _navigationManager.NavigateTo(AppRoutes.LoginUrl);
+            _navigationManager.NavigateTo(AppRoutes.LogInUrl);
         }
         finally
         {
@@ -148,7 +148,7 @@ public class AppService
         {
             _logger.LogError($"Token refresh failed: {ex.Message}");
             _authService.ClearAuthState();
-            _navigationManager.NavigateTo(AppRoutes.LoginUrl);
+            _navigationManager.NavigateTo(AppRoutes.LogInUrl);
         }
     }
 }

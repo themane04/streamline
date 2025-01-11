@@ -13,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>();
         builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddMudServices();
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddScoped<AuthHeaderHelper>();
         builder.Services.AddSingleton<MovieServiceHelper>();
