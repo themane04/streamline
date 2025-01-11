@@ -103,9 +103,8 @@ else
             var watchlistResponse = await MovieService.IsMovieInWatchlist(Id);
             _isMovieInWatchlist = watchlistResponse?.Data != null;
         }
-        catch (Exception e)
+        catch
         {
-            Console.WriteLine(e);
             ToastService.ShowToast("An error occurred while checking if the movie is in the watchlist", ToastStatus.Error);
             _isMovieInWatchlist = false;
         }
@@ -115,9 +114,8 @@ else
             var favoritesResponse = await MovieService.IsMovieInFavorites(Id);
             _isMovieInFavorites = favoritesResponse?.Data != null;
         }
-        catch (Exception e)
+        catch
         {
-            Console.WriteLine(e);
             ToastService.ShowToast("An error occurred while checking if the movie is in favorites", ToastStatus.Error);
             _isMovieInFavorites = false;
         }
@@ -138,9 +136,8 @@ else
                 _isMovieInWatchlist = true;
                 StateHasChanged();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
                 ToastService.ShowToast("An error occurred while adding the movie to watchlist", ToastStatus.Error);
                 throw;
             }
@@ -162,9 +159,8 @@ else
                 _isMovieInFavorites = true;
                 StateHasChanged();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
                 ToastService.ShowToast("An error occurred while adding the movie to favorites", ToastStatus.Error);
                 throw;
             }
