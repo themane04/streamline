@@ -4,7 +4,6 @@
     Title="Change Profile Picture"
     Description="Upload a new profile picture"
     IsVisible="_isImageModalVisible"
-    CloseOnOverlayClick="true"
     OnClose="CloseImageModal"
     ProfileImageIcon="true"
     ButtonText="Upload Image"
@@ -18,7 +17,6 @@
     Title="Update Profile Information"
     Description="Update your profile information"
     IsVisible="_isEditProfileInfoModalVisible"
-    CloseOnOverlayClick="true"
     OnClose="CloseEditProfileInfoModal"
     EditProfileInfoIcon="true"
     ButtonText="Update Profile"
@@ -36,7 +34,6 @@
     Title="Change Password"
     Description="Change your password"
     IsVisible="_isPasswordModalVisible"
-    CloseOnOverlayClick="true"
     OnClose="ClosePasswordModal"
     PasswordResetIcon="true"
     ButtonText="Change Password"
@@ -50,10 +47,26 @@
            @bind-value="_confirmNewPassword" @bind-value:event="oninput" placeholder="Confirm New Password"/>
 </Modal>
 <Modal
+    Title="Notification Settings"
+    Description="Change your notification settings"
+    IsVisible="_isNotificationsModalVisible"
+    OnClose="CloseNotificationsModal"
+>
+    <div class="notification-settings-container">
+        <div class="notification-setting-item">
+            <label class="notification-setting-label">Email Notifications</label>
+            <ToggleSwitch SwitchName="email-notifications"/>
+        </div>
+        <div class="notification-setting-item">
+            <label class="notification-setting-label">Normal Notifications</label>
+            <ToggleSwitch SwitchName="normal-notifications"/>
+        </div>
+    </div>
+</Modal>
+<Modal
     Title="Sign Out"
     Description="Are you sure you want to sign out?"
     IsVisible="_signOutModalVisible"
-    CloseOnOverlayClick="true"
     OnClose="CloseSignOutModal"
     ButtonText="Sign Out"
     SignOutIcon="true"
@@ -93,6 +106,7 @@
             CloseDrawer="CloseDrawer"
             OpenEditProfileInfoModal="OpenEditProfileInfoModal"
             OpenPasswordModal="OpenPasswordModal"
+            OpenNotificationsModal="OpenNotificationsModal"
             OpenSignOutModal="OpenSignOutModal"
             OpenAccountDeletionModal="OpenAccountDeletionModal"
         />
@@ -109,6 +123,7 @@
     private bool _isImageModalVisible;
     private bool _isEditProfileInfoModalVisible;
     private bool _isPasswordModalVisible;
+    private bool _isNotificationsModalVisible;
     private bool _signOutModalVisible;
     private bool _accountDeletionModalVisible;
     private bool _isDrawerOpen;
@@ -120,6 +135,8 @@
     private bool _oldPasswordHasError;
     private bool _newPasswordHasError;
     private bool _confirmNewPasswordHasError;
+    private bool _isEmailNotificationsEnabled;
+    private bool _isNormalNotificationsEnabled;
 
     private bool HasUserDataChanged =>
         AuthService.User != null &&
@@ -157,6 +174,17 @@
     private void ClosePasswordModal()
     {
         _isPasswordModalVisible = false;
+    }
+
+    private void OpenNotificationsModal()
+    {
+        _isNotificationsModalVisible = true;
+        CloseDrawer();
+    }
+
+    private void CloseNotificationsModal()
+    {
+        _isNotificationsModalVisible = false;
     }
 
     private void OpenSignOutModal()

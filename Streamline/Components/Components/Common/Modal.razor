@@ -3,35 +3,42 @@
     <div class="modal-overlay @String.ModalClass(IsVisible)" @onclick="CloseModalOnOverlayClick">
         <div class="modal-content" style="@String.ModalStyle(Width,Height)" @onclick:stopPropagation>
             <button class="close-button" @onclick="CloseModal">
-                <MudIcon Icon="@Icons.Material.Filled.Close" Class="mud-toast-component-message-icon scale-on-interaction"
+                <MudIcon Icon="@Icons.Material.Filled.Close"
+                         Class="mud-toast-component-message-icon scale-on-interaction"
                          Style="fill: var(--text-color) !important;"/>
             </button>
             <h4>@Title</h4>
             <p>@Description</p>
             @ChildContent
-            <MudButton Class="mud-modal-component-action-button scale-on-interaction" OnClick="OnButtonClick">
-                @if (ProfileImageIcon)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.UploadFile" Class="mud-modal-component-button-icon-container"/>
-                }
-                @if (EditProfileInfoIcon)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mud-modal-component-button-icon-container"/>
-                }
-                @if (PasswordResetIcon)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.Lock" Class="mud-modal-component-button-icon-container"/>
-                }
-                @if (SignOutIcon)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.ExitToApp" Class="mud-modal-component-button-icon-container"/>
-                }
-                @if (DeleteAccountIcon)
-                {
-                    <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mud-modal-component-button-icon-container"/>
-                }
-                <span>@ButtonText</span>
-            </MudButton>
+            @if (!string.IsNullOrEmpty(ButtonText))
+            {
+                <MudButton Class="mud-modal-component-action-button scale-on-interaction" OnClick="OnButtonClick">
+                    @if (ProfileImageIcon)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.UploadFile"
+                                 Class="mud-modal-component-button-icon-container"/>
+                    }
+                    @if (EditProfileInfoIcon)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mud-modal-component-button-icon-container"/>
+                    }
+                    @if (PasswordResetIcon)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" Class="mud-modal-component-button-icon-container"/>
+                    }
+                    @if (SignOutIcon)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.ExitToApp"
+                                 Class="mud-modal-component-button-icon-container"/>
+                    }
+                    @if (DeleteAccountIcon)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Delete"
+                                 Class="mud-modal-component-button-icon-container"/>
+                    }
+                    <span>@ButtonText</span>
+                </MudButton>
+            }
         </div>
     </div>
 }
@@ -39,7 +46,7 @@
 @code {
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public string Description { get; set; } = string.Empty;
-    [Parameter] public string ButtonText { get; set; } = "Close";
+    [Parameter] public string ButtonText { get; set; } = string.Empty;
     [Parameter] public EventCallback OnButtonClick { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public EventCallback<bool> OnClose { get; set; }

@@ -16,6 +16,11 @@
                 Change Password
             </MudButton>
             <MudButton Class="mud-profile-page-button-link scale-on-interaction mt-3 fs-4"
+                       OnClick="OpenNotificationsModal">
+                <MudIcon Icon="@Icons.Material.Filled.Notifications" Class="mud-profile-page-button-icon"/>
+                Notifications
+            </MudButton>
+            <MudButton Class="mud-profile-page-button-link scale-on-interaction mt-3 fs-4"
                        OnClick="() => NavigationManager.NavigateTo(AppRoutes.InfoUrl)">
                 <MudIcon Icon="@Icons.Material.Filled.Info" Class="mud-profile-page-button-icon"/>
                 About
@@ -49,4 +54,5 @@
     [Parameter] public EventCallback OpenPasswordModal { get; set; }
     [Parameter] public EventCallback OpenSignOutModal { get; set; }
     [Parameter] public EventCallback OpenAccountDeletionModal { get; set; }
+    [Parameter] public EventCallback OpenNotificationsModal { get; set; }
 }

@@ -53,17 +53,31 @@
     border: 2px solid var(--primary-color);
 }
 
+.notification-settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.notification-setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.notification-setting-label {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: var(--font-weight-medium);
+    margin-right: 20px;
+}
+
 .profile-page-drawer-toggle {
     width: 100%;
     display: flex;
     justify-content: end;
-}
-
-.profile-page-drawer-button-container {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .profile-page-user-info {
