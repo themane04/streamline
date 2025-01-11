@@ -6,6 +6,10 @@
            @bind="_username" @bind:after="SaveDataToStorage"/>
     <input type="email" placeholder="E-Mail" class="@String.GetSignUpInputFieldClass(_hasEmailError)" @bind="_email"
            @bind:after="SaveDataToStorage"/>
+    <div class="sign-up-birthday-container">
+        <input type="date" id="birthday" @bind="_birthday" @bind:after="SaveDataToStorage"
+               class="@String.GetSignUpInputFieldClass(_hasBirthdayError)"/>
+    </div>
     <input type="password" placeholder="Password" class="@String.GetSignUpInputFieldClass(_hasPasswordError)"
            @bind="_password" @bind:after="SaveDataToStorage"/>
     <input type="password" placeholder="Confirm Password"
@@ -34,9 +38,11 @@
     private string _email = string.Empty;
     private string _password = string.Empty;
     private string _confirmPassword = string.Empty;
+    private DateTime? _birthday;
     private bool _isLoading;
     private bool _hasUsernameError;
     private bool _hasEmailError;
+    private bool _hasBirthdayError;
     private bool _hasPasswordError;
     private bool _hasConfirmPasswordError;
     private bool _acceptedTerms;
@@ -47,6 +53,7 @@
 
         _username = formData.GetValueOrDefault("Username", string.Empty);
         _email = formData.GetValueOrDefault("Email", string.Empty);
+        _birthday = DateTime.TryParse(formData.GetValueOrDefault("Birthday", string.Empty), out var date) ? date : null;
         _password = formData.GetValueOrDefault("Password", string.Empty);
         _confirmPassword = formData.GetValueOrDefault("ConfirmPassword", string.Empty);
         _acceptedTerms = bool.TryParse(formData.GetValueOrDefault("AcceptedTerms", "false"), out var terms) && terms;
@@ -58,6 +65,7 @@
         {
             { "Username", _username },
             { "Email", _email },
+            { "Birthday", _birthday?.ToString("dd-MM-yyyy") ?? string.Empty },
             { "Password", _password },
             { "ConfirmPassword", _confirmPassword },
             { "AcceptedTerms", _acceptedTerms.ToString() }
@@ -87,6 +95,14 @@
             ToastService.ShowToast("Invalid Email Format. Please enter a valid email address", ToastStatus.Warning);
             _isLoading = false;
             _hasEmailError = true;
+            return;
+        }
+
+        if (!_birthday.HasValue || _birthday.Value > DateTime.Today)
+        {
+            ToastService.ShowToast("Please enter a valid birthday", ToastStatus.Warning);
+            _isLoading = false;
+            _hasBirthdayError = true;
             return;
         }
 

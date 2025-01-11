@@ -26,6 +26,26 @@
     outline: none;
 }
 
+input[type="date"].sign-up-input-field {
+    text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    font-size: 1.5rem;
+    padding: 0 15px;
+    border-radius: 30px;
+}
+
+input[type="date"]:not(:valid).sign-up-input-field::before {
+    content: attr(placeholder);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    display: block;
+    text-align: center;
+}
+
 .terms-container {
     display: flex;
     align-items: center;
