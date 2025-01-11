@@ -1,0 +1,14 @@
+﻿.about-container {
+    max-width: 800px;
+    margin: 20px auto;
+    font-family: var(--font-open-sans-family), sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 150px;
+    text-align: left;
+}
+
+.about-container strong {
+    color: var(--primary-color);
+}
