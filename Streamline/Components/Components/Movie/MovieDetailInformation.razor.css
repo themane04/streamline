@@ -35,6 +35,60 @@
     display: inline-block;
 }
 
+.movie-rating-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.movie-rating-slider-input {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--light-gray-color);
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.movie-rating-slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.movie-rating-slider-input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.movie-rating-value {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: var(--font-weight-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.movie-detail-information-rating-rating-star {
+    width: 18px;
+    height: 18px;
+}
+
 .movie-detail-information-collection-image {
     width: 150px;
     height: fit-content;

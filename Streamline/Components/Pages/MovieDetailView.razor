@@ -47,7 +47,7 @@
                     <p class="movie-detail-release-date-text">Release Date:</p>
                     @if (Movie?.ReleaseDate != null)
                     {
-                        <p>@(DateTime.Parse(Movie.ReleaseDate).ToString("dd.MM.yyyy"))</p>
+                        <p>@String.FormattedDate(Movie.ReleaseDate)</p>
                     }
                 </div>
             </div>
@@ -77,7 +77,8 @@
             MovieRuntime="@(Movie?.Runtime ?? 0)"
             MovieOverview="@Movie?.Overview"
             MoviePopularity="@(Movie?.Popularity ?? 0)"
-            SimilarMovies="@SimilarMovies"/>
+            SimilarMovies="@SimilarMovies"
+        />
     </div>
 }
 else

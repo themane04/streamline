@@ -8,6 +8,27 @@
         </div>
     }
     <div class="movie-detail-information-text-details-container">
+        <div class="d-flex align-items-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.ThumbUp" Class="mud-movie-detail-information-component-icon" />
+            <p class="movie-detail-information-header-text">Rate this Movie</p>
+        </div>
+        <div class="movie-rating-slider">
+            <input
+                type="range"
+                min="1"
+                max="10"
+                step="0.1"
+                value="@_movieRating"
+                @oninput="UpdateRating"
+                class="movie-rating-slider-input" />
+            <p class="movie-rating-value">
+                @_movieRating/10
+                <img src="images/assets/homepage/rating_star.png" alt="Rating Star"
+                     class="movie-detail-information-rating-rating-star" />
+            </p>
+        </div>
+    </div>
+    <div class="movie-detail-information-text-details-container">
         @if (String.ImageStringAvailable(MovieBelongsToCollection?.FullPosterPath))
         {
             <img src="@MovieBelongsToCollection?.FullPosterPath" alt="@MovieBelongsToCollection?.Name"
@@ -119,6 +140,22 @@
     [Parameter] public double MoviePopularity { get; set; }
     [Parameter] public List<MovieDetail> SimilarMovies { get; set; } = new();
     [Parameter] public EventCallback<MovieDetail> OnMovieSelected { get; set; }
+    private double _movieRating = 5.1;
+    private bool _hasShownRatingToast = false;
+    
+    private void UpdateRating(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var newRating))
+        {
+            if (!_hasShownRatingToast)
+            {
+                ToastService.ShowToast("Movie Rating is not available yet", ToastStatus.Info);
+                _hasShownRatingToast = true;
+            }
+            
+            _movieRating = newRating;
+        }
+    }
 
     private async Task NavigateToSimilarMovie(int movieId)
     {
