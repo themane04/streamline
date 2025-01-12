@@ -24,6 +24,66 @@ public class MovieService
         _logger.LogInformation("Initialized");
     }
 
+    public async Task<List<MovieGenre>> GetMovieGenresAsync()
+    {
+        string methodName = nameof(GetMovieGenresAsync);
+        using HttpClient client = new();
+        string url = $"{_movieDbApiUrl}genre/movie/list?api_key={_apiKey}&language=en-US";
+
+        try
+        {
+            _logger.LogInformation($"{methodName}: Fetching movie genres from {url}");
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                var genresResponse = JsonSerializer.Deserialize<GenreResponseTmdb>(json);
+                return genresResponse?.Genres ?? new List<MovieGenre>();
+            }
+            else
+            {
+                _logger.LogWarning($"{methodName}: Failed to fetch genres. StatusCode: {response.StatusCode}");
+                return new List<MovieGenre>();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"{methodName}: Error fetching movie genres");
+            return new List<MovieGenre>();
+        }
+    }
+    
+    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId, int page = 1)
+    {
+        string methodName = nameof(GetMoviesByGenreAsync);
+        using HttpClient client = new();
+        string url = $"{_movieDbApiUrl}discover/movie?api_key={_apiKey}&language=en-US&with_genres={genreId}&page={page}";
+
+        try
+        {
+            _logger.LogInformation($"{methodName}: Fetching movies for genre {genreId} from {url}");
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                var movieResponse = JsonSerializer.Deserialize<MovieResponseTmdb>(json);
+                return movieResponse?.Results ?? new List<Movie>();
+            }
+            else
+            {
+                _logger.LogWarning($"{methodName}: Failed to fetch movies. StatusCode: {response.StatusCode}");
+                return new List<Movie>();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"{methodName}: Error fetching movies by genre");
+            return new List<Movie>();
+        }
+    }
+
     public async Task<List<Movie>> GetPopularMoviesAsync(int page)
     {
         string methodName = nameof(GetPopularMoviesAsync);

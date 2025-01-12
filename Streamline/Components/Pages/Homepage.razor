@@ -22,6 +22,18 @@
             </div>
         </MudButton>
     </div>
+    <div class="homepage-button-container mt-3">
+        <div class="homepage-genre-dropdown-container scale-on-interaction">
+            <select id="genreDropdown" @onchange="OnGenreSelected" class="homepage-genre-dropdown">
+                <option value="" disabled selected>Select a Genre</option>
+                <option value="">All</option>
+                @foreach (var genre in _genres)
+                {
+                    <option value="@genre.Id">@genre.Name</option>
+                }
+            </select>
+        </div>
+    </div>
 </div>
 <div class="homepage-movies-grid">
     @if (_isInitialLoading)
@@ -52,16 +64,46 @@
 
     private IJSObjectReference? _module;
     private List<Movie>? _movies = new();
+    private List<MovieGenre> _genres = new();
     private int _currentPage = 1;
     private bool _isInitialLoading;
     private bool _isPageLoading;
     private DotNetObjectReference<Homepage>? _dotNetRef;
     private bool _isSearchActive;
     private string _searchQuery = "";
+    private int _selectedGenreId;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _dotNetRef = DotNetObjectReference.Create(this);
+        _genres = await MovieService.GetMovieGenresAsync();
+    }
+
+    private async Task OnGenreSelected(ChangeEventArgs e)
+    {
+        var selectedValue = e.Value?.ToString();
+
+        _isInitialLoading = true;
+        try
+        {
+            if (string.IsNullOrEmpty(selectedValue))
+            {
+                _movies = await MovieService.GetPopularMoviesAsync(_currentPage = 1);
+            }
+            else if (int.TryParse(selectedValue, out var genreId))
+            {
+                _selectedGenreId = genreId;
+                _movies = await MovieService.GetMoviesByGenreAsync(genreId);
+            }
+
+            HomepageService.Movies = _movies;
+            HomepageService.CurrentPage = 1;
+        }
+        finally
+        {
+            _isInitialLoading = false;
+            StateHasChanged();
+        }
     }
 
     protected override async Task OnParametersSetAsync()

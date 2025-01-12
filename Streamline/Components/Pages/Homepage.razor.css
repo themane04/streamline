@@ -5,11 +5,17 @@
     font-family: var(--font-montserrat-family), sans-serif;
 }
 
-.homepage-search-content {
+/* Movies Search Button */
+
+.homepage-search-content, .homepage-search-content input[type="text"] {
     display: flex;
     align-items: center;
     flex: 1;
     transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+    width: 100%;
+    color: var(--text-color);
 }
 
 .homepage-search-icon {
@@ -24,7 +30,7 @@
     font-size: 1rem;
     font-family: var(--font-montserrat-family), sans-serif;
     font-weight: var(--font-weight-regular);
-    color: var(--black-color);
+    color: var(--text-color);
     background: transparent;
     box-sizing: border-box;
     border: none;
@@ -35,10 +41,56 @@
 }
 
 .homepage-search-input::placeholder {
-    color: var(--black-color);
+    color: var(--text-color);
     font-family: var(--font-montserrat-family), sans-serif;
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-semibold);
 }
+
+/* Movie Dropdown Menu */
+
+.homepage-genre-dropdown-container {
+    width: fit-content;
+    position: relative;
+    background: var(--input-field-background-color);
+    border-radius: 30px;
+    box-shadow: var(--action-box-shadow);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.homepage-genre-dropdown {
+    width: 100%;
+    max-width: 250px;
+    padding: 5px;
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+    border-radius: 5px;
+    color: var(--text-color);
+    border: none;
+    background-color: transparent;
+    overflow-y: auto;
+    max-height: 120px;
+}
+
+.homepage-genre-dropdown option {
+    font-size: 1rem;
+    padding: 5px 10px;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    border: none;
+}
+
+.homepage-genre-dropdown option:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.homepage-genre-dropdown:focus {
+    outline: none;
+}
+
+/* Movies Grid */
 
 .homepage-movies-grid {
     margin-top: 30px;
