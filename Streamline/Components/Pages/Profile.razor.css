@@ -1,4 +1,6 @@
-﻿.profile-page-outer-container {
+﻿/* Profile Page Content */
+
+.profile-page-outer-container {
     padding-bottom: 150px;
     font-family: var(--font-montserrat-family), sans-serif;
 }
@@ -12,66 +14,6 @@
     display: block;
     box-shadow: var(--action-box-shadow);
     object-fit: cover;
-}
-
-.profile-page-form {
-    max-width: 369px;
-}
-
-.profile-page-input-field {
-    width: 100%;
-    height: 70px;
-    margin-top: 20px;
-    font-family: var(--font-montserrat-family), sans-serif;
-    font-weight: var(--font-weight-regular);
-    font-size: 1.5rem;
-    text-align: center;
-    color: var(--text-color);
-    background: var(--input-field-background-color);
-    border-radius: 30px;
-    border: none;
-    box-shadow: var(--action-box-shadow);
-    padding: 15px;
-}
-
-.profile-page-input-field::placeholder {
-    color: var(--text-color);
-}
-
-.profile-page-input-field:focus {
-    outline: none;
-}
-
-.profile-page-button-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-}
-
-.profile-page-field-error-border {
-    border: 2px solid var(--primary-color);
-}
-
-.notification-settings-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    text-align: left;
-}
-
-.notification-setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 50px;
-}
-
-.notification-setting-label {
-    font-size: 1rem;
-    color: var(--text-color);
-    font-weight: var(--font-weight-medium);
-    margin-right: 20px;
 }
 
 .profile-page-drawer-toggle {
@@ -112,4 +54,105 @@
     margin: 0;
     font-size: 1.2rem;
     font-weight: var(--font-weight-regular);
+}
+
+/* Edit Profile Info Modal && Password Modal */
+
+.profile-page-form {
+    max-width: 369px;
+}
+
+.profile-page-input-field {
+    width: 100%;
+    height: 70px;
+    margin-top: 20px;
+    font-family: var(--font-montserrat-family), sans-serif;
+    font-weight: var(--font-weight-regular);
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--input-field-background-color);
+    border-radius: 30px;
+    border: none;
+    box-shadow: var(--action-box-shadow);
+    padding: 15px;
+}
+
+.profile-page-input-field::placeholder {
+    color: var(--text-color);
+}
+
+.profile-page-input-field:focus {
+    outline: none;
+}
+
+.profile-page-field-error-border {
+    border: 2px solid var(--primary-color);
+}
+
+/* Notification Settings Modal */
+
+.notifications-settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.notifications-setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.notifications-setting-label {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: var(--font-weight-medium);
+    margin-right: 20px;
+}
+
+/* Preferences Settings Modal */
+
+.preferences-theme-selection-title {
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    margin: 0 0 10px;
+}
+
+.preferences-theme-selection label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.preferences-theme-selection input[type="radio"] {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--light-gray-color);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.preferences-theme-selection input[type="radio"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.preferences-theme-selection input[type="radio"]:focus {
+    box-shadow: 0 0 3px 2px rgba(250, 64, 50, 0.4);
+}
+
+.preferences-theme-selection input[type="radio"]:checked + .mud-profile-page-theme-icon {
+    color: var(--secondary-color);
 }

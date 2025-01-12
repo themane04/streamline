@@ -54,15 +54,40 @@
     IsVisible="_isNotificationsModalVisible"
     OnClose="CloseNotificationsModal"
 >
-    <div class="notification-settings-container">
-        <div class="notification-setting-item">
-            <label class="notification-setting-label">Email Notifications</label>
+    <div class="notifications-settings-container">
+        <div class="notifications-setting-item">
+            <label class="notifications-setting-label">Email Notifications</label>
             <ToggleSwitch SwitchName="email-notifications"/>
         </div>
-        <div class="notification-setting-item">
-            <label class="notification-setting-label">Normal Notifications</label>
+        <div class="notifications-setting-item">
+            <label class="notifications-setting-label">Normal Notifications</label>
             <ToggleSwitch SwitchName="normal-notifications"/>
         </div>
+    </div>
+</Modal>
+<Modal
+    Title="Preferences Settings"
+    Description="Change your preferences settings"
+    IsVisible="_isPreferencesModalVisible"
+    OnClose="ClosePreferencesModal"
+>
+    <div class="preferences-theme-selection">
+        <p class="preferences-theme-selection-title">Pick a Look</p>
+        <label>
+            <input type="radio" name="theme" @bind-value="_lightTheme"/>
+            <MudIcon Icon="@Icons.Material.Filled.WbSunny" Class="mud-profile-page-theme-icon"/>
+            Light
+        </label>
+        <label>
+            <input type="radio" name="theme" @bind-value="_darkTheme"/>
+            <MudIcon Icon="@Icons.Material.Filled.DarkMode" Class="mud-profile-page-theme-icon"/>
+            Dark
+        </label>
+        <label>
+            <input type="radio" name="theme" @bind-value="_systemTheme"/>
+            <MudIcon Icon="@Icons.Material.Filled.Sync" Class="mud-profile-page-theme-icon"/>
+            System Default
+        </label>
     </div>
 </Modal>
 <Modal
@@ -119,6 +144,7 @@
             OpenEditProfileInfoModal="OpenEditProfileInfoModal"
             OpenPasswordModal="OpenPasswordModal"
             OpenNotificationsModal="OpenNotificationsModal"
+            OpenPreferencesModal="OpenPreferencesModal"
             OpenSignOutModal="OpenSignOutModal"
             OpenAccountDeletionModal="OpenAccountDeletionModal"
         />
@@ -136,6 +162,7 @@
     private bool _isEditProfileInfoModalVisible;
     private bool _isPasswordModalVisible;
     private bool _isNotificationsModalVisible;
+    private bool _isPreferencesModalVisible;
     private bool _signOutModalVisible;
     private bool _accountDeletionModalVisible;
     private bool _isDrawerOpen;
@@ -150,6 +177,9 @@
     private bool _confirmNewPasswordHasError;
     private bool _isEmailNotificationsEnabled;
     private bool _isNormalNotificationsEnabled;
+    private string _darkTheme = "dark";
+    private string _lightTheme = "light";
+    private string _systemTheme = "system";
 
     private bool HasUserDataChanged =>
         AuthService.User != null &&
@@ -192,6 +222,7 @@
 
     private void OpenNotificationsModal()
     {
+        ToastService.ShowToast("Notifications settings are not available yet", ToastStatus.Info);
         _isNotificationsModalVisible = true;
         CloseDrawer();
     }
@@ -199,6 +230,18 @@
     private void CloseNotificationsModal()
     {
         _isNotificationsModalVisible = false;
+    }
+
+    private void OpenPreferencesModal()
+    {
+        ToastService.ShowToast("Preferences settings are not available yet", ToastStatus.Info);
+        _isPreferencesModalVisible = true;
+        CloseDrawer();
+    }
+
+    private void ClosePreferencesModal()
+    {
+        _isPreferencesModalVisible = false;
     }
 
     private void OpenSignOutModal()
