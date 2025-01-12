@@ -46,7 +46,7 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
     text-align: center;
 }
 
-.terms-container {
+.sign-up-terms-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,7 +56,7 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
     font-family: var(--font-open-sans-family), sans-serif;
 }
 
-.terms-container input[type="checkbox"] {
+.sign-up-terms-container input[type="checkbox"] {
     margin-right: 10px;
     cursor: pointer;
     width: 20px;
@@ -72,12 +72,12 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.terms-container input[type="checkbox"]:checked {
+.sign-up-terms-container input[type="checkbox"]:checked {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.terms-container input[type="checkbox"]:checked::before {
+.sign-up-terms-container input[type="checkbox"]:checked::before {
     content: "✔";
     color: var(--white-color);
     font-size: 14px;
@@ -85,12 +85,12 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
     display: inline-block;
 }
 
-.terms-label a {
+.sign-up-terms-label a {
     color: var(--primary-color);
     text-decoration: none;
 }
 
-.terms-label a:hover {
+.sign-up-terms-label a:hover {
     text-decoration: underline;
     color: var(--secondary-color);
 }
@@ -98,6 +98,7 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
 .sign-up-link-container {
     margin-top: 20px;
     font-size: 1.25rem;
+    padding-bottom: 150px;
 }
 
 .sign-up-question-text {
@@ -119,7 +120,7 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
 .sign-up-link:visited,
 .sign-up-link:hover,
 .sign-up-link:active {
-    color: var(--primary-color);
+    color: var(--navigation-color);
 }
 
 .sign-up-field-error-border {

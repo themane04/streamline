@@ -6,18 +6,17 @@
            @bind="_username" @bind:after="SaveDataToStorage"/>
     <input type="email" placeholder="E-Mail" class="@String.GetSignUpInputFieldClass(_hasEmailError)" @bind="_email"
            @bind:after="SaveDataToStorage"/>
-    <div class="sign-up-birthday-container">
-        <input type="date" id="birthday" @bind="_birthday" @bind:after="SaveDataToStorage"
-               class="@String.GetSignUpInputFieldClass(_hasBirthdayError)"/>
-    </div>
+    <input type="date" id="birthday" @bind="_birthday" @bind:after="SaveDataToStorage"
+           class="@String.GetSignUpInputFieldClass(_hasBirthdayError)"/>
     <input type="password" placeholder="Password" class="@String.GetSignUpInputFieldClass(_hasPasswordError)"
            @bind="_password" @bind:after="SaveDataToStorage"/>
     <input type="password" placeholder="Confirm Password"
            class="@String.GetSignUpInputFieldClass(_hasConfirmPasswordError)"
            @bind="_confirmPassword" @bind:after="SaveDataToStorage"/>
-    <div class="terms-container">
-        <input type="checkbox" id="termsCheckbox" @bind="_acceptedTerms" @bind:after="SaveDataToStorage"/>
-        <label for="termsCheckbox" class="terms-label">
+    <div class="sign-up-terms-container">
+        <input type="checkbox" id="termsCheckbox" class="scale-on-interaction" @bind="_acceptedTerms"
+               @bind:after="SaveDataToStorage"/>
+        <label for="termsCheckbox" class="sign-up-terms-label">
             I accept the <a href="@AppRoutes.TermsUrl">Terms and Conditions</a>
         </label>
     </div>

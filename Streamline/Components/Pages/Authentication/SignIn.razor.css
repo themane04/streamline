@@ -29,6 +29,7 @@
 .sign-in-link-container {
     margin-top: 20px;
     font-size: 1.25rem;
+    padding-bottom: 150px;
 }
 
 .sign-in-question-text {
@@ -50,7 +51,7 @@
 .sign-in-link:visited,
 .sign-in-link:hover,
 .sign-in-link:active {
-    color: var(--primary-color);
+    color: var(--navigation-color);
 }
 
 .sign-in-field-error-border {
