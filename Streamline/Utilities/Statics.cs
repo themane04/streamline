@@ -108,4 +108,6 @@ public class Statics
     };
     
     public static readonly string SignUpDataStorageKey = "SignUpData";
+    public static string FormattedDate(string date) => DateTime.Parse(date).ToString("dd.MM.yyyy");
+    public static string BackendBirthdayFormat(DateTime date) => date.ToString("dd-MM-yyyy");
 }

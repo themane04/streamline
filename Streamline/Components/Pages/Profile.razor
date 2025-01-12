@@ -27,6 +27,8 @@
                @bind-value="_editedUsername" @bind-value:event="oninput"/>
         <input type="text" class="profile-page-input-field scale-on-interaction"
                @bind-value="_editedEmail" @bind-value:event="oninput"/>
+        <input type="date" id="birthday" class="profile-page-input-field scale-on-interaction"
+               @bind-value="_editedBirthday" @bind-value:event="oninput"/>
     </div>
 </Modal>
 
@@ -96,9 +98,19 @@
                      class="profile-page-profile-picture scale-on-interaction"/>
             </div>
             <div class="profile-page-user-info">
-                <h3>@AuthService.User.Username</h3>
-                <p>Email @AuthService.User.Email</p>
-                <p>Joined on @DateTime.Parse(AuthService.User.DateJoined).ToString("dd.MM.yyyy")</p>
+                <p class="profile-page-username">@AuthService.User.Username</p>
+                <div class="user-info-item">
+                    <MudIcon Icon="@Icons.Material.Filled.Email" Class="mud-profile-page-user-data-icon"/>
+                    <p>Email: @AuthService.User.Email</p>
+                </div>
+                <div class="user-info-item">
+                    <MudIcon Icon="@Icons.Material.Filled.Cake" Class="mud-profile-page-user-data-icon"/>
+                    <p>Birthday: @String.FormattedDate(AuthService.User.Birthday)</p>
+                </div>
+                <div class="user-info-item">
+                    <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Class="mud-profile-page-user-data-icon"/>
+                    <p>Joined on: @String.FormattedDate(AuthService.User.DateJoined)</p>
+                </div>
             </div>
         </div>
         <ProfilePageSideDrawer
@@ -129,6 +141,7 @@
     private bool _isDrawerOpen;
     private string _editedUsername = string.Empty;
     private string _editedEmail = string.Empty;
+    private DateTime? _editedBirthday;
     private string _oldPassword = string.Empty;
     private string _newPassword = string.Empty;
     private string _confirmNewPassword = string.Empty;
@@ -141,7 +154,8 @@
     private bool HasUserDataChanged =>
         AuthService.User != null &&
         _editedUsername == AuthService.User.Username &&
-        _editedEmail == AuthService.User.Email;
+        _editedEmail == AuthService.User.Email &&
+        _editedBirthday == DateTime.Parse(AuthService.User.Birthday);
 
     private void OpenImageModal()
     {
@@ -233,6 +247,7 @@
         {
             _editedUsername = AuthService.User.Username;
             _editedEmail = AuthService.User.Email;
+            _editedBirthday = DateTime.Parse(AuthService.User.Birthday);
         }
     }
 
@@ -313,9 +328,9 @@
     {
         if (AuthService.User != null)
         {
-            if (string.IsNullOrWhiteSpace(_editedUsername) || string.IsNullOrWhiteSpace(_editedEmail))
+            if (string.IsNullOrWhiteSpace(_editedUsername) || string.IsNullOrWhiteSpace(_editedEmail) || _editedBirthday == null)
             {
-                ToastService.ShowToast("Username or email cannot be empty", ToastStatus.Warning);
+                ToastService.ShowToast("Username, email, and birthday cannot be empty", ToastStatus.Warning);
                 _editedUsername = AuthService.User.Username;
                 _editedEmail = AuthService.User.Email;
                 return;
@@ -341,7 +356,12 @@
 
             try
             {
-                var response = await UserService.UpdateProfileAsync(AuthService.User.Id, _editedUsername, _editedEmail);
+                var response = await UserService.UpdateProfileAsync(
+                    AuthService.User.Id,
+                    _editedUsername,
+                    _editedEmail,
+                    String.BackendBirthdayFormat(_editedBirthday.Value)
+                );
                 if (response?.Data != null)
                 {
                     await AuthService.UpdateUserData(response.Data);

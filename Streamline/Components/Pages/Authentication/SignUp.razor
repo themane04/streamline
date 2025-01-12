@@ -80,6 +80,7 @@
         _hasEmailError = false;
         _hasPasswordError = false;
         _hasConfirmPasswordError = false;
+        _hasBirthdayError = false;
 
         if (string.IsNullOrWhiteSpace(_username) || !Validation.IsUsernameValid(_username))
         {
@@ -131,7 +132,13 @@
 
         try
         {
-            var user = await UserService.SignUpUserAsync(_username, _email, _password, _confirmPassword);
+            var user = await UserService.SignUpUserAsync(
+                _username,
+                _email,
+                String.BackendBirthdayFormat(_birthday.Value),
+                _password,
+                _confirmPassword
+            );
 
             if (user != null)
             {

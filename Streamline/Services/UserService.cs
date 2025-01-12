@@ -22,7 +22,10 @@ public class UserService
         _logger.LogInformation("Initialized");
     }
 
-    public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(string username, string email,
+    public async Task<BackendResponse<AuthenticatedUser>?> SignUpUserAsync(
+        string username,
+        string email,
+        string birthday,
         string password,
         string confirmPassword)
     {
@@ -30,6 +33,7 @@ public class UserService
         {
             username,
             email,
+            birthday,
             password,
             confirm_password = confirmPassword
         };
@@ -198,7 +202,12 @@ public class UserService
         }
     }
 
-    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfileAsync(int? id, string username, string email)
+    public async Task<BackendResponse<AuthenticatedUser>?> UpdateProfileAsync(
+        int? id,
+        string username,
+        string email,
+        string birthday
+        )
     {
         var accessToken = await SecureStorage.GetAsync("accessToken");
         AuthHeaderHelper.SetAuthorizationHeader(_httpClient, accessToken);
@@ -208,7 +217,8 @@ public class UserService
         var userData = new
         {
             username,
-            email
+            email,
+            birthday
         };
 
         var jsonRequest = JsonSerializer.Serialize(userData, new JsonSerializerOptions

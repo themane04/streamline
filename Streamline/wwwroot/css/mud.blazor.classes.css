@@ -163,6 +163,12 @@
     background-color: transparent;
 }
 
+.mud-profile-page-user-data-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-color);
+}
+
 .mud-faq-page-icon-left,
 .mud-faq-page-icon-right {
     width: 24px;

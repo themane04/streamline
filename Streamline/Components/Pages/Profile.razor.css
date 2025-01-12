@@ -81,16 +81,35 @@
 }
 
 .profile-page-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: var(--font-open-sans-family), sans-serif;
+    color: var(--text-color);
+    margin-top: 20px;
+}
+
+.profile-page-user-info {
     font-style: italic;
 }
 
-.profile-page-user-info h3 {
+.profile-page-username {
     margin: 10px 0;
-    color: #333;
-    font-size: 24px;
+    font-size: 2rem;
 }
 
 .profile-page-user-info p {
-    color: #555;
     margin: 5px 0;
+}
+
+.user-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info-item p {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-regular);
 }
