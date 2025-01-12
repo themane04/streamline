@@ -46,6 +46,14 @@ input[type="date"]:not(:valid).sign-up-input-field::before {
     text-align: center;
 }
 
+input[type="date"].sign-up-input-field::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+input[type="date"].sign-up-input-field {
+    cursor: pointer;
+}
+
 .sign-up-terms-container {
     display: flex;
     align-items: center;
